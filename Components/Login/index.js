@@ -4,7 +4,7 @@ import {
   View ,
   StyleSheet,
   KeyboardAvoidingView,
-  Alert
+  Alert,
 } from 'react-native'
 import { SecureStore } from 'expo'
 import { Button,Text,Input,Item ,Label,Container,Spinner} from 'native-base';
@@ -14,10 +14,8 @@ import { Mutation } from 'react-apollo'
 const LOGIN = gql`
 mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
+        id
         token
-        user{
-          id
-        }
     }
 }
 `

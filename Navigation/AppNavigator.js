@@ -88,22 +88,39 @@ import React from 'react'
 
 import Group from '../Components/Group'
 import Home from '../Components/Explore'
-import Profile from '../Components/Profile/App'
+import Profile from '../screens/Profile'
 import ChangePassword from '../Components/ChangePassword'
+import BasicInfo from '../Components/BasicInfo'
+import Region from '../Components/Region'
+import Family from '../Components/Family'
+import AddFamily from '../Components/Family/AddFamily'
 
 const ProfileNavigation = createStackNavigator(
     {
-        Main: {
-            screen: Profile
+        Profile: {
+            screen: Profile,
         },
         ChangePassword: {
-            screen: ChangePassword
+            screen: ChangePassword,
+        },
+        BasicInfo: {
+            screen: BasicInfo,
+        },
+        Family: {
+            screen: Family,
+        },
+        AddFamily: {
+            screen: AddFamily,
+        },
+        Region: {
+            screen: Region,
         },
     },
     {
+        initialRouteName:"Profile",
         navigationOptions: {
             header: null
-        }
+        },
     }
 )
 

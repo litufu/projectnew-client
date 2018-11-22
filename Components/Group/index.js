@@ -7,7 +7,7 @@ export default class Group extends Component {
     return (
       <View style={styles.container}>
         <StatusBar
-          backgroundColor="blue"
+          backgroundColor="grey"
           barStyle="light-content"
         />
         <View style={styles.container}>

@@ -13,10 +13,8 @@ const SIGNUP = gql`
             username: $username
             password: $password
         ) {
+            id
             token
-            user{
-              id
-            }
         }
     }
 `

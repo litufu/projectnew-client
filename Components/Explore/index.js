@@ -5,13 +5,6 @@ export default class Explore extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar
-          backgroundColor="blue"
-          barStyle="default"
-          translucent={true}
-          height={StatusBar.currentHeight}
-          hidden={true}
-        />
         <View >
           <Text>hello explore</Text>
         </View>

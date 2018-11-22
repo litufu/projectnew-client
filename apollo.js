@@ -12,7 +12,7 @@ export const client = new ApolloClient({
 
         operation.setContext({
             headers: {
-                token: token ? token : ''
+                authorization: token ? `Bearer ${token}` : ''
             }
         })
     }
