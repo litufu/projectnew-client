@@ -44,23 +44,23 @@ const GET_ME = gql`
     birthdaycalendar
     birthday
     birthProvince{
-      id
+      code
       name
     }
     birthCity{
-      id
+      code
       name
     }
     birthArea{
-      id
+      code
       name
     }
     birthStreet{
-      id
+      code
       name
     }
     birthVillage{
-      id
+      code
       name
     }
   }
@@ -76,7 +76,6 @@ export default class BasicInfo extends React.Component{
           if (loading) return (
             <Container>
               <Spinner />
-              <Info />
             </Container>
           );
           if (error) {
@@ -91,17 +90,14 @@ export default class BasicInfo extends React.Component{
             gender={data.me.gender}
             birthday={{
               calendar:data.me.birthdaycalendar,
-              year:data.me.birthday ? new Date(data.me.birthday).getFullYear() : '',
-              month:data.me.birthday ? new Date(data.me.birthday).getMonth()+1 : '',
-              day:data.me.birthday ? new Date(data.me.birthday).getDate() : '',
-              hour:data.me.birthday ? new Date(data.me.birthday).getHours() : ''
+              date:data.me.birthday
             }}
             birthplace={{
-              province:data.me.province ? data.me.province.name : '',
-              city:data.me.city ? data.me.city.name : '',
-              area:data.me.area ? data.me.area.name : '',
-              street:data.me.street ? data.me.street.name : '',
-              village:data.me.village ? data.me.village.name : '',
+              province:data.me.birthProvince ? {code:data.me.birthProvince.code,name:data.me.birthProvince.name}:'',
+              city:data.me.birthCity ? {code:data.me.birthCity.code,name:data.me.birthCity.name} : '',
+              area:data.me.birthArea ? {code:data.me.birthArea.code,name:data.me.birthArea.name} : '',
+              street:data.me.birthStreet ? {code:data.me.birthStreet.code,name:data.me.birthStreet.name} : '',
+              village:data.me.birthVillage ? {code:data.me.birthVillage.code,name:data.me.birthVillage.name} : '',
             }}
             />
           );

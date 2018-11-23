@@ -165,7 +165,7 @@ class SettingsScreen extends Component {
         <View>
           <ListItem
             title="手机验证"
-            onPress={() =>  this.props.navigation.navigate('Region')}
+            onPress={() =>  this.props.navigation.navigate('MyDatetime')}
             containerStyle={styles.listItemContainer}
             leftIcon={
               <BaseIcon

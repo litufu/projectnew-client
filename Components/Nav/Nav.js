@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import { Icon } from 'react-native-elements'
 import PropTypes from 'prop-types'
+import { withApollo } from 'react-apollo';
 
 import { Colors } from '../../constants'
 import logout from './logout'
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const Nav = ({ title, navigation, hasLeftIcon,leftIcon,hasLogoutText,logoutText }) => (
+const Nav = ({ title, navigation, hasLeftIcon,leftIcon,hasLogoutText,logoutText,client }) => (
   <View style={{ backgroundColor: 'white' }}>
     <View style={styles.container}>
       <View style={styles.leftRow}>
@@ -80,7 +81,7 @@ const Nav = ({ title, navigation, hasLeftIcon,leftIcon,hasLogoutText,logoutText 
       </View>
 
       {hasLogoutText && (<View style={styles.rightRow}>
-        <TouchableOpacity onPress={()=>logout(navigation)}>
+        <TouchableOpacity onPress={()=>logout(navigation,client)}>
           <Text style={styles.rightText}>{logoutText}</Text>
         </TouchableOpacity>
       </View>)}
@@ -102,4 +103,4 @@ Nav.defaultProps = {
 }
 
 
-export default Nav
+export default withApollo(Nav)

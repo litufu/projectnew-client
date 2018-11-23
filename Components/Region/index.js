@@ -11,38 +11,36 @@ import {
   Alert,
 } from 'react-native';
 import Location from './Location'
+import display from '../../utils/displayplace'
 
 export default class Region extends Component{
   state={
-  place:{},
+  place:this.props.place||{},
   openProvinceCityArea:false,
 }
 
   handlePlace=(place,closeModal)=>{
-    this.setState({place:Object.assign(this.state.place,place),openProvinceCityArea:closeModal},)
+    const newplace = Object.assign(this.state.place,place)
+    this.setState({place:newplace,openProvinceCityArea:closeModal})
+    this.props.handlePlace(newplace)
   }
 
   render(){
     const {place} = this.state
-    console.log('place',place)
+    const displayPlace = display(place)
     return(
       <View>
-        <Text>1</Text>
-        <Text>1</Text>
-        <Text>1</Text>
-        <Text>1</Text>
         <TouchableOpacity
          onPress={()=>this.setState({openProvinceCityArea:true})}
        >
-       <Text>
-        {place.province ? place.province.name+place.city.name+place.area.name+place.street.name+place.village.name: '居住地'}
+       <Text style={{color:'blue'}}>
+        {displayPlace}
        </Text>
      </TouchableOpacity>
         <Location
         callback={this.handlePlace}
         openProvinceCityArea={this.state.openProvinceCityArea}
         />
-
       </View>
     )
   }

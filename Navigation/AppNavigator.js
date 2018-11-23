@@ -92,6 +92,7 @@ import Profile from '../screens/Profile'
 import ChangePassword from '../Components/ChangePassword'
 import BasicInfo from '../Components/BasicInfo'
 import Region from '../Components/Region'
+import MyDatetime from '../Components/MyDatetime'
 import Family from '../Components/Family'
 import AddFamily from '../Components/Family/AddFamily'
 
@@ -114,6 +115,9 @@ const ProfileNavigation = createStackNavigator(
         },
         Region: {
             screen: Region,
+        },
+        MyDatetime: {
+            screen: MyDatetime,
         },
     },
     {

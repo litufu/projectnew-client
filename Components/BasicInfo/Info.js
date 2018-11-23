@@ -28,9 +28,56 @@ import {
   TextInput,
   StyleSheet,
 } from "react-native"
+import dateFormat from 'dateformat';
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 
 import Region from '../Region'
+import MyDatetime from '../MyDatetime'
+import display from '../../utils/displayplace'
 
+const ADD_BASICKINFO = gql`
+mutation AddBasicInfo(
+  $name: String!,
+  $gender: String!,
+  $birthday:BirthdayInput!,
+  $birthplace:BirthplaceInput!
+
+){
+  addBasicInfo(
+    name:$name,
+    gender:$gender,
+    birthday:$birthday,
+    birthplace:$birthplace
+  ){
+    id
+    name
+    gender
+    birthday
+    birthCity{
+      code
+      name
+    }
+    birthProvince{
+      code
+      name
+    }
+    birthdaycalendar
+    birthVillage{
+      code
+      name
+    }
+    birthStreet{
+      code
+      name
+    }
+    birthArea{
+      code
+      name
+    }
+  }
+}
+`;
 
 
 export default class Info extends Component{
@@ -38,29 +85,93 @@ export default class Info extends Component{
   state = {
     name:this.props.name||'',
     gender:this.props.gender||'male',
-    birthday:this.props.birthday||{calendar:"lunar",year:'',month:'',day:'',hour:''},
-    birthplace:this.props.birthplace||{province:'',city:'',area:'',street:'',village:''},
+    birthday:this.props.birthday.calendar?this.props.birthday:{calendar:"gregorian",date:''},
+    place:this.props.birthplace.province?this.props.birthplace:{province:'',city:'',area:'',street:'',village:''},
     editable:this.props.editable||false,
-    place:this.props.birthplace
-          ?(this.props.birthplace.province+this.props.birthplace.city+
-            this.props.birthplace.area+this.props.birthplace.street+this.props.birthplace.village)
-            :"",
   }
 
-  _handlePlace=(place)=>{
-    const {selectedProvince,selectedCity,selectedArea,selectedStreet,selectedVillage} = place
-    const newplace = selectedProvince + selectedCity + selectedArea +selectedStreet + selectedVillage
-    this.setState({place:newplace})
+  handlePlace=(place)=>{
+    this.setState({place:place})
   }
 
-  handleSubmit=()=>{
+  handleDate=(date)=>{
+    this.setState({birthday:Object.assign(this.state.birthday,{date:date})})
+  }
+
+  validate=(name,gender,birthday,placeCode)=>{
+    let pass = true
+    if(name===""){
+      Alert.alert('姓名未填写')
+      pass = false
+    }
+    const rxName =/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/
+    if(!rxName.test(name)){
+      Alert.alert('姓名格式暂不支持')
+      pass = false
+    }
+    if(gender!=='male' && gender !== 'female'){
+      Alert.alert('性别未选择')
+      pass = false
+    }
+    if(birthday.calendar!=='lunar' && birthday.calendar!=='gregorian'){
+      Alert.alert('未选择日历类别')
+      pass = false
+    }
+    if(isNaN(Date.parse(birthday.date))){
+    　　Alert.alert(`生日选择错误 ${birthday.date}`)
+        pass = false
+    }
+    if(!placeCode.province){
+        Alert.alert(`未选择所在省 ${placeCode.province}`)
+        pass = false
+    }
+    if (placeCode.province!=null && placeCode.province !="" && isNaN(placeCode.province)){
+        Alert.alert(`未选择所在省 ${placeCode.province}`)
+        pass = false
+    }
+    if (placeCode.city!=null && placeCode.city !="" && isNaN(placeCode.city)){
+      Alert.alert('未选择所在市')
+      pass = false
+    }
+    if (placeCode.area==null && placeCode.area =="" && isNaN(placeCode.area)){
+      Alert.alert('未选择所在区')
+      pass = false
+    }
+    if (placeCode.street==null && placeCode.street =="" && isNaN(placeCode.street)){
+      Alert.alert('未选择所在乡镇')
+      pass = false
+    }
+    if (placeCode.village==null && placeCode.village =="" && isNaN(placeCode.village)){
+      Alert.alert('未选择所在村')
+      pass = false
+    }
+    return pass
+  }
+
+  handleSubmit=(addBasicInfo)=>{
+    if(!this.state.editable){
+      return null
+    }
+    const {name,gender,birthday,place} = this.state
+    const placeCode = {
+      province:place.province.code,
+      city:place.city.code,
+      area:place.area.code,
+      street:place.street.code,
+      village:place.village.code,
+    }
+    const pass = this.validate(name,gender,birthday,placeCode)
+    if(!pass){
+      return null
+    }
     this.setState({editable:false})
+    addBasicInfo({ variables: { name,gender,birthday,birthplace:placeCode } })
   }
 
   render(){
 
-    const {name,gender,birthday,birthplace,editable} = this.state
-    const place = birthplace.province+birthplace.city+birthplace.area+birthplace.street+birthplace.village
+    const {name,gender,birthday,editable,place} = this.state
+    const displayPlace = display(place)
 
     return(
       <Container>
@@ -76,6 +187,7 @@ export default class Info extends Component{
                 value={name}
                 editable={editable}
                 placeholder={name===""?"未填写":name}
+                style={{color:this.state.editable?'blue':'black'}}
                 />
             </Right>
           </ListItem>
@@ -105,69 +217,57 @@ export default class Info extends Component{
             </Left>
             {
               editable
-              ? (<Picker
-                mode="dropdown"
-                style={{ width: 80 ,height:20,alignItems:"center"}}
-                selectedValue={birthday.calendar}
-                onValueChange={value=>this.setState({...birthday,calendar:value})}
-              >
-                <Picker.Item label="公历" value="Gregorian" />
-                <Picker.Item label="阴历" value="lunar" />
-              </Picker>)
-              :(
-                <Text>{this.state.calendar==="lunar" ?"阴历":"阳历"}</Text>
+              ? (
+                <View style={styles.birthday}>
+                  <Picker
+                    mode="dropdown"
+                    style={{height:20,alignItems:"center"}}
+                    selectedValue={birthday.calendar}
+                    onValueChange={value=>this.setState({birthday:Object.assign(this.state.birthday,{calendar:value})})}
+                  >
+                    <Picker.Item label="公历" value="gregorian" />
+                    <Picker.Item label="阴历" value="lunar" />
+                  </Picker>
+                  <MyDatetime
+                    handleDate={this.handleDate}
+                    chosenDate={this.state.birthday.date}
+                  />
+              </View>
+            )
+              :(<View>
+                {
+                  this.state.birthday.date
+                  ? (
+                    <View style={styles.birthday}>
+                      <Text>{this.state.birthday.calendar==="lunar" ?"阴历":"阳历"}</Text>
+                      <Text>{dateFormat(this.state.birthday.date, "yyyy年mm月dd日h时")}</Text>
+                    </View>
+                  )
+                : (
+                  <View style={styles.birthday}>
+                    <Text>未填写</Text>
+                  </View>
+                 )
+                }
+                </View>
               )
             }
-
-              <TextInput
-                placeholder= {birthday.year==="" ?"1989":birthday.year}
-                keyboardType="numeric"
-                maxLength={4}
-                editable={editable}
-                style={{width:50,justifyContent:"center"}}
-              />
-              <Text>年</Text>
-              <TextInput
-                placeholder={birthday.month==="" ?"12":birthday.month}
-                keyboardType="numeric"
-                editable={editable}
-                maxLength={2}
-                style={{width:25,justifyContent:"center"}}
-              />
-              <Text>月</Text>
-              <TextInput
-                placeholder={birthday.day==="" ?"31":birthday.day}
-                keyboardType="numeric"
-                editable={editable}
-                maxLength={2}
-                style={{width:25,justifyContent:"center"}}
-              />
-              <Text>日</Text>
-              <TextInput
-                placeholder={birthday.hour==="" ?"23":birthday.hour}
-                keyboardType="numeric"
-                editable={editable}
-                maxLength={2}
-                style={{width:25,justifyContent:"center"}}
-              />
-              <Text>时</Text>
           </ListItem>
           <ListItem >
-            <Left style={{flex:0.2}}>
+            <Left >
               <Text>出生地</Text>
             </Left>
             {
               editable ? (
-                <View style={{flex:0.8}}>
-                  <TouchableOpacity
-                   onPress={this.onPress}
-                 >
-                   <Text> Touch Here </Text>
-                 </TouchableOpacity>
+                <View  style={styles.birthplace}>
+                  <Region
+                  handlePlace={this.handlePlace}
+                  place={place}
+                  />
                 </View>
               )
-              :(<View style={{flex:0.8,alignItems:"flex-end"}}>
-                  <Text>{place ? place : "未填写"}</Text>
+              :(<View style={styles.birthplace}>
+                  <Text>{displayPlace}</Text>
                 </View>
               )
             }
@@ -182,11 +282,17 @@ export default class Info extends Component{
              </TouchableOpacity>
            </Left>
            <Right style={{flex:1,alignItems:"center"}}>
-             <TouchableOpacity
-               style={styles.button}
-               onPress={this.handleSubmit}>
-              <Text style={styles.whiteText }>保存</Text>
-             </TouchableOpacity>
+            <Mutation mutation={ADD_BASICKINFO}>
+            {(addBasicInfo, { loading, error }) => (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={()=>this.handleSubmit(addBasicInfo)}>
+                <Text style={styles.whiteText }>{ loading ? '保存中...':'保存'}</Text>
+               {error && Alert.alert(error.message.replace(/GraphQL error:/g, ""))}
+              </TouchableOpacity>
+            )}
+
+            </Mutation>
            </Right>
           </View>
         </Content>
@@ -221,5 +327,17 @@ const styles = StyleSheet.create({
   },
   whiteText:{
     color:"white"
+  },
+  birthday:{
+    flex:1,
+    flexDirection:'row',
+    alignItems:'flex-end',
+    justifyContent:'flex-end'
+  },
+  birthplace:{
+    flex:1,
+    flexDirection:'row',
+    alignItems:'flex-end',
+    justifyContent:'flex-end',
   }
 })
