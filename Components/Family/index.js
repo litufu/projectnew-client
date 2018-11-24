@@ -14,17 +14,20 @@ import {
   Badge,
   Spinner,
  } from 'native-base';
-import {StyleSheet,TouchableOpacity } from 'react-native'
+import { Avatar } from 'react-native-elements';
+import {StyleSheet,TouchableOpacity,Alert } from 'react-native'
 import gql from 'graphql-tag'
-import { Query } from 'react-apollo'
+import { Query ,Mutation} from 'react-apollo'
 
 import Nav from '../Nav'
+import getRelationshipName from '../../utils/relationship'
 
 const GET_FAMILIES = gql`
   {
     family {
       id
       to{
+        id
         name
       }
       relationship
@@ -33,10 +36,38 @@ const GET_FAMILIES = gql`
   }
 `;
 
+const DELETE_FAMILY = gql`
+  mutation($familyId:ID!,$toId:ID!){
+    deleteFamily(
+      familyId:$familyId,toId:$toId
+      )
+    {
+      id
+    }
+  }
+`
+
 export default class Family extends Component {
 
-  _onPressButton=()=>{
+  _onPressButton=(who)=>{
+    this.props.navigation.navigate("AddFamily", {
+      isAdd:false,
+      familyId:who.id,
+      name: who.to.name,
+      toId:who.to.id,
+      relationship: who.relationship,
+    })
+  }
 
+  handleLongPress=(familyId,toId,deleteFamily)=>{
+    Alert.alert(
+        '提示',
+        '确定要删除吗?',
+        [
+            {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: '确定', onPress: () => deleteFamily({variables: {familyId,toId}})},
+        ]
+    )
   }
 
   render() {
@@ -45,25 +76,43 @@ export default class Family extends Component {
         {({ loading, error, data }) => {
           if (loading) return <Spinner />;
           if (error) return <Text>`Error! ${error.message}`</Text>;
-
           return (
             <Container>
               <Content>
                 <List>
                   {
-                    data.family.map((who,index)=>(
+                  data.family.length >0 &&  data.family.map((who,index)=>(
                       <ListItem key={index}>
                         <Left style={styles.left}>
-                          <TouchableOpacity onPress={this._onPressButton}>
-                            <Badge>
-                              <Text style={styles.relationship}>{who.relationship}</Text>
-                            </Badge>
-                          </TouchableOpacity>
+                          <Avatar
+                            size="xlarge"
+                            rounded
+                            title={getRelationshipName(who.relationship)}
+                            onPress={()=>this._onPressButton(who)}
+                            overlayContainerStyle={{backgroundColor: 'red'}}
+                            activeOpacity={0.7}
+                          />
                         </Left>
                         <Body style={styles.center}>
-                          <TouchableOpacity onPress={this._onPressButton}>
-                            <Text style={styles.name}>{who.to.name}</Text>
-                          </TouchableOpacity>
+                          <Mutation
+                          mutation={DELETE_FAMILY}
+                          update={(cache, { data: { deleteFamily } }) => {
+                            const { family } = cache.readQuery({ query: GET_FAMILIES });
+                            cache.writeQuery({
+                              query: GET_FAMILIES,
+                              data: { family: family.filter((who)=>{return who.id!==deleteFamily.id}) }
+                            });
+                          }}
+                          >
+                          {deleteFamily => (
+                            <TouchableOpacity
+                            onPress={()=>this._onPressButton(who)}
+                            onLongPress={()=>this.handleLongPress(who.id,who.to.id,deleteFamily)}
+                            >
+                              <Text style={styles.name}>{who.to.name}</Text>
+                            </TouchableOpacity>
+                          )}
+                          </Mutation>
                         </Body>
 
                         <Right style={styles.right}>
@@ -96,7 +145,13 @@ export default class Family extends Component {
                 </List>
                 <Button block
                   style={styles.addButton}
-                  onPress={()=>this.props.navigation.navigate("AddFamily")}
+                  onPress={()=>this.props.navigation.navigate("AddFamily", {
+                    isAdd:true,
+                    familyId:'',
+                    name: '',
+                    toId:'',
+                    relationship: 'father',
+                  })}
                 >
                  <Text>添加成员</Text>
                 </Button>
@@ -126,11 +181,8 @@ Family.navigationOptions = ({ navigation }) => ({
 })
 
 const styles = StyleSheet.create({
-  relationship:{
-    fontSize:15,
-  },
   name:{
-    fontSize:20,
+    fontSize:18,
   },
   left:{
     flex:0.2
@@ -143,7 +195,6 @@ const styles = StyleSheet.create({
     flex:0.2,
   },
   button:{
-    width:80,
     alignItems:"center",
     justifyContent:"center"
   },
