@@ -6,6 +6,11 @@ import { withClientState } from 'apollo-link-state';
 import { ApolloLink, Observable  } from 'apollo-link';
 import { ApolloProvider } from 'react-apollo'
 import { SecureStore } from 'expo'
+import { split } from 'apollo-link';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getMainDefinition } from 'apollo-utilities';
+import { setContext } from 'apollo-link-context'
+
 
 const cache = new InMemoryCache();
 
@@ -38,13 +43,35 @@ const requestLink = new ApolloLink((operation, forward) =>
   })
 );
 
+// Create an http link:
+const httpLink = new HttpLink({
+  uri: 'http://192.168.56.1:4000/graphql',
+  credentials: 'include'
+});
+
+// Create a WebSocket link:
+const wsLink = new WebSocketLink({
+  uri: `ws://192.168.56.1:4000/graphql`,
+  options: {
+    reconnect: true,
+  }
+});
+
+// using the ability to split links, you can send data to each link
+// depending on what kind of operation is being sent
+const splitlink = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query)
+    return kind === 'OperationDefinition' && operation === 'subscription'
+  },
+  wsLink,
+  httpLink,
+)
+
 export const client = new ApolloClient({
   link: ApolloLink.from([
     requestLink,
-    new HttpLink({
-      uri: 'http://192.168.56.1:4000/graphql',
-      credentials: 'include'
-    })
+    splitlink
   ]),
   cache
 });

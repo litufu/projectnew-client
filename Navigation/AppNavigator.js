@@ -95,6 +95,7 @@ import Region from '../Components/Region'
 import MyDatetime from '../Components/MyDatetime'
 import Family from '../Components/Family'
 import AddFamily from '../Components/Family/AddFamily'
+import SearchFamily from '../Components/SearchFamily'
 
 const ProfileNavigation = createStackNavigator(
     {
@@ -112,6 +113,9 @@ const ProfileNavigation = createStackNavigator(
         },
         AddFamily: {
             screen: AddFamily,
+        },
+        SearchFamily: {
+            screen: SearchFamily,
         },
         Region: {
             screen: Region,

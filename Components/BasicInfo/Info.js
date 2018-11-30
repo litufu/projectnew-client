@@ -29,56 +29,12 @@ import {
   StyleSheet,
 } from "react-native"
 import dateFormat from 'dateformat';
-import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
 import Region from '../Region'
 import MyDatetime from '../MyDatetime'
 import display from '../../utils/displayplace'
-
-const ADD_BASICKINFO = gql`
-mutation AddBasicInfo(
-  $name: String!,
-  $gender: String!,
-  $birthday:BirthdayInput!,
-  $birthplace:BirthplaceInput!
-
-){
-  addBasicInfo(
-    name:$name,
-    gender:$gender,
-    birthday:$birthday,
-    birthplace:$birthplace
-  ){
-    id
-    name
-    gender
-    birthday
-    birthCity{
-      code
-      name
-    }
-    birthProvince{
-      code
-      name
-    }
-    birthdaycalendar
-    birthVillage{
-      code
-      name
-    }
-    birthStreet{
-      code
-      name
-    }
-    birthArea{
-      code
-      name
-    }
-  }
-}
-`;
-
+import ADD_BASICKINFO from '../../graphql/add_basicinfo.mutation'
 
 export default class Info extends Component{
 

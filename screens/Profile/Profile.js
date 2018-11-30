@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import BaseIcon from './Icon'
 import Chevron from './Chevron'
 
+
 const styles = StyleSheet.create({
   scroll: {
     backgroundColor: 'white',
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: '#ECECEC',
   },
-  lineContainer:{
+  lineContainer: {
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#F4F5F4',
@@ -88,49 +89,49 @@ class SettingsScreen extends Component {
         <View style={styles.lineContainer} />
         <View>
 
-        <ListItem
-          // chevron
-          title="收到的评价"
-          onPress={() => this.onPressOptions()}
-          containerStyle={styles.listItemContainer}
-          badge={{
-            value: 5,
-            textStyle: { color: 'white' },
-            containerStyle: { backgroundColor: 'gray', marginTop: 0 },
-          }}
-          leftIcon={
-            <BaseIcon
-              containerStyle={{ backgroundColor: '#FAD291' }}
-              icon={{
-                type: 'font-awesome',
-                name: 'comment',
-              }}
-            />
-          }
-          rightIcon={<Chevron />}
-        />
+          <ListItem
+            // chevron
+            title="收到的评价"
+            onPress={() => this.onPressOptions()}
+            containerStyle={styles.listItemContainer}
+            badge={{
+              value: 5,
+              textStyle: { color: 'white' },
+              containerStyle: { backgroundColor: 'gray', marginTop: 0 },
+            }}
+            leftIcon={
+              <BaseIcon
+                containerStyle={{ backgroundColor: '#FAD291' }}
+                icon={{
+                  type: 'font-awesome',
+                  name: 'comment',
+                }}
+              />
+            }
+            rightIcon={<Chevron />}
+          />
 
-        <ListItem
-          // chevron
-          title="历史轨迹"
-          onPress={() => this.onPressOptions()}
-          containerStyle={styles.listItemContainer}
-          leftIcon={
-            <BaseIcon
-              containerStyle={{ backgroundColor: '#57DCE7' }}
-              icon={{
-                type: 'font-awesome',
-                name: 'history',
-              }}
-            />
-          }
-          rightIcon={<Chevron />}
-        />
+          <ListItem
+            // chevron
+            title="历史轨迹"
+            onPress={() => this.onPressOptions()}
+            containerStyle={styles.listItemContainer}
+            leftIcon={
+              <BaseIcon
+                containerStyle={{ backgroundColor: '#57DCE7' }}
+                icon={{
+                  type: 'font-awesome',
+                  name: 'history',
+                }}
+              />
+            }
+            rightIcon={<Chevron />}
+          />
 
           <ListItem
             // chevron
             title="家庭成员"
-            onPress={()=>this.props.navigation.navigate('Family')}
+            onPress={() => this.props.navigation.navigate('Family')}
             containerStyle={styles.listItemContainer}
             leftIcon={
               <BaseIcon
@@ -165,7 +166,7 @@ class SettingsScreen extends Component {
         <View>
           <ListItem
             title="手机验证"
-            onPress={() =>  this.props.navigation.navigate('MyDatetime')}
+            onPress={() => this.props.navigation.navigate('MyDatetime')}
             containerStyle={styles.listItemContainer}
             leftIcon={
               <BaseIcon

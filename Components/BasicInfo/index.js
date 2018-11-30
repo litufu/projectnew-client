@@ -1,71 +1,17 @@
 import React, {Component} from 'react'
 import {
   Container,
-  Header,
-  Left,
-  Body,
-  Button,
-  Icon,
-  Title,
-  Content,
-  Form,
-  Item,
-  Label,
-  Input,
   Spinner,
-  DatePicker,
-  Right,
-  ListItem,
-  List,
-  Picker
 } from 'native-base'
 import {
-  Text,
   Alert,
-  TouchableOpacity,
-  View,
-  Dimensions,
-  TextInput,
-  StyleSheet,
-
 } from "react-native"
 import { withNavigation } from 'react-navigation'
-import gql from 'graphql-tag'
 import { Mutation,Query } from 'react-apollo'
 
 import Nav from '../Nav'
 import Info from './Info'
-
-const GET_ME = gql`
-{
-  me {
-    name
-    gender
-    birthdaycalendar
-    birthday
-    birthProvince{
-      code
-      name
-    }
-    birthCity{
-      code
-      name
-    }
-    birthArea{
-      code
-      name
-    }
-    birthStreet{
-      code
-      name
-    }
-    birthVillage{
-      code
-      name
-    }
-  }
-}
-`;
+import GET_ME from '../../graphql/get_me.query'
 
 export default class BasicInfo extends React.Component{
 

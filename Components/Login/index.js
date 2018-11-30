@@ -8,17 +8,9 @@ import {
 } from 'react-native'
 import { SecureStore } from 'expo'
 import { Button,Text,Input,Item ,Label,Container,Spinner} from 'native-base';
-import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
-const LOGIN = gql`
-mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-        id
-        token
-    }
-}
-`
+import LOGIN from '../../graphql/login.mutation'
 
 export default class Login extends React.Component{
   state = {

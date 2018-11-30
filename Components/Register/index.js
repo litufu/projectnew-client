@@ -1,23 +1,9 @@
 import React from 'react'
 import { TouchableNativeFeedback,StyleSheet,View,KeyboardAvoidingView,Alert} from 'react-native'
 import { Button,Text,Input,Item ,Label,Container,Spinner,Content} from 'native-base';
-import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
-const SIGNUP = gql`
-    mutation signup(
-        $username: String!
-        $password: String!
-    ) {
-        signup(
-            username: $username
-            password: $password
-        ) {
-            id
-            token
-        }
-    }
-`
+import SIGNUP from '../../graphql/signup'
 
 export default class Register extends React.Component{
   state = {

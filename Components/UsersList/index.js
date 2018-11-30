@@ -1,31 +1,49 @@
 import React from 'react'
-import { graphql } from 'react-apollo'
+import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import {Spinner,Text} from 'native-base'
+import {Alert,View} from 'react-native'
+import { withNavigation } from 'react-navigation';
+import UserList from './UserList'
 
-import Spinner from '../Spinner'
-import UsersList from './UsersList'
 
-const UsersListConainer = ({ searchUsers, navigation }) => {
-    if (searchUsers.loading) return <Spinner />
+const USER_SEARCH = gql`
+  query searchUser($username: String!) {
+    searchUser(username: $username) {
+      id
+      username
+      name
+    }
+  }
+`;
 
-    return <UsersList users={searchUsers.searchUsers} navigation={navigation} />
+class UserListConainer extends React.Component{
+
+    render(){
+        const {navigation,username,who} = this.props
+        return(
+            <Query query={USER_SEARCH} variables={{ username }}>
+                {({ loading, error, data }) => {
+                if (loading) return  <Spinner />;
+                if (error) {
+                    Alert.alert(error.message)
+                    return null
+                }
+                if(!data.searchUser || !data.searchUser.id){
+                    return <View style={{margin:10}}><Text>没有找到对应的用户名</Text></View>
+                }
+
+                console.log(data.searchUser)
+
+                return (
+                        <UserList users={[data.searchUser]} who={who} navigation={navigation} />
+                    );
+                }}
+            </Query>
+        )
+    }
 }
 
-const userSearchQuery = gql`
-    query searchUsers($pattern: String) {
-        searchUsers(pattern: $pattern) {
-            id
-            username
-            fullname
-        }
-    }
-`
 
-export default graphql(userSearchQuery, {
-    name: 'searchUsers',
-    options: props => ({
-        variables: {
-            pattern: props.navigation.state.params.search
-        }
-    })
-})(UsersListConainer)
+
+export default withNavigation(UserListConainer);

@@ -1,28 +1,11 @@
 import React, {Component} from 'react';
 import {View, Text, FlatList, Modal, TouchableOpacity,StyleSheet} from 'react-native';
 import {Spinner} from 'native-base'
-import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
 import CHINA_REGION from './china_region';
-
-const GET_STREETS = gql`
-  query Streets($code: String!) {
-    streets(code: $code) {
-      code
-      name    }
-  }
-`;
-
-const GET_VILLAGE = gql`
-  query Village($code: String!) {
-    villages(code: $code) {
-      code
-      name    }
-  }
-`;
-
-
+import GET_STREETS from '../../graphql/get_streets.query'
+import GET_VILLAGES from '../../graphql/get_villages.query'
 
 class ProvinceCityArea extends Component{
     constructor(p) {
@@ -346,7 +329,7 @@ class ProvinceCityArea extends Component{
                                 )
                               }}
                             </Query>
-                            <Query query={GET_VILLAGE}  variables={ {code:this.state.address.street.code} }>
+                            <Query query={GET_VILLAGES}  variables={ {code:this.state.address.street.code} }>
                                 {({ loading, error, data }) => {
                                     if(loading) return <Spinner />
                                     if (error){ return <Text>{error.message}</Text>};
