@@ -7,6 +7,9 @@ const FAMILY_FRAGMENT = gql`
       id
       name
     }
+    spouse{
+      id
+    }
     relationship
     status
   }

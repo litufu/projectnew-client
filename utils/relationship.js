@@ -22,14 +22,20 @@ const getRelationshipName = (relationship)=>{
       return "妻"
       break;
     case 'husband':
-      return "丈"
+      return "夫"
       break;
     case 'son':
-      return "儿子"
+      return "儿"
       break;
     case 'daughter':
-      return "女儿"
+      return "女"
       break;
+    case 'sister':
+      return "姐妹"
+      break
+    case 'brother':
+      return "兄弟"
+      break
     default:
       return null
   }

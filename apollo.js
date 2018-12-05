@@ -10,7 +10,7 @@ import { split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { setContext } from 'apollo-link-context'
-
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 
 const cache = new InMemoryCache();
 
@@ -22,6 +22,17 @@ const request = async (operation) => {
     }
   });
 };
+
+const erorrLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      ),
+    );
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
 
 const requestLink = new ApolloLink((operation, forward) =>
   new Observable(observer => {
@@ -45,17 +56,18 @@ const requestLink = new ApolloLink((operation, forward) =>
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: 'http://192.168.56.1:4000/graphql',
+  uri: 'http://192.168.56.1:4000/',
   credentials: 'include'
 });
 
 // Create a WebSocket link:
-const wsLink = new WebSocketLink({
-  uri: `ws://192.168.56.1:4000/graphql`,
-  options: {
-    reconnect: true,
-  }
+export const wsClient = new SubscriptionClient(`ws://192.168.56.1:4000/graphql`, {
+  reconnect: true,
+  connectionParams: {
+    // Pass any arguments you want for initialization
+  },
 });
+const wsLink = new WebSocketLink(wsClient);
 
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
@@ -70,6 +82,7 @@ const splitlink = split(
 
 export const client = new ApolloClient({
   link: ApolloLink.from([
+    erorrLink,
     requestLink,
     splitlink
   ]),

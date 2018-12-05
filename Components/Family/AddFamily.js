@@ -19,11 +19,14 @@ import MODIFY_FAMILY from '../../graphql/modify_family.mutation'
 import GET_FAMILIES from '../../graphql/get_families.query'
 import GET_ME from '../../graphql/get_me.query'
 import Nav from '../Nav'
+import Family from '.';
 
 export default class AddFamily extends Component {
   state = {
     name: this.props.navigation.getParam('name', ''),
     relationship: this.props.navigation.getParam('relationship', 'father'),
+    spouseId:this.props.navigation.getParam('spouseId', ''),
+    disabled:false,
   }
 
   validate = (relationship, name, client) => {
@@ -67,14 +70,14 @@ export default class AddFamily extends Component {
   }
 
   submitRelationship = (createFamily, client) => {
-    const { relationship, name } = this.state
+    const { relationship, name,spouseId } = this.state
     const pass = this.validate(relationship, name, client)
 
     if (!pass) {
       return null
     }
     createFamily({
-      variables: { name, relationship },
+      variables: { name, relationship,spouseId },
       optimisticResponse: {
         __typename: "Mutation",
         createFamily: {
@@ -86,6 +89,10 @@ export default class AddFamily extends Component {
             __typename: "Person",
             id: Math.floor(Math.random() * 200).toString(),
             name: name,
+          },
+          spouse:{
+            __typename:"Family",
+            id:spouseId
           }
         }
       }
@@ -94,7 +101,7 @@ export default class AddFamily extends Component {
   }
 
   updateRelationship = (updateFamily, client) => {
-    const { relationship, name } = this.state
+    const { relationship, name,spouseId } = this.state
     console.log(relationship)
     const pass = this.validate(relationship, name, client)
     const familyId = this.props.navigation.getParam('familyId')
@@ -104,7 +111,7 @@ export default class AddFamily extends Component {
       return null
     }
     updateFamily({
-      variables: { id: familyId, name, relationship },
+      variables: { id: familyId, name, relationship,spouseId },
       optimisticResponse: {
         __typename: "Mutation",
         updateFamily: {
@@ -116,6 +123,10 @@ export default class AddFamily extends Component {
             __typename: "Person",
             id: toId,
             name: name,
+          },
+          spouse:{
+            __typename:"Family",
+            id:spouseId
           }
         }
       }
@@ -137,6 +148,7 @@ export default class AddFamily extends Component {
       {(createFamily, { loading, error, client }) => (
         <View>
           <Button block
+            disabled={this.state.disabled}
             style={styles.saveButton}
             onPress={() => this.submitRelationship(createFamily, client)}
           >
@@ -155,6 +167,7 @@ export default class AddFamily extends Component {
       {(updateFamily, { loading, error, client }) => (
         <View>
           <Button block
+            disabled={this.state.disabled}
             style={styles.saveButton}
             onPress={() => this.updateRelationship(updateFamily, client)}
           >
@@ -166,19 +179,59 @@ export default class AddFamily extends Component {
     </Mutation>
   )
 
+  renderSpouse=(relationship,gender,spouses)=>{
+    const addSonOrDaughter = relationship==="son" || relationship==="daughter"
+    const hasSpouse = spouses.length>0
+
+    if(addSonOrDaughter ){
+      if(hasSpouse){
+        
+        return (
+        <Item style={styles.left}>
+          <Label>配偶</Label>
+          <Picker
+            mode="dropdown"
+            style={{ width: 100, alignItems: "center", justifyContent: "center", }}
+            placeholder="配偶"
+            placeholderStyle={{ color: "#bfc6ea" }}
+            placeholderIconColor="#007aff"
+            selectedValue={this.state.spouseId}
+            onValueChange={(spouseId) => this.setState({ spouseId })}
+          >
+           {
+             spouses.map(spouse=><Picker.Item label={spouse.to.name} value={spouse.id} key={spouse.id}/>)
+           }
+          </Picker>
+        </Item>
+        )
+      }else{
+        if(gender==="male"){
+          Alert.alert("请先添加配偶后，再添加子女")
+        }else{
+          Alert.alert("请先添加配偶后，再添加子女")
+        }
+        return null
+      }
+      
+    }
+  }
+
   render() {
     const { relationship, name } = this.state
     const isAdd = this.props.navigation.getParam('isAdd', true);
 
     return (
       <Query query={GET_ME}>
-        {({ loading, error, data }) => {
+        {({ loading, error, data,client }) => {
           if (loading) return <Spinner />;
           if (error) return <Text>{error.message}</Text>
           if (data.me.name === '' || data.me.gender === "") {
             Alert.alert('需要先完善个人信息')
             return null
           }
+          const { family } = client.readQuery({ query: GET_FAMILIES });
+          const spouses = family.filter(f=>f.relationship==="wife"||f.relationship==="husband")
+
 
           return (
             <Container>
@@ -211,6 +264,7 @@ export default class AddFamily extends Component {
                       <Picker.Item label="女儿" value="daughter" />
                     </Picker>
                   </Item>
+                    {this.renderSpouse(relationship,data.me.gender,spouses)}
                   <Item style={styles.right}>
                     <Label>姓名</Label>
                     <Input
@@ -219,7 +273,6 @@ export default class AddFamily extends Component {
                     />
                   </Item>
                   {isAdd ? this.renderAddFamily() : this.renderModifyFamily()}
-
                 </Form>
               </Content>
             </Container>

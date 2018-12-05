@@ -3,7 +3,7 @@ import { TouchableNativeFeedback,StyleSheet,View,KeyboardAvoidingView,Alert} fro
 import { Button,Text,Input,Item ,Label,Container,Spinner,Content} from 'native-base';
 import { Mutation } from 'react-apollo'
 
-import SIGNUP from '../../graphql/signup'
+import SIGNUP from '../../graphql/signup.mutation'
 
 export default class Register extends React.Component{
   state = {
