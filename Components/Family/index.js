@@ -23,6 +23,7 @@ import getRelationshipName from '../../utils/relationship'
 import GET_FAMILIES from '../../graphql/get_families.query'
 import DELETE_FAMILY from '../../graphql/delete_family.mutation'
 import FAMILY_CONNECTED_SUBSCRIPTION from '../../graphql/family_connected.subscription'
+import FAMILY_CHANGED_SUBSCRIPTION from '../../graphql/family_changed.subscription'
 import CONFIRM_FAMILY from '../../graphql/confirm_family.mutation'
 
 export default class Family extends Component {
@@ -99,22 +100,35 @@ export default class Family extends Component {
 
   }
 
-  _subscribeConnectedFamily = (subscribeToMore, data) => {
-    subscribeToMore({
-      document: FAMILY_CONNECTED_SUBSCRIPTION,
-      variables: {
-        familyIds: data.family.map(f => f.id),
-      },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev
-        const connectedFamily = subscriptionData.data.familyConnected
+  // _subscribeConnectedFamily = (subscribeToMore, data) => {
+  //   subscribeToMore({
+  //     document: FAMILY_CONNECTED_SUBSCRIPTION,
+  //     variables: {
+  //       familyIds: data.family.map(f => f.id),
+  //     },
+  //     updateQuery: (prev, { subscriptionData }) => {
+  //       if (!subscriptionData.data) return prev
+  //       const connectedFamily = subscriptionData.data.familyConnected
 
-        return prev.family.map(f => {
-          if (f.id === connectedFamily.id) {
-            return Object.assign({}, f, { status: connectedFamily.status })
-          }
-          return f
-        })
+  //       return prev.family.map(f => {
+  //         if (f.id === connectedFamily.id) {
+  //           return Object.assign({}, f, { status: connectedFamily.status })
+  //         }
+  //         return f
+  //       })
+  //     }
+  //   })
+  // }
+
+  _subscribeChangedFamily = async (subscribeToMore, client) => {
+    console.log('familyChange')
+    subscribeToMore({
+      document: FAMILY_CHANGED_SUBSCRIPTION,
+      updateQuery: async () => {
+        const { data } = await client.query({
+          query: GET_FAMILIES,
+        });
+        return data.family
       }
     })
   }
@@ -122,13 +136,14 @@ export default class Family extends Component {
   render() {
     return (
       <Query query={GET_FAMILIES} fetchPolicy="network-only" pollInterval={30 * 1000}>
-        {({ loading, error, data, subscribeToMore }) => {
+        {({ loading, error, data, subscribeToMore ,client}) => {
           if (loading) return <Spinner />;
           if (error) return <Text>`Error! ${error.message}`</Text>;
           console.log(data)
-          if(data.family && data.family.filter(f=>f.status==="0").length>0) {
-            this._subscribeConnectedFamily(subscribeToMore, data)
-          }
+          // if(data.family && data.family.filter(f=>f.status==="0").length>0) {
+          //   this._subscribeConnectedFamily(subscribeToMore, data)
+          // }
+          this._subscribeChangedFamily(subscribeToMore,client)
           let spouseId = ''
           if(data.family.length>0){
             const wifeOrHusband = data.family.filter(f=>{return f.relationship==="wife"||f.relationship==="husband" })

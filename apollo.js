@@ -63,8 +63,9 @@ const httpLink = new HttpLink({
 // Create a WebSocket link:
 export const wsClient = new SubscriptionClient(`ws://192.168.56.1:4000/graphql`, {
   reconnect: true,
-  connectionParams: {
-    // Pass any arguments you want for initialization
+  async connectionParams(){
+    const authToken = await SecureStore.getItemAsync('token');
+    return {authToken}
   },
 });
 const wsLink = new WebSocketLink(wsClient);
