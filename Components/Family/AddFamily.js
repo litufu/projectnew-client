@@ -70,6 +70,7 @@ export default class AddFamily extends Component {
   }
 
   submitRelationship = (createFamily, client) => {
+    this.setState({disabled:true})
     const { relationship, name,spouseId } = this.state
     const pass = this.validate(relationship, name, client)
 
@@ -101,6 +102,7 @@ export default class AddFamily extends Component {
   }
 
   updateRelationship = (updateFamily, client) => {
+    this.setState({disabled:true})
     const { relationship, name,spouseId } = this.state
     console.log(relationship)
     const pass = this.validate(relationship, name, client)
@@ -268,7 +270,7 @@ export default class AddFamily extends Component {
                   <Item style={styles.right}>
                     <Label>姓名</Label>
                     <Input
-                      onChangeText={(name) => this.setState({ name })}
+                      onChangeText={(name) => this.setState({ name,disabled:false })}
                       value={this.state.name}
                     />
                   </Item>

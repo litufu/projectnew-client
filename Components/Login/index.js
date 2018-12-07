@@ -46,11 +46,13 @@ export default class Login extends React.Component{
   }
 // 渲染登录按钮
   renderLoginButton=(username,password)=>(
-      <Mutation mutation={LOGIN}>
+      <Mutation 
+      mutation={LOGIN}
+      >
         {(login, { loading, error, data }) => {
           if (loading) return (
-            <Button block primary>
-              <Text style={styles.bigText}>登 录</Text>
+            <Button disabled block primary>
+              <Text style={styles.bigText}>正 在 登 录</Text>
               <Spinner color='blue' />
             </Button>
           );

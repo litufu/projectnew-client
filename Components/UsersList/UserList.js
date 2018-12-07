@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, TouchableWithoutFeedback, View,Alert } from 'react-native'
+import { ScrollView, TouchableWithoutFeedback, View, Alert } from 'react-native'
 import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text, Button } from 'native-base';
 import { Mutation } from 'react-apollo'
 
@@ -53,49 +53,55 @@ class UserList extends React.Component {
                                                 }
                                             });
                                         }}
-
+                                    onCompleted={(data)=>navigation.navigate('Family') }
+                                    onError={(error)=>Alert.alert(error.message)}
                                     >
-                                        {(connectFamily,{loading,error,data}) => (
-                                            <Button
-                                                onPress={
-                                                    () =>{
-                                                    try{
-                                                        connectFamily({
-                                                            variables: {
-                                                                relativeId: user.id,
-                                                                familyId: who.id,
-                                                                name: who.to.name,
-                                                                relationship: who.relationship
-                                                            },
-                                                            optimisticResponse: {
-                                                                __typename: "Mutation",
-                                                                connectFamily: {
-                                                                    id:who.id ,
-                                                                    __typename: "Family",
-                                                                    to:{
-                                                                      id:who.to.id,
-                                                                      __typename:"Person",
-                                                                      name:who.to.name
+                                        {(connectFamily, { loading }) => {
+                                            if (loading) return (<Button transparent>
+                                                <Text style={{ color: "blue" }}>添加...</Text>
+                                            </Button>)
+                                            return (
+                                                <Button
+                                                    transparent
+                                                    onPress={
+                                                        () => {
+                                                            try {
+                                                                connectFamily({
+                                                                    variables: {
+                                                                        relativeId: user.id,
+                                                                        familyId: who.id,
+                                                                        name: who.to.name,
+                                                                        relationship: who.relationship
                                                                     },
-                                                                    status: "1",
-                                                                    relationship:who.relationship,
-                                                                    spouse:null
-                                                                }
+                                                                    optimisticResponse: {
+                                                                        __typename: "Mutation",
+                                                                        connectFamily: {
+                                                                            id: who.id,
+                                                                            __typename: "Family",
+                                                                            to: {
+                                                                                id: who.to.id,
+                                                                                __typename: "Person",
+                                                                                name: who.to.name
+                                                                            },
+                                                                            status: "1",
+                                                                            relationship: who.relationship,
+                                                                            spouse: null
+                                                                        }
+                                                                    }
+                                                                })
+                                                            } catch (error) {
+                                                                console.log(error.message)
                                                             }
-                                                        })
-                                                    }catch(error){
-                                                        console.log(error.message)
-                                                    }
-                                                    
-                                                    navigation.navigate('Family')
-                                                } }
-                                            >
-                                            {error && <Text>{error.message}</Text>}
-                                            <Text style={{ color: "blue" }}>
-                                                添加{loading && <Text style={{ color: "blue" }}>...</Text>}
-                                            </Text>
-                                            </Button>
-                                        )}
+                                                        }}
+                                                >
+                                                    <Text style={{ color: "blue" }}>
+                                                        添加{loading && <Text style={{ color: "blue" }}>...</Text>}
+                                                    </Text>
+                                                </Button>
+                                            )
+                                        }
+
+                                        }
                                     </Mutation>
                                 </Right>
                             </ListItem>

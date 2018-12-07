@@ -121,7 +121,6 @@ export default class Family extends Component {
   // }
 
   _subscribeChangedFamily = async (subscribeToMore, client) => {
-    console.log('familyChange')
     subscribeToMore({
       document: FAMILY_CHANGED_SUBSCRIPTION,
       updateQuery: async () => {
@@ -135,7 +134,7 @@ export default class Family extends Component {
 
   render() {
     return (
-      <Query query={GET_FAMILIES} fetchPolicy="network-only" pollInterval={30 * 1000}>
+      <Query query={GET_FAMILIES} >
         {({ loading, error, data, subscribeToMore ,client}) => {
           if (loading) return <Spinner />;
           if (error) return <Text>`Error! ${error.message}`</Text>;
@@ -217,7 +216,7 @@ export default class Family extends Component {
                                         query: GET_FAMILIES,
                                         data: { family: family.map((who) => { 
                                           if(who.id===confirmFamily.id){
-                                            return Object.assign({},who,{status:confirmFamily.staus})
+                                            return Object.assign({},who,{status:confirmFamily.status})
                                           }else{
                                             return who
                                           }
