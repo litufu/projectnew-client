@@ -100,26 +100,6 @@ export default class Family extends Component {
 
   }
 
-  // _subscribeConnectedFamily = (subscribeToMore, data) => {
-  //   subscribeToMore({
-  //     document: FAMILY_CONNECTED_SUBSCRIPTION,
-  //     variables: {
-  //       familyIds: data.family.map(f => f.id),
-  //     },
-  //     updateQuery: (prev, { subscriptionData }) => {
-  //       if (!subscriptionData.data) return prev
-  //       const connectedFamily = subscriptionData.data.familyConnected
-
-  //       return prev.family.map(f => {
-  //         if (f.id === connectedFamily.id) {
-  //           return Object.assign({}, f, { status: connectedFamily.status })
-  //         }
-  //         return f
-  //       })
-  //     }
-  //   })
-  // }
-
   _subscribeChangedFamily = async (subscribeToMore, client) => {
     subscribeToMore({
       document: FAMILY_CHANGED_SUBSCRIPTION,

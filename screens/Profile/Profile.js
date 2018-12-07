@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { ScrollView, Switch, StyleSheet, Text, View } from 'react-native'
-import { Avatar, ListItem } from 'react-native-elements'
+import {  ListItem } from 'react-native-elements'
+import {Thumbnail} from 'native-base'
 import PropTypes from 'prop-types'
 
 import BaseIcon from './Icon'
@@ -36,42 +37,25 @@ const styles = StyleSheet.create({
 
 class SettingsScreen extends Component {
   static propTypes = {
-    avatar: PropTypes.string.isRequired,
+    avatar: PropTypes.string,
     name: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
     navigation: PropTypes.object.isRequired,
-    emails: PropTypes.arrayOf(
-      PropTypes.shape({
-        email: PropTypes.string.isRequired,
-      })
-    ).isRequired,
   }
 
-  state = {
-    pushNotifications: true,
-  }
 
   onPressOptions = () => {
     this.props.navigation.navigate('options')
   }
 
-  onChangePushNotifications = () => {
-    this.setState(state => ({
-      pushNotifications: !state.pushNotifications,
-    }))
-  }
-
   render() {
-    const { avatar, name, emails: [firstEmail] } = this.props
+    const { avatar, name, username } = this.props
     return (
       <ScrollView style={styles.scroll}>
         <View style={styles.userRow}>
           <View style={styles.userImage}>
-            <Avatar
-              rounded
-              size="large"
-              source={{
-                uri: avatar,
-              }}
+            <Thumbnail
+              large source={require('../../assets/RQ1iLOs.jpg')}
             />
           </View>
           <View>
@@ -82,7 +66,7 @@ class SettingsScreen extends Component {
                 fontSize: 16,
               }}
             >
-              {firstEmail.email}
+              {username}
             </Text>
           </View>
         </View>

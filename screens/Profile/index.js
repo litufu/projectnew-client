@@ -1,13 +1,48 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Query } from 'react-apollo'
+import { Spinner } from 'native-base'
+import { Alert } from 'react-native'
 
-import contactData from '../../mocks/contact.json'
-import  Nav  from '../../Components/Nav'
+import Nav from '../../Components/Nav'
 import Profile from './Profile'
+import GET_ME from '../../graphql/get_me.query'
+
 
 const ProfileScreen = ({ navigation }) => (
-  <Profile {...contactData} navigation={navigation} />
-)
+  <Query
+    query={GET_ME}
+    onError={(error) => Alert.alert(error.message.replace(/GraphQL error:/g, ""))}
+  >
+    {({ loading,error, data }) => {
+      if (loading) return  (
+        <Profile
+          avatar=""
+          name=""
+          username=""
+          navigation={navigation}
+        />
+      );
+      if (error) return  (
+          <Profile
+            avatar=""
+            name=""
+            username=""
+            navigation={navigation}
+          />
+      );
+
+      return (
+        <Profile
+          avatar={data.me.avatar}
+          name={data.me.name}
+          username={data.me.username}
+          navigation={navigation}
+        />
+      );
+    }}
+  </Query>
+);
 
 ProfileScreen.navigationOptions = ({ navigation }) => ({
   header: (
