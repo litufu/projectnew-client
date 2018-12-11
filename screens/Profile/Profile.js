@@ -98,7 +98,7 @@ class SettingsScreen extends Component {
           <ListItem
             // chevron
             title="历史轨迹"
-            onPress={() => this.onPressOptions()}
+            onPress={() => this.props.navigation.navigate('Histroy')}
             containerStyle={styles.listItemContainer}
             leftIcon={
               <BaseIcon
@@ -150,7 +150,7 @@ class SettingsScreen extends Component {
         <View>
           <ListItem
             title="手机验证"
-            onPress={() => this.props.navigation.navigate('MyDatetime')}
+            onPress={() => this.props.navigation.navigate('SelectClass')}
             containerStyle={styles.listItemContainer}
             leftIcon={
               <BaseIcon

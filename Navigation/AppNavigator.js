@@ -94,8 +94,12 @@ import BasicInfo from '../Components/BasicInfo'
 import Region from '../Components/Region'
 import MyDatetime from '../Components/MyDatetime'
 import Family from '../Components/Family'
+import Histroy from '../Components/Histroy'
 import AddFamily from '../Components/Family/AddFamily'
 import SearchFamily from '../Components/SearchFamily'
+import SelectInput from '../Components/Histroy/SelecteInput'
+import SelectClass from '../Components/Histroy/SelectClass'
+import CreateClass from '../Components/Histroy/CreateClass'
 
 const ProfileNavigation = createStackNavigator(
     {
@@ -107,6 +111,18 @@ const ProfileNavigation = createStackNavigator(
         },
         BasicInfo: {
             screen: BasicInfo,
+        },
+        Histroy: {
+            screen: Histroy,
+        },
+        SelectInput: {
+            screen: SelectInput,
+        },
+        CreateClass: {
+            screen: CreateClass,
+        },
+        SelectClass: {
+            screen: SelectClass,
         },
         Family: {
             screen: Family,

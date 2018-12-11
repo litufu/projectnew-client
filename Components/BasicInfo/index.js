@@ -19,6 +19,7 @@ export default class BasicInfo extends React.Component{
     return(
       <Query query={GET_ME} pollInterval={500}>
         {({ loading, error, data }) => {
+          console.log(data)
           if (loading) return (
             <Container>
               <Spinner />
@@ -39,12 +40,19 @@ export default class BasicInfo extends React.Component{
               date:data.me.birthday
             }}
             birthplace={{
-              province:data.me.birthProvince ? {code:data.me.birthProvince.code,name:data.me.birthProvince.name}:'',
-              city:data.me.birthCity ? {code:data.me.birthCity.code,name:data.me.birthCity.name} : '',
-              area:data.me.birthArea ? {code:data.me.birthArea.code,name:data.me.birthArea.name} : '',
-              street:data.me.birthStreet ? {code:data.me.birthStreet.code,name:data.me.birthStreet.name} : '',
-              village:data.me.birthVillage ? {code:data.me.birthVillage.code,name:data.me.birthVillage.name} : '',
+              province:data.me.birthplace && data.me.birthplace.province ? {code:data.me.birthplace.province.code,name:data.me.birthplace.province.name}:'',
+              city:data.me.birthplace && data.me.birthplace.city ? {code:data.me.birthplace.city.code,name:data.me.birthplace.city.name} : '',
+              area:data.me.birthplace && data.me.birthplace.area ? {code:data.me.birthplace.area.code,name:data.me.birthplace.area.name} : '',
+              street:data.me.birthplace && data.me.birthplace.street ? {code:data.me.birthplace.street.code,name:data.me.birthplace.street.name} : '',
+              village:data.me.birthplace && data.me.birthplace.village ? {code:data.me.birthplace.village.code,name:data.me.birthplace.village.name} : '',
             }}
+            // birthplace={{
+            //   province:data.me.birthProvince ? {code:data.me.birthProvince.code,name:data.me.birthProvince.name}:'',
+            //   city:data.me.birthCity ? {code:data.me.birthCity.code,name:data.me.birthCity.name} : '',
+            //   area:data.me.birthArea ? {code:data.me.birthArea.code,name:data.me.birthArea.name} : '',
+            //   street:data.me.birthStreet ? {code:data.me.birthStreet.code,name:data.me.birthStreet.name} : '',
+            //   village:data.me.birthVillage ? {code:data.me.birthVillage.code,name:data.me.birthVillage.name} : '',
+            // }}
             />
           );
         }}

@@ -329,6 +329,7 @@ class ProvinceCityArea extends Component{
                                 )
                               }}
                             </Query>
+
                             <Query query={GET_VILLAGES}  variables={ {code:this.state.address.street.code} }>
                                 {({ loading, error, data }) => {
                                     if(loading) return <Spinner />

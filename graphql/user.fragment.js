@@ -9,6 +9,29 @@ const USER_FRAGMENT = gql`
     avatar
     birthdaycalendar
     birthday
+    birthplace{
+      id
+      province{
+        code
+        name
+      }
+      city{
+        code
+        name
+      }
+      area{
+        code
+        name
+      }
+      street{
+        code
+        name
+      }
+      village{
+        code
+        name
+      }
+    }
     birthProvince{
       code
       name

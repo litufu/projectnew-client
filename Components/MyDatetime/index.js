@@ -21,11 +21,13 @@ export default class MyDatetime extends Component {
 
   render () {
     const {chosenDate} = this.state
+    const {showtime} = this.props
+    const formatDate = showtime ? dateFormat(chosenDate, "yyyy年mm月dd日h时") : dateFormat(chosenDate, "yyyy年mm月dd日")
     let date
     if(chosenDate===''){
       date = '请选择'
     }else{
-      date = dateFormat(chosenDate, "yyyy年mm月dd日h时");
+      date = formatDate;
     }
 
     return (
@@ -37,7 +39,7 @@ export default class MyDatetime extends Component {
           isVisible={this.state.isDateTimePickerVisible}
           onConfirm={this._handleDatePicked}
           onCancel={this._hideDateTimePicker}
-          mode="datetime"
+          mode={this.props.mode || "datetime"}
           locale='zh-Hans'
         />
       </View>

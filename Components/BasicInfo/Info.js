@@ -185,6 +185,7 @@ export default class Info extends Component{
                     <Picker.Item label="阴历" value="lunar" />
                   </Picker>
                   <MyDatetime
+                    showtime={true}
                     handleDate={this.handleDate}
                     chosenDate={this.state.birthday.date}
                   />
