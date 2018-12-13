@@ -100,6 +100,7 @@ import SearchFamily from '../Components/SearchFamily'
 import SelectInput from '../Components/Histroy/SelecteInput'
 import SelectClass from '../Components/Histroy/SelectClass'
 import CreateClass from '../Components/Histroy/CreateClass'
+import Events from '../Components/Histroy/Events'
 
 const ProfileNavigation = createStackNavigator(
     {
@@ -120,6 +121,9 @@ const ProfileNavigation = createStackNavigator(
         },
         CreateClass: {
             screen: CreateClass,
+        },
+        Events: {
+            screen: Events,
         },
         SelectClass: {
             screen: SelectClass,

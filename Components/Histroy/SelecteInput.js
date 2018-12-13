@@ -14,7 +14,7 @@ export default  class SelectInput extends Component {
             </Button>
           </Left>
           <Body style={{alignItems:'center'}}>
-            <Title>人生轨迹</Title>
+            <Title>学习经历</Title>
           </Body>
           <Right>
 

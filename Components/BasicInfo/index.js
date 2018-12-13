@@ -46,13 +46,6 @@ export default class BasicInfo extends React.Component{
               street:data.me.birthplace && data.me.birthplace.street ? {code:data.me.birthplace.street.code,name:data.me.birthplace.street.name} : '',
               village:data.me.birthplace && data.me.birthplace.village ? {code:data.me.birthplace.village.code,name:data.me.birthplace.village.name} : '',
             }}
-            // birthplace={{
-            //   province:data.me.birthProvince ? {code:data.me.birthProvince.code,name:data.me.birthProvince.name}:'',
-            //   city:data.me.birthCity ? {code:data.me.birthCity.code,name:data.me.birthCity.name} : '',
-            //   area:data.me.birthArea ? {code:data.me.birthArea.code,name:data.me.birthArea.name} : '',
-            //   street:data.me.birthStreet ? {code:data.me.birthStreet.code,name:data.me.birthStreet.name} : '',
-            //   village:data.me.birthVillage ? {code:data.me.birthVillage.code,name:data.me.birthVillage.name} : '',
-            // }}
             />
           );
         }}

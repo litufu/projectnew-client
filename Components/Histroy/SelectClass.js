@@ -51,7 +51,7 @@ export default class SelectClass extends Component {
                     </TouchableHighlight>
                 </ListItem>
             </List>
-            <Button
+            <Button block
                 onPress={()=>this.props.navigation.navigate('CreateClass')}
             >
             <Text>添加班级</Text>

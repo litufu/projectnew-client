@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 
+import SCHOOLEDU_FRAGMENT from './schooledu.fragment'
 const USER_FRAGMENT = gql`
   fragment UserFragment on User {
     id
@@ -32,26 +33,10 @@ const USER_FRAGMENT = gql`
         name
       }
     }
-    birthProvince{
-      code
-      name
+    studies{
+      ...SchoolEduFragment
     }
-    birthCity{
-      code
-      name
-    }
-    birthArea{
-      code
-      name
-    }
-    birthStreet{
-      code
-      name
-    }
-    birthVillage{
-      code
-      name
-    }
-  }
+ }
+ ${SCHOOLEDU_FRAGMENT}
 `
 export default USER_FRAGMENT;

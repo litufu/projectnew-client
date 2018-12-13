@@ -8,99 +8,81 @@ import {
 } from 'react-native';
 import Timeline from 'react-native-timeline-feed'
 
+const kindName = {
+    "PrimarySchool":"小学",
+    "JuniorMiddleSchool":"初中",
+    "HighSchool":"高中",
+    "VocationalHighSchool":"职业中学",
+    "TechnicalSchool": "技工学校",
+    "SecondarySpecializedSchool": "中专",
+    "JuniorCollege":"大专",
+    "Undergraduate":"本科",
+    "Master":"硕士",
+    "Doctor":"博士",
+    "JuniorToCollege" :"本科",
+    "HighToCollege":"本科",
+    "HighToJunior":"专科",
+}
+
+const gradeName = {
+  1:'一',
+  2:'二',
+  3:'三',
+  4:'四',
+  5:'五',
+  6:'六',
+  7:'七',
+  8:'八',
+  9:'九'
+
+}
+
+
+const studydescription =(study)=>{
+  // "在**学校**专业/**年级**班，地点:"
+  const schoolName = study.school.name
+  const major = study.major ? study.major.name :""
+  const className = study.className === '0' ? '' : study.className + "班"
+  const location = study.school.location.name
+  const description = schoolName + major + className 
+  return description
+}
+
+const studytitle = (study) =>{
+  const kind = study.school.kind
+  const grade = gradeName[study.grade]+"年级"
+  const title = kindName[kind] + grade
+  return title
+}
+
+const timeTodate = (time) =>{
+  const date = new Date(time)
+  return date.getFullYear() + '年'
+}
+
 export default class TimeLocationLine extends Component {
-  constructor(){
-    super()
-    this.onEndReached = this.onEndReached.bind(this)
-    this.renderFooter = this.renderFooter.bind(this)
-    this.onRefresh = this.onRefresh.bind(this)
-
-    this.data = [
-      {time: '09:00', title: 'Archery Training', description: 'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. '},
-      {time: '10:45', title: 'Play Badminton', description: 'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.'},
-      {time: '14:00', title: 'Watch Soccer', description: 'Team sport played between two teams of eleven players with a spherical ball. '},
-      {time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)'},
-    ]
-
-    this.state = {
-      isRefreshing: false,      
-      waiting: false,
-      data: this.data
-    }
-  } 
 
   _keyExtractor = (item, index) => index.toString();
 
-  onRefresh(){
-    this.setState({isRefreshing: true});
-    //refresh to initial data
-    setTimeout(() => {
-      //refresh to initial data
-      this.setState({
-        data: this.data,
-        isRefreshing: false
-      });
-    }, 200);
-  }
-
-  onEndReached() {
-    if (!this.state.waiting) {
-        this.setState({waiting: true});
-
-        //fetch and concat data
-        setTimeout(() => {
-
-          //refresh to initial data
-          var data = this.state.data.concat(
-            [
-              {time: '18:00', title: 'Load more data', description: 'append event at bottom of timeline'},
-              {time: '18:00', title: 'Load more data', description: 'append event at bottom of timeline'},
-              {time: '18:00', title: 'Load more data', description: 'append event at bottom of timeline'},
-              {time: '18:00', title: 'Load more data', description: 'append event at bottom of timeline'},
-              {time: '18:00', title: 'Load more data', description: 'append event at bottom of timeline'}
-            ]
-            )
-
-          this.setState({
-            waiting: false,
-            data: data,
-          });
-        }, 200);
-    }
-  }
-
-renderFooter() {
-    if (this.state.waiting) {
-        return <ActivityIndicator />;
-    } else {
-        return <Text>~</Text>;
-    }
-  }
-
   render() {
-    //'rgb(45,156,219)'
+    const { studies } = this.props;
+    
+
+    const data = studies.map(study=>{return {time:timeTodate(study.startTime),title:studytitle(study),description:studydescription(study)}})
     return (
       <View style={styles.container}>
         <Timeline 
           style={styles.list}
-          data={this.state.data}
+          data={data}
           keyExtractor={this._keyExtractor}
           circleSize={20}
           circleColor='rgb(45,156,219)'
           lineColor='rgb(45,156,219)'
-          timeContainerStyle={{minWidth:52, marginTop: -5}}
+          timeContainerStyle={{minWidth:72, marginTop: -5}}
           timeStyle={{textAlign: 'center', backgroundColor:'#ff9797', color:'white', padding:5, borderRadius:13}}
           descriptionStyle={{color:'gray'}}
           flatListProps={{
             style:{paddingTop:5},
-            refreshControl: (
-              <RefreshControl
-                refreshing={this.state.isRefreshing}
-                onRefresh={this.onRefresh}
-              />
-            ),
-            renderFooter: this.renderFooter,
-            onEndReached: this.onEndReached,
           }}
           innerCircleType={'dot'}
         />

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Segment, Content, Text } from 'native-base';
 
-import TimeLocationLine from './TimeLocationLine'
-import EditHistory from './EditHistory'
+import Events from './Events'
+import Study from './Study'
 
 export default class Example extends Component {
 
@@ -20,7 +20,7 @@ export default class Example extends Component {
             </Button>
           </Left>
           <Body style={{alignItems:'center'}}>
-            <Title>人生轨迹</Title>
+            <Title>学习经历</Title>
           </Body>
           <Right>
 
@@ -28,16 +28,16 @@ export default class Example extends Component {
         </Header>
         <Segment>
           <Button first active={this.state.selected===1} onPress={()=>this.setState({selected:1})}>
-            <Text>我的历史</Text>
+            <Text>求学列表</Text>
           </Button>
           <Button last active={this.state.selected===2} onPress={()=>this.setState({selected:2})}>
-            <Text>自己写</Text>
+            <Text>添加</Text>
           </Button>
         </Segment>
 
         <Content padder>
-          {this.state.selected===1 &&  <TimeLocationLine />}
-          {this.state.selected===2 &&  <EditHistory />}
+          {this.state.selected===1 &&  <Events />}
+          {this.state.selected===2 &&  <Study />}
         </Content>
       </Container>
       
