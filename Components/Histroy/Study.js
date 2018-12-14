@@ -15,11 +15,13 @@ import {
     Label,
     Picker,
     Icon,
+    Spinner,
 } from 'native-base';
 import {Mutation} from 'react-apollo'
 import {withNavigation} from 'react-navigation'
 
 import Region from '../Region'
+import display from '../../utils/displayplace'
 import ADD_LOCATION from '../../graphql/add_location.mutation'
 
 class Study extends Component {
@@ -47,7 +49,89 @@ class Study extends Component {
                 }
     }
 
-    _selectSchool = (addLocation) =>{
+    _handlePlace = (place,addLocation)=>{
+        const {selected} = this.state
+        if(selected==="0"){
+            Alert.alert('你尚未选择学历')
+            return
+        }
+        this.setState( {location:place})
+        // 判断地址是否正确
+        const hasCity = place.city.code!==""
+        const hasArea = place.area.code!==""
+        const hasStreet = place.street.code!==""
+        const hasVillage = place.village.code!==""
+        // 检查地点是否合格
+       
+        let newlocation
+        switch(selected){
+            case "PrimarySchool":
+                if(hasVillage){
+                    newlocation = {
+                        province:place.province.code,
+                        city:place.city.code,
+                        area:place.area.code,
+                        street:place.street.code,
+                        village:place.village.code
+                    }
+                }
+                break;
+            case "JuniorMiddleSchool" :
+                if(hasStreet){
+                    newlocation = {
+                        province:place.province.code,
+                        city:place.city.code,
+                        area:place.area.code,
+                        street:place.street.code,
+                        village:""
+                    }
+                }
+                break;
+            case "HighSchool":
+                if(hasArea){
+                    newlocation = {
+                        province:place.province.code,
+                        city:place.city.code,
+                        area:place.area.code,
+                        street:"",
+                        village:""
+                    }
+                }
+                break;
+            case 'VocationalHighSchool':
+            case  'TechnicalSchool':
+            case  'SecondarySpecializedSchool':
+            case 'JuniorCollege':
+            case 'Undergraduate':
+            case'Master' :
+            case 'Doctor':
+            case 'JuniorToCollege':
+            case 'HighToCollege':
+            case 'HighToJunior' :
+                if(hasCity){
+                    newlocation = {
+                        province:place.province.code,
+                        city:place.city.code,
+                        area:"",
+                        street:"",
+                        village:""
+                    }
+                }
+                break;
+        }
+
+        console.log(newlocation)
+
+        // 新增地址
+        if(newlocation){
+            const locationName = place.province.name + place.city.name + place.area.name + place.street.name + place.village.name
+            console.log(locationName)
+            addLocation({ variables: { location:newlocation,locationName } });
+        }
+        
+    }
+
+    _selectSchool = () =>{
         const {location,selected} = this.state
         if(location===""){
             Alert.alert('你尚未选择地址')
@@ -73,35 +157,17 @@ class Study extends Component {
                     Alert.alert('地址选择不完整')
                     return
                 }
-                newlocation = {
-                    province:location.province.code,
-                    city:location.city.code,
-                    area:location.area.code,
-                    street:location.street.code,
-                    village:location.village.code
-                }
                 break;
             case "JuniorMiddleSchool" :
                 if(!hasStreet){
                     Alert.alert('地址选择不完整')
                     return
                 }
-                newlocation = {
-                    province:location.province.code,
-                    city:location.city.code,
-                    area:location.area.code,
-                    street:location.street.code,
-                }
                 break;
             case "HighSchool":
                 if(!hasArea){
                     Alert.alert('地址选择不完整')
                     return
-                }
-                newlocation = {
-                    province:location.province.code,
-                    city:location.city.code,
-                    area:location.area.code,
                 }
                 break;
             case 'VocationalHighSchool':
@@ -118,25 +184,13 @@ class Study extends Component {
                     Alert.alert('未选择市')
                     return
                 }
-                newlocation = {
-                    province:location.province.code,
-                    city:location.city.code,
-                    area:location.area.code,
-                }
                 break;
             default:
                 Alert.alert("你尚未选择学历")
                 break;
         }
-
-        console.log(newlocation)
-
-        // 新增地址
-        const locationName = location.province.name + location.city.name + location.area.name + location.street.name + location.village.name
-        console.log(locationName)
-        addLocation({ variables: { location:newlocation,locationName } });
         // 查询地点所有的学校并列示
-        this.props.navigation.navigate('SelectInput')
+        this.props.navigation.navigate('SelectSchool', {locationName:display(this.state.location),kind:this.state.selected})
     }
 
     render() {
@@ -211,10 +265,16 @@ class Study extends Component {
                                 <Text>地点:</Text>
                             </Left>
                             <Right style={styles.right}>
-                                <Region
-                                    handlePlace={(place) => this.setState( {location:place})}
-                                    place={location}
-                                />
+                            <Mutation 
+                                mutation={ADD_LOCATION}
+                                >
+                                {(addLocation) => {
+                                    return (<Region
+                                        handlePlace={(place) => this._handlePlace(place,addLocation)}
+                                        place={location}
+                                    />)
+                                }}
+                            </Mutation>
                             </Right>
                         </ListItem>
                         <ListItem>
@@ -222,15 +282,13 @@ class Study extends Component {
                                 <Text>学校名称:</Text>
                             </Left>
                             <Right style={styles.right}>
-                                <Mutation mutation={ADD_LOCATION}>
-                                {(addLocation, { data }) => (
-                                    <TouchableNativeFeedback
-                                    onPress={()=>this._selectSchool(addLocation)}
-                                    >
-                                    <Text>未填写</Text>
-                                    </TouchableNativeFeedback>
-                                    )}
-                                </Mutation>
+                            
+                            <TouchableNativeFeedback
+                             onPress={this._selectSchool}
+                            >
+                            <Text>未填写</Text> 
+                            </TouchableNativeFeedback>
+                          
                                 
                             </Right>
                         </ListItem>

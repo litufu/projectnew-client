@@ -5,13 +5,13 @@ const ADD_SCHOOL = gql`
 mutation AddSchool(
   $name: String!,
   $kind:String!
-  $locationId:String
+  $locationName:String
 
 ){
 addSchool(
     name:$name,
     kind:$kind,
-    locationId:$locationId
+    locationName:$locationName
   ){
     ...SchoolFragment
   }
