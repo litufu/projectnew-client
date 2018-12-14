@@ -75,7 +75,7 @@ class SettingsScreen extends Component {
 
           <ListItem
             // chevron
-            title="收到的评价"
+            title="工作经历"
             onPress={() => this.onPressOptions()}
             containerStyle={styles.listItemContainer}
             badge={{
@@ -97,7 +97,7 @@ class SettingsScreen extends Component {
 
           <ListItem
             // chevron
-            title="历史轨迹"
+            title="学习经历"
             onPress={() => this.props.navigation.navigate('Histroy')}
             containerStyle={styles.listItemContainer}
             leftIcon={
@@ -105,7 +105,7 @@ class SettingsScreen extends Component {
                 containerStyle={{ backgroundColor: '#57DCE7' }}
                 icon={{
                   type: 'font-awesome',
-                  name: 'history',
+                  name: 'book',
                 }}
               />
             }
@@ -150,7 +150,7 @@ class SettingsScreen extends Component {
         <View>
           <ListItem
             title="手机验证"
-            onPress={() => this.props.navigation.navigate('Events')}
+            onPress={() => this.props.navigation.navigate('Common')}
             containerStyle={styles.listItemContainer}
             leftIcon={
               <BaseIcon

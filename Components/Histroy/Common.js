@@ -1,46 +1,27 @@
-import React, { Component } from 'react';
-import {View ,Text}  from 'react-native'
-import {Picker} from 'native-base'
+import React from 'react'
+import {
+    View,
+    ART
+} from 'react-native'
 
-import MyDateTime from '../MyDatetime'
+const {Surface, Shape, Path} = ART;
 
-
-export default class Common extends Component{
-    state = {
-        startDate:'',
-        endDate : '',
-        location:'',
-    }
+export default class Rect extends React.Component{
 
     render(){
-        return(
-            <View >
-                <view>
-                    <Text>开始时间</Text>
-                    <MyDatetime
-                        handleDate={(startDate)=>this.setState({startDate})}
-                        chosenDate={this.state.startDate}
-                        mode="date"
-                    />
-                </view>
-                <view>
-                    <Text>结束时间</Text>
-                    <MyDatetime
-                        handleDate={(startDate)=>this.setState({startDate})}
-                        chosenDate={this.state.startDate}
-                        mode="date"
-                    />
-                </view>
-                <view>
-                    <Text>开始时间</Text>
-                    <MyDatetime
-                        handleDate={(startDate)=>this.setState({startDate})}
-                        chosenDate={this.state.startDate}
-                        mode="date"
-                    />
-                </view>
-                
 
+        const path = new Path()
+            .moveTo(1,1)
+            .lineTo(1,99)
+            .lineTo(99,99)
+            .lineTo(99,1)
+            .close();
+
+        return(
+            <View style={this.props.style}>
+                <Surface width={100} height={100}>
+                    <Shape d={path} stroke="#000000" fill="#892265" strokeWidth={1} />
+                </Surface>
             </View>
         )
     }

@@ -27,7 +27,7 @@ export default class SelectClass extends Component {
                 </Button>
             </Left>
             <Body style={{ alignItems: 'center' }}>
-                <Title>人生轨迹</Title>
+                <Title>学习经历</Title>
             </Body>
             <Right>
                 <Button><Text>确认</Text></Button>

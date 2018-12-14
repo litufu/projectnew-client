@@ -57,7 +57,9 @@ const studytitle = (study) =>{
 
 const timeTodate = (time) =>{
   const date = new Date(time)
-  return date.getFullYear() + '年'
+  const year = date.getFullYear()
+  const nextYear = year + 1
+  return year + '年-' + nextYear +'年'
 }
 
 export default class TimeLocationLine extends Component {
