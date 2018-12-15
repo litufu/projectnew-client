@@ -217,7 +217,10 @@ class ProvinceCityArea extends Component{
                         <View style={style.skuTitle}>
                             <Text style={style.skuTitleTxt}>所在地区</Text>
                             <TouchableOpacity style={style.skuContentClose}
-                                              onPress={() => this.setState({openProvinceCityArea:false})}>
+                                              onPress={() => {
+                                              this.setState({openProvinceCityArea:false})
+                                              this.props.callback(this.state.address,false)
+                                              }}>
                                 <Text style={style.skuContentCloseIcon}>关闭</Text>
                             </TouchableOpacity>
                         </View>

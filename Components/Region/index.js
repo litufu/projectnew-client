@@ -16,8 +16,16 @@ import display from '../../utils/displayplace'
 export default class Region extends Component{
   state={
   place:this.props.place||{},
-  openProvinceCityArea:false,
+  openProvinceCityArea:this.props.openProvinceCityArea || false,
 }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.place !== this.props.place) {
+      this.setState({
+        place:nextProps.place
+    })
+    }
+  }
 
   handlePlace=(place,closeModal)=>{
     const newplace = Object.assign(this.state.place,place)

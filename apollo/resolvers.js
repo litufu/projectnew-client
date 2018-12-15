@@ -1,3 +1,5 @@
+import GET_NEWSCHOOL from '../graphql/get_newSchool.query'
+
 export const resolvers = {
     Mutation: {
       addNewSchool:(_, { schoolId,schoolName }, { cache }) => {

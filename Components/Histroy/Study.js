@@ -32,7 +32,7 @@ class Study extends Component {
         selected:"0",
         startDate: '',
         endDate: '',
-        location: '',
+        location: {},
         name:'',
         undivided:false,
         hasMajor:false,
@@ -40,7 +40,7 @@ class Study extends Component {
 
     onValueChange = (value) => {
         this.setState({
-            selected: value
+            selected: value,
         });
         if(!!~['PrimarySchool', 'JuniorMiddleSchool', 'HighSchool'].indexOf(value)){
             this.setState({hasMajor:false})
@@ -50,9 +50,12 @@ class Study extends Component {
                 ].indexOf(value)){
                     this.setState({hasMajor:true})
                 }
+
+        this.setState({location:{},startDate:"",endDate:"",undivided:false})
+
     }
 
-    _handlePlace = (place,addLocation)=>{
+    _handlePlace = (place,addLocation,client)=>{
         const {selected} = this.state
         if(selected==="0"){
             Alert.alert('你尚未选择学历')
@@ -131,6 +134,14 @@ class Study extends Component {
             console.log(locationName)
             addLocation({ variables: { location:newlocation,locationName } });
         }
+        const data = {
+            newSchool: {
+              __typename: 'NewSchool',
+              id: "",
+              name:"",
+            },
+          };
+        client.writeData({ data });
         
     }
 
@@ -271,9 +282,9 @@ class Study extends Component {
                             <Mutation 
                                 mutation={ADD_LOCATION}
                                 >
-                                {(addLocation) => {
+                                {(addLocation,{client}) => {
                                     return (<Region
-                                        handlePlace={(place) => this._handlePlace(place,addLocation)}
+                                        handlePlace={(place) => this._handlePlace(place,addLocation,client)}
                                         place={location}
                                     />)
                                 }}
@@ -287,7 +298,10 @@ class Study extends Component {
                             <Right style={styles.right}>
                             
                             
-                            <Query query={GET_NEWSCHOOL}>
+                            <Query 
+                            query={GET_NEWSCHOOL}
+                            variables={{locationName:display(this.state.location),kind:this.state.selected}}
+                            >
                             {({ data}) => {
                                 console.log(data)
                                 if(data.newSchool.id===""){
