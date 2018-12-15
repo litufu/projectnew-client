@@ -25,7 +25,7 @@ export default class AddFamily extends Component {
   state = {
     name: this.props.navigation.getParam('name', ''),
     relationship: this.props.navigation.getParam('relationship', 'father'),
-    spouseId:this.props.navigation.getParam('spouseId', ''),
+    spouseId:'',
     disabled:false,
   }
 
