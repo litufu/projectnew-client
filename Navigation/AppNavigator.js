@@ -101,7 +101,7 @@ import SelectSchool from '../Components/Histroy/SelectSchool'
 import SelectClass from '../Components/Histroy/SelectClass'
 import CreateClass from '../Components/Histroy/CreateClass'
 import Events from '../Components/Histroy/Events'
-import Common from '../Components/Histroy/Common'
+import Study from '../Components/Histroy/Study'
 
 const ProfileNavigation = createStackNavigator(
     {
@@ -126,8 +126,8 @@ const ProfileNavigation = createStackNavigator(
         Events: {
             screen: Events,
         },
-        Common: {
-            screen: Common,
+        Study: {
+            screen: Study,
         },
         SelectClass: {
             screen: SelectClass,

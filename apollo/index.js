@@ -12,7 +12,19 @@ import { getMainDefinition } from 'apollo-utilities';
 import { setContext } from 'apollo-link-context'
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
+import { resolvers} from "./resolvers";
+import { typeDefs} from "./schema";
+import { defaults} from "./defaults";
+
+
 const cache = new InMemoryCache();
+
+const stateLink = withClientState({
+  typeDefs,
+  cache,
+  defaults,
+  resolvers
+});
 
 const request = async (operation) => {
   const token = await SecureStore.getItemAsync('token');
@@ -81,11 +93,16 @@ const splitlink = split(
   httpLink,
 )
 
-export const client = new ApolloClient({
+const client = new ApolloClient({
   link: ApolloLink.from([
     erorrLink,
     requestLink,
+    stateLink,
     splitlink
   ]),
-  cache
+  cache,
 });
+
+client.onResetStore(stateLink.writeDefaults);
+
+export default client

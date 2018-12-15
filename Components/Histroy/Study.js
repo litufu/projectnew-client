@@ -17,12 +17,15 @@ import {
     Icon,
     Spinner,
 } from 'native-base';
-import {Mutation} from 'react-apollo'
+import {Query,Mutation} from 'react-apollo'
 import {withNavigation} from 'react-navigation'
+
 
 import Region from '../Region'
 import display from '../../utils/displayplace'
 import ADD_LOCATION from '../../graphql/add_location.mutation'
+import GET_NEWSCHOOL from '../../graphql/get_newSchool.query'
+
 
 class Study extends Component {
     state = {
@@ -283,13 +286,27 @@ class Study extends Component {
                             </Left>
                             <Right style={styles.right}>
                             
-                            <TouchableNativeFeedback
-                             onPress={this._selectSchool}
-                            >
-                            <Text>未填写</Text> 
-                            </TouchableNativeFeedback>
-                          
-                                
+                            
+                            <Query query={GET_NEWSCHOOL}>
+                            {({ data}) => {
+                                console.log(data)
+                                if(data.newSchool.id===""){
+                                    return (<TouchableNativeFeedback
+                                        onPress={this._selectSchool}
+                                        >
+                                        <Text>未填写</Text>
+                                        </TouchableNativeFeedback>)
+                                    
+                                }
+                                 return (<TouchableNativeFeedback
+                                    onPress={this._selectSchool}
+                                    >
+                                    <Text>{data.newSchool.name}</Text>
+                                    </TouchableNativeFeedback>)
+                            }}
+                            </Query>
+                            
+                            
                             </Right>
                         </ListItem>
                         {

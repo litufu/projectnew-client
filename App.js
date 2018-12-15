@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo'
-import {client} from './apollo'
+import client from './apollo'
 import { Font } from 'expo'
 import { Text, View } from 'react-native';
 import Navigation from './Navigation/SwitchNavigator'

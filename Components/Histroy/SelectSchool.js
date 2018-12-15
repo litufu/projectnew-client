@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import {View,TouchableHighlight,Alert} from 'react-native'
-import {Query,Mutation} from 'react-apollo'
+import {Query,Mutation,ApolloConsumer} from 'react-apollo'
 import { Container, Header, Item, Input, Icon, Button, Text, Content,List, ListItem,Left,Body,Right,Title,Spinner,Radio } from 'native-base';
 
-import {trim} from '../../utils/tools'
+import {trim,errorMessage} from '../../utils/tools'
 import GET_SCHOOLS from '../../graphql/get_schools.query'
 import ADD_SCHOOL from '../../graphql/add_school.mutation'
+import ADD_NEWSCHOOL from '../../graphql/add_newSchool.mutation'
 
 export default  class SelectSchool extends Component {
   
@@ -24,8 +25,8 @@ export default  class SelectSchool extends Component {
     return true
   }
 
-  _handlePress=(id)=>{
-    this.setState({selectedId:id})
+  _handlePress=(id,name)=>{
+    this.setState({selectedId:id,schoolName:name,hideNew:true})
   }
 
   handleNewSchool=(addSchool)=>{
@@ -38,6 +39,18 @@ export default  class SelectSchool extends Component {
       addSchool({variables:{name:this.state.schoolName,kind,locationName}})
       this.setState({schoolName:""})
     }
+  }
+
+  submitSchool=(addNewSchool)=>{
+    const {selectedId,schoolName} = this.state
+    console.log(selectedId)
+    if(!selectedId){
+      Alert.alert('尚未选择或创建学校')
+      return
+    }
+    
+    addNewSchool({variables:{schoolId:selectedId,schoolName}})
+    this.props.navigation.goBack()
   }
 
 
@@ -57,17 +70,21 @@ export default  class SelectSchool extends Component {
             <Title>学习经历</Title>
           </Body>
           <Right>
-            <Button
-
+            <Mutation 
+            mutation={ADD_NEWSCHOOL}
             >
-              <Text>确认选择</Text>
-              </Button>
+            {addNewSchool => (
+                <Button
+                onPress={()=>this.submitSchool(addNewSchool)}
+              >
+                <Text>确认</Text>
+                </Button>
+            )}
+            </Mutation>
           </Right>
         </Header>
         <Content style={{marginTop:5}}>
         <List>
-          
-            
               {
                 hideNew && (
                   <ListItem>
@@ -117,7 +134,7 @@ export default  class SelectSchool extends Component {
                           </Body>
                           
                           </ListItem>
-                          {error && <Text style={{color:'red'}}>{error.message.replace(/GraphQL error:/g, "")}</Text>}
+                          {error && <Text style={{color:'red'}}>{errorMessage(error)}</Text>}
                           </View>
                       )
                     }}
@@ -138,7 +155,7 @@ export default  class SelectSchool extends Component {
            >
             {({ loading, error, data }) => {
               if (loading) return <Spinner />;
-              if (error) return <Text>{error.message}</Text>;
+              if (error) return <Text>{errorMessage(error)}</Text>;
               
               return (
                 data.getSchools.map(school=>(
@@ -148,7 +165,7 @@ export default  class SelectSchool extends Component {
                   </Left>
                   <Right>
                     <Radio 
-                      onPress={()=>this._handlePress(school.id)}
+                      onPress={()=>this._handlePress(school.id,school.name)}
                       selected={selectedId===school.id} 
                     />
                   </Right>
