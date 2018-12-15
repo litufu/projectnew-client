@@ -3,6 +3,7 @@ import {View,TouchableHighlight,Alert} from 'react-native'
 import {Query,Mutation} from 'react-apollo'
 import { Container, Header, Item, Input, Icon, Button, Text, Content,List, ListItem,Left,Body,Right,Title,Spinner,Radio } from 'native-base';
 
+import {trim} from '../../utils/tools'
 import GET_SCHOOLS from '../../graphql/get_schools.query'
 import ADD_SCHOOL from '../../graphql/add_school.mutation'
 
@@ -14,17 +15,31 @@ export default  class SelectSchool extends Component {
     schoolName:"",
   }
 
+  validate=(name)=>{
+    const rxName =/^[a-zA-Z0-9\u4E00-\u9FA5\uf900-\ufa2d·s]+$/
+    if(!rxName.test(name)){
+      Alert.alert('学校名称格式暂不支持')
+      return false
+    }
+    return true
+  }
+
   _handlePress=(id)=>{
     this.setState({selectedId:id})
   }
 
   handleNewSchool=(addSchool)=>{
+    const {schoolName} =  this.state
+    
     const { navigation } = this.props;
     const locationName = navigation.getParam('locationName', '');
     const kind = navigation.getParam('kind', '');
-    addSchool({variables:{name:this.state.schoolName,kind,locationName}})
-    this.setState({schoolName:""})
+    if(this.validate(schoolName)){
+      addSchool({variables:{name:this.state.schoolName,kind,locationName}})
+      this.setState({schoolName:""})
+    }
   }
+
 
   render() {
     const { navigation } = this.props;
@@ -90,7 +105,7 @@ export default  class SelectSchool extends Component {
                           <Body style={{flexDirection:'row'}}>
                           <Input 
                             value={this.state.schoolName}
-                            onChangeText={(value)=>this.setState({schoolName:value})}
+                            onChangeText={(value)=>this.setState({schoolName:trim(value)})}
                             placeholder="请输入新建学校名称" 
                           />
                         <Button 

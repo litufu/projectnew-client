@@ -34,6 +34,7 @@ import { Mutation } from "react-apollo";
 import Region from '../Region'
 import MyDatetime from '../MyDatetime'
 import display from '../../utils/displayplace'
+import {trim} from '../../utils/tools'
 import ADD_BASICKINFO from '../../graphql/add_basicinfo.mutation'
 
 export default class Info extends Component{
@@ -139,7 +140,7 @@ export default class Info extends Component{
             </Left>
             <Right>
                <TextInput
-                onChangeText={(name) => this.setState({name})}
+                onChangeText={(name) => this.setState({name:trim(name)})}
                 value={name}
                 editable={editable}
                 placeholder={name===""?"未填写":name}
