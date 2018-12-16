@@ -22,9 +22,11 @@ import {withNavigation} from 'react-navigation'
 
 import Region from '../Region'
 import display from '../../utils/displayplace'
+import {grades} from '../../utils/tools'
 import ADD_LOCATION from '../../graphql/add_location.mutation'
 import GET_NEWSCHOOL from '../../graphql/get_newSchool.query'
 import GET_NEWMAJOR from '../../graphql/get_newMajor.query'
+import GET_NEWGRADEANDCLASSES from '../../graphql/get_newGradeAndClasses.query'
 
 class Study extends Component {
     state = {
@@ -351,7 +353,6 @@ class Study extends Component {
                                         query={GET_NEWMAJOR}
                                         >
                                         {({ data}) => {
-                                            console.log('major',data)
                                             if(data.newMajor.id===""){
                                                 return (<TouchableNativeFeedback
                                                     onPress={this._selectMajor}
@@ -378,11 +379,26 @@ class Study extends Component {
                                 <Text>所在班级:</Text>
                             </Left>
                             <Right style={styles.right}>
-                            <TouchableNativeFeedback
-                                    onPress={this._selectClass}
-                                >
-                                    <Text>选择班级</Text>
-                                </TouchableNativeFeedback>
+                                <Query 
+                                    query={GET_NEWGRADEANDCLASSES}
+                                    >
+                                    {({ data}) => {
+                                        if(data.newGradeAndClasses.length===0){
+                                            return (<TouchableNativeFeedback
+                                                onPress={this._selectClass}
+                                                >
+                                                <Text>未填写</Text>
+                                                </TouchableNativeFeedback>)
+                                            
+                                        }
+                                        return (<TouchableNativeFeedback
+                                            onPress={this._selectClass}
+                                            >
+                                            <Text>{`${grades[data.newGradeAndClasses[0].grade]}年级${data.newGradeAndClasses[0].className==="0"?"未分":data.newGradeAndClasses[0].className}班...`}</Text>
+                                            </TouchableNativeFeedback>)
+                                    }}
+                                </Query>
+                       
                             </Right>
                         </ListItem>)
                         }

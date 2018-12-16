@@ -17,6 +17,7 @@ import { Container,
  } from 'native-base';
  import {Query,Mutation} from 'react-apollo'
 
+ import {grades} from '../../utils/tools'
  import GET_NEWGRADEANDCLASSES from '../../graphql/get_newGradeAndClasses.query'
 
 export default class SelectClass extends Component {
@@ -31,51 +32,63 @@ export default class SelectClass extends Component {
             Alert.alert('你输入的班级数与输入的入学时间和毕业时间不符')
             return
         }
+        this.props.navigation.goBack()
     }
 
   render() {
-    const grades = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七', 8: '八', 9: '九', 10: '十' }  
+    
     return (
         <Query query={GET_NEWGRADEANDCLASSES}>
-                {({ data}) => {
-                    console.log('rq',data)
+                {({ data,client}) => {
         return(
-      <Container>
-          <Header >
-            <Left style={{ justifyContent: 'flex-end' }}>
-                <Button transparent onPress={() => this.props.navigation.goBack()}>
-                    <Icon name="arrow-back" />
-                </Button>
-            </Left>
-            <Body style={{ alignItems: 'center' }}>
-                <Title>学习经历</Title>
-            </Body>
-            <Right>
-                <Button
-                onPress={()=>this.submitClasses(data.newGradeAndClasses)}
-                ><Text>确认</Text></Button>
-            </Right>
-        </Header>
-        <Content>
-            <List>
-                
-            {data.newGradeAndClasses.length===0 && <ListItem></ListItem>}
-            {data.newGradeAndClasses.length>0 && data.newGradeAndClasses.map(newGradeAndClass=>(
-                <ListItem key={newGradeAndClass.id}>
-                <TouchableHighlight>
-                    <Text>{`${grades[newGradeAndClass.grade]}年级${newGradeAndClass.className}班`}</Text>
-                </TouchableHighlight>
-                </ListItem>))
-                }
-                 
-            </List>
-            <Button block
-                onPress={()=>this.props.navigation.navigate('CreateClass')}
-            >
-            <Text>添加班级</Text>
-            </Button>
-        </Content>
-      </Container>)
+            <Container>
+                <Header >
+                    <Left style={{ justifyContent: 'flex-end' }}>
+                        <Button transparent onPress={() => this.props.navigation.goBack()}>
+                            <Icon name="arrow-back" />
+                        </Button>
+                    </Left>
+                    <Body style={{ alignItems: 'center' }}>
+                        <Title>学习经历</Title>
+                    </Body>
+                    <Right>
+                        <Button
+                        onPress={()=>this.submitClasses(data.newGradeAndClasses)}
+                        ><Text>确认</Text></Button>
+                    </Right>
+                </Header>
+                <Content>
+                    <List>
+                        
+                    {data.newGradeAndClasses.length===0 && <ListItem></ListItem>}
+                    {data.newGradeAndClasses.length>0 && data.newGradeAndClasses.map(newGradeAndClass=>(
+                        <ListItem key={newGradeAndClass.id}>
+                        <TouchableHighlight>
+                            <Text>{`${grades[newGradeAndClass.grade]}年级${newGradeAndClass.className==="0"?"未分":newGradeAndClass.className}班`}</Text>
+                        </TouchableHighlight>
+                        </ListItem>))
+                        }
+                        
+                    </List>
+                    <Button block
+                        style={{padding:10,margin:10}}
+                        onPress={()=>this.props.navigation.navigate('CreateClass')}
+                    >
+                    <Text>添加班级</Text>
+                    </Button>
+                    {
+                        data.newGradeAndClasses.length>0 && (
+                        <Button block warning
+                            style={{padding:10,margin:10}}
+                            onPress={()=>{client.writeQuery({query:GET_NEWGRADEANDCLASSES,data:{newGradeAndClasses:[]}})}}
+                        >
+                            <Text>清除班级</Text>
+                        </Button>
+                        )
+                    }
+                </Content>
+            </Container>
+            )
     }}
 </Query>
     );

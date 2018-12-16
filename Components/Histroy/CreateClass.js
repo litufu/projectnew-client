@@ -20,7 +20,7 @@ import {
     Picker,
 } from 'native-base';
 import {Mutation} from 'react-apollo'
-import {checkNum} from '../../utils/tools'
+import {checkNum, errorMessage} from '../../utils/tools'
 import ADD_NEWGRADEANDCLASS from '../../graphql/add_newGradeAndClass.mutation'
 
 class CreateClass extends Component {
@@ -32,7 +32,8 @@ class CreateClass extends Component {
         endGrade: 1,
     }
 
-    _handleAddGradeAndClass=(addGradeAndClass)=>{
+    _handleAddGradeAndClass=async (addGradeAndClass,error)=>{
+        
         const { startGrade, endGrade, special, className ,undivided} = this.state
         if(special ===false && !checkNum(className)){
             Alert.alert('非特色班，请输入阿拉伯数字')
@@ -47,8 +48,15 @@ class CreateClass extends Component {
         console.log(className)
         for(let i=startGrade;i<=endGrade;i++){
             console.log(i)
-            addGradeAndClass({variables:{grade:i,className}})
+            try{
+                await addGradeAndClass({variables:{grade:i,className}})
+            }catch(error){
+                Alert.alert(errorMessage(error))
+                return
+            }
+            
         }
+        
         this.props.navigation.goBack()
     }
 
@@ -141,17 +149,16 @@ class CreateClass extends Component {
                         <ListItem style={styles.row}>
                             <Mutation mutation={ADD_NEWGRADEANDCLASS}>
                             {
-                                addGradeAndClass=>(
+                                (addGradeAndClass,{error})=>(
                                     <Button 
                                     block 
                                     style={{ padding: 10, flex: 1 }}
-                                    onPress={()=>this._handleAddGradeAndClass(addGradeAndClass)}
+                                    onPress={()=>this._handleAddGradeAndClass(addGradeAndClass,error)}
                                     >
                                         <Text style={{fontSize:15}}> 保 存 </Text>
                                     </Button>
                                 )
                             }
-
                             </Mutation>
                             
                         </ListItem>
