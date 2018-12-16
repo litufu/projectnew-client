@@ -98,6 +98,7 @@ import Histroy from '../Components/Histroy'
 import AddFamily from '../Components/Family/AddFamily'
 import SearchFamily from '../Components/SearchFamily'
 import SelectSchool from '../Components/Histroy/SelectSchool'
+import SelectMajor from '../Components/Histroy/SelectMajor'
 import SelectClass from '../Components/Histroy/SelectClass'
 import CreateClass from '../Components/Histroy/CreateClass'
 import Events from '../Components/Histroy/Events'
@@ -119,6 +120,9 @@ const ProfileNavigation = createStackNavigator(
         },
         SelectSchool: {
             screen: SelectSchool,
+        },
+        SelectMajor: {
+            screen: SelectMajor,
         },
         CreateClass: {
             screen: CreateClass,

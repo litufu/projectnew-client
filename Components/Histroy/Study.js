@@ -20,21 +20,19 @@ import {
 import {Query,Mutation} from 'react-apollo'
 import {withNavigation} from 'react-navigation'
 
-
 import Region from '../Region'
 import display from '../../utils/displayplace'
 import ADD_LOCATION from '../../graphql/add_location.mutation'
 import GET_NEWSCHOOL from '../../graphql/get_newSchool.query'
-
+import GET_NEWMAJOR from '../../graphql/get_newMajor.query'
 
 class Study extends Component {
     state = {
         selected:"0",
-        startDate: '',
-        endDate: '',
+        startYear: '',
+        endYear: '',
         location: {},
         name:'',
-        undivided:false,
         hasMajor:false,
     }
 
@@ -51,8 +49,7 @@ class Study extends Component {
                     this.setState({hasMajor:true})
                 }
 
-        this.setState({location:{},startDate:"",endDate:"",undivided:false})
-
+        this.setState({location:{},startYear:"",endYear:"",undivided:false})
     }
 
     _handlePlace = (place,addLocation,client)=>{
@@ -131,8 +128,7 @@ class Study extends Component {
         // 新增地址
         if(newlocation){
             const locationName = place.province.name + place.city.name + place.area.name + place.street.name + place.village.name
-            console.log(locationName)
-            addLocation({ variables: { location:newlocation,locationName } });
+            // addLocation({ variables: { location:newlocation,locationName } });
         }
         const data = {
             newSchool: {
@@ -207,8 +203,31 @@ class Study extends Component {
         this.props.navigation.navigate('SelectSchool', {locationName:display(this.state.location),kind:this.state.selected})
     }
 
+    _selectMajor=()=>{
+        const {selected} = this.state
+        if(selected==="0"){
+            Alert.alert('你尚未选择学历')
+            return
+        }
+        this.props.navigation.navigate('SelectMajor',{education:selected})
+    }
+
+    _selectClass=()=>{
+        const {startYear,endYear} = this.state
+        const reg = /^\d{4}$/;
+        if(!reg.test(startYear)){
+            Alert.alert('你输入的入学时间有误，请输入四位数字')
+            return
+        }
+        if(!reg.test(endYear)){
+            Alert.alert('你输入的毕业时间有误，请输入四位数字')
+            return
+        }
+        this.props.navigation.navigate('SelectClass',{startYear,endYear})
+    }
+
     render() {
-        const { startDate, endDate, location,undivided,hasMajor } = this.state
+        const { startYear, endYear, location,undivided,hasMajor } = this.state
         return (
             <Container>
                 <Content>
@@ -253,8 +272,8 @@ class Study extends Component {
                                 keyboardType='numeric'
                                 maxLength={4}
                                 placeholder="年度"
-                                value={startDate}
-                                onChangeText={(startDate) => this.setState({startDate})}
+                                value={startYear}
+                                onChangeText={(startYear) => this.setState({startYear})}
                                 />
                             </Right>
                         </ListItem>
@@ -268,8 +287,8 @@ class Study extends Component {
                                     keyboardType='numeric'
                                     maxLength={4}
                                     placeholder="年度"
-                                    value={endDate}
-                                    onChangeText={(endDate) => this.setState({endDate})}
+                                    value={endYear}
+                                    onChangeText={(endYear) => this.setState({endYear})}
                                     />
                             </Right>
 
@@ -300,10 +319,8 @@ class Study extends Component {
                             
                             <Query 
                             query={GET_NEWSCHOOL}
-                            variables={{locationName:display(this.state.location),kind:this.state.selected}}
                             >
                             {({ data}) => {
-                                console.log(data)
                                 if(data.newSchool.id===""){
                                     return (<TouchableNativeFeedback
                                         onPress={this._selectSchool}
@@ -330,24 +347,31 @@ class Study extends Component {
                                         <Text>专业名称:</Text>
                                     </Left>
                                     <Right style={styles.right}>
-                                        <TouchableNativeFeedback
-                                            onPress={()=>this.props.navigation.navigate('SelectInput')}
+                                    <Query 
+                                        query={GET_NEWMAJOR}
                                         >
-                                            <Text>未填写</Text>
-                                        </TouchableNativeFeedback>
+                                        {({ data}) => {
+                                            console.log('major',data)
+                                            if(data.newMajor.id===""){
+                                                return (<TouchableNativeFeedback
+                                                    onPress={this._selectMajor}
+                                                    >
+                                                    <Text>未填写</Text>
+                                                    </TouchableNativeFeedback>)
+                                                
+                                            }
+                                            return (<TouchableNativeFeedback
+                                                onPress={this._selectMajor}
+                                                >
+                                                <Text>{data.newMajor.name}</Text>
+                                                </TouchableNativeFeedback>)
+                                        }}
+                                        </Query>
+
                                     </Right>
                                 </ListItem>
                             )
                         }
-                         <ListItem >
-                            <CheckBox
-                                checked={undivided}
-                                onPress={() => { this.setState({ undivided: !undivided }) }}
-                            />
-                            <Body>
-                                <Label > 本界仅有一个班,未分班</Label>
-                            </Body>
-                        </ListItem>
                         {
                             !undivided && (<ListItem>
                             <Left style={styles.left}>
@@ -355,7 +379,7 @@ class Study extends Component {
                             </Left>
                             <Right style={styles.right}>
                             <TouchableNativeFeedback
-                                    onPress={()=>this.props.navigation.navigate('SelectClass')}
+                                    onPress={this._selectClass}
                                 >
                                     <Text>选择班级</Text>
                                 </TouchableNativeFeedback>

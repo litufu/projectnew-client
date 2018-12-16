@@ -17,9 +17,15 @@ export default  class SelectSchool extends Component {
   }
 
   validate=(name)=>{
+    let pass
     const rxName =/^[a-zA-Z0-9\u4E00-\u9FA5\uf900-\ufa2d·s]+$/
     if(!rxName.test(name)){
       Alert.alert('学校名称格式暂不支持')
+      return false
+    }
+
+    if(!~name.indexOf('小') && !~name.indexOf('中') && !~name.indexOf('学')){
+      Alert.alert('请检查学校名称是否为全称')
       return false
     }
     return true
@@ -43,7 +49,6 @@ export default  class SelectSchool extends Component {
 
   submitSchool=(addNewSchool)=>{
     const {selectedId,schoolName} = this.state
-    console.log(selectedId)
     if(!selectedId){
       Alert.alert('尚未选择或创建学校')
       return
@@ -58,6 +63,7 @@ export default  class SelectSchool extends Component {
     const { navigation } = this.props;
     const {selectedId,hideNew} = this.state
     const locationName = navigation.getParam('locationName', '');
+    
     return (
       <Container>
          <Header >

@@ -4,4 +4,10 @@ export const defaults = {
         id:"",
         name:"",
     },
+    newMajor:{
+        __typename:"NewMajor",
+        id:"",
+        name:"",
+    },
+    newGradeAndClasses:[]
   };

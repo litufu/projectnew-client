@@ -7,3 +7,9 @@ export const checkName = (name)=>{
     }
   }
 export const errorMessage = (error)=>error.message.replace(/GraphQL error:/g, "")
+export const checkNum = (str)=>{
+  if(!/^\d+$/.test(str)){
+     return false
+    }
+  return true
+}
