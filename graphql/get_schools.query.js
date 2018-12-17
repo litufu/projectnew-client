@@ -3,8 +3,8 @@ import gql from 'graphql-tag'
 import SCHOOL_FRAGMENT from './school.fragment'
 
 const GET_SCHOOLS = gql`
-  query getSchools($locationName: String!) {
-    getSchools(locationName: $locationName) {
+  query getSchools($locationName: String!,$kind:String) {
+    getSchools(locationName: $locationName,kind:$kind) {
       ... SchoolFragment
     }
   }

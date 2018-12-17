@@ -7,7 +7,7 @@ mutation AddBasicInfo(
   $name: String!,
   $gender: String!,
   $birthday:BirthdayInput!,
-  $birthplace:BirthplaceInput!
+  $birthplace:PlaceInput!
 
 ){
   addBasicInfo(

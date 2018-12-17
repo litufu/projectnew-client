@@ -31,9 +31,10 @@ export const resolvers = {
         console.log('clasname',className)
         const previous = cache.readQuery({ query: GET_NEWGRADEANDCLASSES });
         console.log(previous)
-        if(previous.newGradeAndClasses.filter(newGradeAndClass=>newGradeAndClass.grade===grade).length>0){
-          throw new Error('年级已存在，无法重复创建年级')
-        }
+        // 复习生可能存在年级重复的情况
+        // if(previous.newGradeAndClasses.filter(newGradeAndClass=>newGradeAndClass.grade===grade).length>0){
+        //   throw new Error('年级已存在，无法重复创建年级')
+        // }
         const newGradeAndClass = {
             __typename: 'GradeAndClass',
             id: nextGradeAndClassId++,

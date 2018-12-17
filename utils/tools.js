@@ -14,3 +14,18 @@ export const checkNum = (str)=>{
   return true
 }
 export const grades = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七', 8: '八', 9: '九', 10: '十' }  
+export const educations = {
+  "PrimarySchool":"初等教育-小学",
+  "JuniorMiddleSchool":"中等教育-初中",
+  "HighSchool":"中等教育-高中",
+  "VocationalHighSchool":"中等教育-职业中学",
+  "TechnicalSchool":"中等教育-技工学校",
+  "SecondarySpecializedSchool":"中等教育-中等专业学校",
+  "JuniorCollege":"普通高等教育-大专",
+  "Undergraduate":"普通高等教育-本科",
+  "Master":"普通高等教育-硕士",
+  "Doctor":"普通高等教育-博士",
+  "JuniorToCollege":"成人高等教育-专科起点本科",
+  "HighToCollege":"成人高等教育-高中起点升本科",
+  "HighToJunior":"成人高等教育-高中起点升专科"
+}

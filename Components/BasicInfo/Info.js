@@ -36,6 +36,7 @@ import MyDatetime from '../MyDatetime'
 import display from '../../utils/displayplace'
 import {trim} from '../../utils/tools'
 import ADD_BASICKINFO from '../../graphql/add_basicinfo.mutation'
+import GET_ME from '../../graphql/get_me.query'
 
 export default class Info extends Component{
 
@@ -122,7 +123,9 @@ export default class Info extends Component{
       return null
     }
     this.setState({editable:false})
-    addBasicInfo({ variables: { name,gender,birthday,birthplace:placeCode } })
+    addBasicInfo({ 
+      variables: { name,gender,birthday,birthplace:placeCode }
+    })
   }
 
   render(){

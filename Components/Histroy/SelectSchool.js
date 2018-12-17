@@ -42,7 +42,23 @@ export default  class SelectSchool extends Component {
     const locationName = navigation.getParam('locationName', '');
     const kind = navigation.getParam('kind', '');
     if(this.validate(schoolName)){
-      addSchool({variables:{name:this.state.schoolName,kind,locationName}})
+      addSchool({
+        variables:{name:this.state.schoolName,kind,locationName},
+        optimisticResponse: {
+          __typename: "Mutation",
+          addSchool: {
+            id: '123',
+            __typename: "School",
+            name: this.state.schoolName,
+            kind:kind,
+            location:{
+              __typename:'Location',
+              id:'456',
+              name:locationName
+            }
+          }
+        }
+      })
       this.setState({schoolName:""})
     }
   }
@@ -54,7 +70,9 @@ export default  class SelectSchool extends Component {
       return
     }
     
-    addNewSchool({variables:{schoolId:selectedId,schoolName}})
+    addNewSchool({
+      variables:{schoolId:selectedId,schoolName}
+    })
     this.props.navigation.goBack()
   }
 
@@ -63,7 +81,7 @@ export default  class SelectSchool extends Component {
     const { navigation } = this.props;
     const {selectedId,hideNew} = this.state
     const locationName = navigation.getParam('locationName', '');
-    
+    const kind = navigation.getParam('kind', '');
     return (
       <Container>
          <Header >
@@ -111,10 +129,10 @@ export default  class SelectSchool extends Component {
                   <Mutation 
                   mutation={ADD_SCHOOL}
                   update={(cache, { data: { addSchool } }) => {
-                    const {getSchools} = cache.readQuery({ query: GET_SCHOOLS,variables:{locationName} });
+                    const {getSchools} = cache.readQuery({ query: GET_SCHOOLS,variables:{locationName,kind} });
                     cache.writeQuery({
                       query: GET_SCHOOLS,
-                      variables:{locationName},
+                      variables:{locationName,kind},
                       data: { getSchools: getSchools.concat([addSchool]) }
                     });
                   }}
@@ -157,7 +175,7 @@ export default  class SelectSchool extends Component {
           
            <Query
            query={GET_SCHOOLS}
-           variables={{ locationName}}
+           variables={{ locationName,kind}}
            >
             {({ loading, error, data }) => {
               if (loading) return <Spinner />;

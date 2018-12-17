@@ -36,7 +36,13 @@ export default class SelectClass extends Component {
     }
 
   render() {
-    
+    const { navigation } = this.props;
+    const startYear = navigation.getParam('startYear', 0);
+    const endYear = navigation.getParam('endYear', 0);
+    const existYears = []
+    for(let i=startYear;i<endYear;i++){
+        existYears.push(i)
+    }
     return (
         <Query query={GET_NEWGRADEANDCLASSES}>
                 {({ data,client}) => {
@@ -61,10 +67,10 @@ export default class SelectClass extends Component {
                     <List>
                         
                     {data.newGradeAndClasses.length===0 && <ListItem></ListItem>}
-                    {data.newGradeAndClasses.length>0 && data.newGradeAndClasses.map(newGradeAndClass=>(
+                    {data.newGradeAndClasses.length>0 && data.newGradeAndClasses.map((newGradeAndClass,index)=>(
                         <ListItem key={newGradeAndClass.id}>
                         <TouchableHighlight>
-                            <Text>{`${grades[newGradeAndClass.grade]}年级${newGradeAndClass.className==="0"?"未分":newGradeAndClass.className}班`}</Text>
+                            <Text>{`${existYears[index]}年:${grades[newGradeAndClass.grade]}年级${newGradeAndClass.className==="0"?"未分":newGradeAndClass.className}班`}</Text>
                         </TouchableHighlight>
                         </ListItem>))
                         }

@@ -43,9 +43,7 @@ class CreateClass extends Component {
             Alert.alert('班级名称不能以"0"开头')
             return
         }
-        console.log(startGrade)
-        console.log(endGrade)
-        console.log(className)
+    
         for(let i=startGrade;i<=endGrade;i++){
             console.log(i)
             try{

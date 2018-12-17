@@ -15,7 +15,7 @@ const EventsWithData = () => (
       if(error) return <Text>{error.message}</Text>
 
       return (<TimeLocationLine
-        studies={data.me.studies || []}
+        studies={data.me.studies.sort((a,b)=>(new Date(a.startTime) - new Date(b.startTime))) || []}
       />)
     }}
   </Query>
