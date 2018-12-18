@@ -95,6 +95,7 @@ import Region from '../Components/Region'
 import MyDatetime from '../Components/MyDatetime'
 import Family from '../Components/Family'
 import Histroy from '../Components/Histroy'
+import Work from '../Components/Work'
 import AddFamily from '../Components/Family/AddFamily'
 import SearchFamily from '../Components/SearchFamily'
 import SelectSchool from '../Components/Histroy/SelectSchool'
@@ -117,6 +118,9 @@ const ProfileNavigation = createStackNavigator(
         },
         Histroy: {
             screen: Histroy,
+        },
+        Work: {
+            screen: Work,
         },
         SelectSchool: {
             screen: SelectSchool,

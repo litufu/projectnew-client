@@ -1,7 +1,6 @@
 import React from 'react'
 import {Query} from 'react-apollo'
-import {Spinner,Text } from 'native-base'
-import {gql} from 'graphql-tag'
+import {Spinner,Text, View } from 'native-base'
 
 import TimeLocationLine from './TimeLocationLine'
 import GET_ME from '../../graphql/get_me.query'
@@ -13,12 +12,12 @@ const EventsWithData = () => (
     {({ loading,error,data }) => {
       if(loading) return <Spinner />
       if(error) return <Text>{error.message}</Text>
-
-      if(data.me.studies && data.me.studies.length>0){
-        return (<TimeLocationLine
-          studies={data.me.studies.sort((a,b)=>(new Date(a.startTime) - new Date(b.startTime))) || []}
-        />)
-      }
+      console.log(data)
+      if(data.me.works && data.me.works.length>0){
+        console.log('works',data.me.works)
+      return (<TimeLocationLine
+        works={data.me.works.sort((a,b)=>(new Date(a.startTime) - new Date(b.startTime))) || []}
+      />)}
       return <View></View>
     }}
   </Query>

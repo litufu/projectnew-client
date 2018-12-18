@@ -76,7 +76,7 @@ class SettingsScreen extends Component {
           <ListItem
             // chevron
             title="工作经历"
-            onPress={() => this.onPressOptions()}
+            onPress={() => this.props.navigation.navigate('Work')}
             containerStyle={styles.listItemContainer}
             badge={{
               value: 5,
