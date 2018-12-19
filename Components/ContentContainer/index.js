@@ -1,6 +1,7 @@
 import {
   StyleSheet,
   View,
+  TextInput
 } from 'react-native';
 import React from 'react';
 
@@ -18,6 +19,7 @@ export default class ContentContainer extends React.Component {
   handleChangeInputMethod = inputMethod => {
     this.setState({ inputMethod });
   };
+
 
   render() {
     const { inputMethod } = this.state;

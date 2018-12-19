@@ -150,7 +150,7 @@ class SettingsScreen extends Component {
         <View>
           <ListItem
             title="手机验证"
-            onPress={() => this.props.navigation.navigate('Common')}
+            onPress={() => this.props.navigation.navigate('MyIcon')}
             containerStyle={styles.listItemContainer}
             leftIcon={
               <BaseIcon

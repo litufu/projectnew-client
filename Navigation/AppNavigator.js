@@ -87,8 +87,14 @@ import React from 'react'
 // )
 
 import Group from '../Components/Group'
-import Home from '../Components/Explore'
+import Home from '../screens/MyHome'
 import Profile from '../screens/Profile'
+
+// 引入home
+import CollegeEntranceExam from '../Components/CollegeEntranceExam'
+import QueryExamBasicInfo from '../Components/CollegeEntranceExam/QueryExamBasicInfo'
+
+// 引入profile
 import ChangePassword from '../Components/ChangePassword'
 import BasicInfo from '../Components/BasicInfo'
 import Region from '../Components/Region'
@@ -104,6 +110,28 @@ import SelectClass from '../Components/Histroy/SelectClass'
 import CreateClass from '../Components/Histroy/CreateClass'
 import Events from '../Components/Histroy/Events'
 import Study from '../Components/Histroy/Study'
+import MyIcon from '../Components/MyIcon'
+
+const HomeNavigation = createStackNavigator(
+    {
+        Home: {
+            screen: Home,
+        },
+        CollegeEntranceExam: {
+            screen: CollegeEntranceExam,
+        },
+        QueryExamBasicInfo:{
+            screen:QueryExamBasicInfo
+        }
+       
+    },
+    {
+        initialRouteName:"Home",
+        navigationOptions: {
+            header: null
+        },
+    }
+)
 
 const ProfileNavigation = createStackNavigator(
     {
@@ -155,6 +183,9 @@ const ProfileNavigation = createStackNavigator(
         MyDatetime: {
             screen: MyDatetime,
         },
+        MyIcon: {
+            screen: MyIcon,
+        },
     },
     {
         initialRouteName:"Profile",
@@ -167,7 +198,7 @@ const ProfileNavigation = createStackNavigator(
 export default createBottomTabNavigator(
     {
         Home: {
-            screen: Home
+            screen: HomeNavigation
         },
         Group: {
             screen: Group
