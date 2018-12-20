@@ -1,7 +1,9 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, List, ListItem,Item } from 'native-base';
-
+import { StyleSheet, View ,Alert} from 'react-native'
+import { Container, Header, Title, Content, Footer, Spinner, Button, Left, Right, Body, Icon, Text, List, ListItem,Item } from 'native-base';
+import {Query} from 'react-apollo'
+import GET_ME from '../../graphql/get_me.query'
+import { errorMessage } from '../../utils/tools';
 
 
 export default class CollegeEntranceExam extends React.Component {
@@ -11,9 +13,8 @@ export default class CollegeEntranceExam extends React.Component {
     }
 
     _handleBasicInfo=()=>{
-        this.setState({selectedItem:"1"})
-        this.props.navigation.navigate('QueryExamBasicInfo')
-        this.setState({selectedItem:""})
+        const data=this.props.navigation.getParam('data', '')
+        this.props.navigation.navigate('QueryExamBasicInfo',{data})
     }
 
     render() {
@@ -22,7 +23,10 @@ export default class CollegeEntranceExam extends React.Component {
             <Container style={{flex:1}}>
                 <Header >
                     <Left>
-                        <Button transparent>
+                        <Button 
+                        transparent
+                        onPress={()=>this.props.navigation.goBack()}
+                        >
                             <Icon name='arrow-back' />
                         </Button>
                     </Left>
@@ -33,9 +37,9 @@ export default class CollegeEntranceExam extends React.Component {
                 </Header>
                 <Content style={{flex:0.5}}>
                     <List>
+                     
                         <ListItem
-                        selected={selectedItem==="1"} 
-                        onPress={this._handleBasicInfo}>
+                            onPress={this._handleBasicInfo}>
                             <Left>
                                 <Text >高考基本信息</Text>
                             </Left>
@@ -43,8 +47,8 @@ export default class CollegeEntranceExam extends React.Component {
                                 <Icon name="arrow-forward" />
                             </Right>
                         </ListItem>
+                    
                         <ListItem
-                        selected={selectedItem==="2"} 
                         >
                             <Left>
                                 <Text >选择学校和专业</Text>
@@ -54,7 +58,6 @@ export default class CollegeEntranceExam extends React.Component {
                             </Right>
                         </ListItem>
                         <ListItem 
-                        selected={selectedItem==="3"} 
                         >
                             <Left>
                                 <Text>报名结果</Text>

@@ -12,6 +12,7 @@ const EXAMBASICINFO_FRAGMENT = gql`
     culscore
     proscore
     candidatenum
+    times
     student{
       id
       name

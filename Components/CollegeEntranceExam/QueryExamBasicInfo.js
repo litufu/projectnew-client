@@ -27,7 +27,9 @@ export default class QueryExamBasicInfo extends React.Component{
                                 score={data.getExamBasicInfo.culscore.toString()}
                                 specialScore={data.getExamBasicInfo.proscore.toString()}
                                 examineeCardNumber={data.getExamBasicInfo.candidatenum}
+                                times={data.getExamBasicInfo.times}
                                 updateInfo={true}
+                                data={this.props.navigation.getParam('data', '')}
                             />
                         );
                     }

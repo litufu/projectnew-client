@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 
 import SCHOOLEDU_FRAGMENT from './schooledu.fragment'
 import WORK_FRAGMENT from './work.fragment'
+import FAMILY_FRAGMENT from './family.fragment'
 
 const USER_FRAGMENT = gql`
   fragment UserFragment on User {
@@ -35,6 +36,9 @@ const USER_FRAGMENT = gql`
         name
       }
     }
+    families{
+      ...FamilyFragment
+    }
     studies{
       ...SchoolEduFragment
     }
@@ -42,6 +46,7 @@ const USER_FRAGMENT = gql`
       ...WorkFragment
     }
  }
+ ${FAMILY_FRAGMENT}
  ${SCHOOLEDU_FRAGMENT}
  ${WORK_FRAGMENT}
 `
