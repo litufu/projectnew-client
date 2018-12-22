@@ -9,5 +9,15 @@ export const defaults = {
         id:"",
         name:"",
     },
+    searchNewMajor:{
+        __typename:"NewMajor",
+        id:"",
+        name:"",
+    },
+    searchNewUniversity:{
+        __typename:"NewSchool",
+        id:"",
+        name:"",
+    },
     newGradeAndClasses:[]
   };

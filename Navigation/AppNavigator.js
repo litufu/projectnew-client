@@ -93,7 +93,11 @@ import Profile from '../screens/Profile'
 // 引入home
 import CollegeEntranceExam from '../Components/CollegeEntranceExam'
 import QueryExamBasicInfo from '../Components/CollegeEntranceExam/QueryExamBasicInfo'
-
+import UniversityAndMajor from '../Components/CollegeEntranceExam/UniversityAndMajor'
+import SearchMajor from '../Components/CollegeEntranceExam/SearchMajor'
+import SelectUniversity from '../Components/CollegeEntranceExam/SelectUniversity'
+import QueryResult from '../Components/CollegeEntranceExam/QueryResult'
+import Applicants from '../Components/CollegeEntranceExam/Applicants'
 // 引入profile
 import ChangePassword from '../Components/ChangePassword'
 import BasicInfo from '../Components/BasicInfo'
@@ -122,7 +126,22 @@ const HomeNavigation = createStackNavigator(
         },
         QueryExamBasicInfo:{
             screen:QueryExamBasicInfo
-        }
+        },
+        UniversityAndMajor:{
+            screen:UniversityAndMajor
+        },
+        SearchMajor:{
+            screen:SearchMajor
+        },
+        SelectUniversity:{
+            screen:SelectUniversity
+        },
+        QueryResult:{
+            screen:QueryResult
+        },
+        Applicants:{
+            screen:Applicants
+        },
        
     },
     {

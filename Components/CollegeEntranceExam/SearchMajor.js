@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import {View,TouchableHighlight,Alert} from 'react-native'
+import {View,TouchableHighlight,Alert,StyleSheet} from 'react-native'
 import {Query,Mutation,ApolloConsumer} from 'react-apollo'
 import { Container, Header, Item, Input, Icon, Button, Text, Content,List, ListItem,Left,Body,Right,Title,Spinner,Radio } from 'native-base';
 
 import {trim,errorMessage} from '../../utils/tools'
 import GET_MAJORS from '../../graphql/get_majors.query'
-import ADD_NEWMAJOR from '../../graphql/add_newMajor.mutation'
+import SELECT_NEWMAJOR from '../../graphql/add_selectNewMajor.mutation'
 
-export default  class SelectSchool extends Component {
+export default  class SearchMajor extends Component {
   
   state = {
     selectedId:'',
@@ -82,14 +82,14 @@ export default  class SelectSchool extends Component {
   }
     
 
-  submitMajor=(addNewMajor)=>{
+  submitMajor=(selectNewMajor)=>{
     const {selectedId,majorName} = this.state
     if(!selectedId){
       Alert.alert('尚未选择专业')
       return
     }
     console.log(selectedId,majorName)
-    addNewMajor({variables:{majorId:selectedId,majorName:majorName}})
+    selectNewMajor({variables:{majorId:selectedId,majorName:majorName}})
     this.props.navigation.goBack()
   }
 
@@ -105,15 +105,15 @@ export default  class SelectSchool extends Component {
             </Button>
           </Left>
           <Body style={{alignItems:'center'}}>
-            <Title>学习经历</Title>
+            <Title>选择专业</Title>
           </Body>
           <Right>
             <Mutation 
-            mutation={ADD_NEWMAJOR}
+            mutation={SELECT_NEWMAJOR}
             >
-            {addNewMajor => (
+            {selectNewMajor => (
                 <Button
-                onPress={()=>this.submitMajor(addNewMajor)}
+                onPress={()=>this.submitMajor(selectNewMajor)}
               >
                 <Text>确认</Text>
                 </Button>
@@ -134,6 +134,7 @@ export default  class SelectSchool extends Component {
                 />
               <Button 
                 transparent
+                disabled={loading?true:false}
                 onPress={
                   async () => {
                     const pass = this.validate(majorName)
@@ -154,17 +155,26 @@ export default  class SelectSchool extends Component {
           )}
         </ApolloConsumer >
           <ListItem>
-          <Text>
-            已存在的专业:
-          </Text>
+          <Left style={styles.left}>
+                <Text>类别</Text>
+              </Left>
+              <Body style={styles.body}>
+                <Text>专业名称</Text>
+              </Body>
+              <Right style={styles.right}>
+                <Text>选择</Text>
+              </Right>
           </ListItem>
           {loading && <Spinner />}
           { majors.map(major=>(
             <ListItem key={major.id}>
-              <Left>
-                <Text>{major.name}</Text>
+              <Left style={styles.left}>
+                <Text>{major.category}</Text>
               </Left>
-              <Right>
+              <Body style={styles.body}>
+                <Text>{major.name}</Text>
+              </Body>
+              <Right style={styles.right}>
                 <Radio 
                   onPress={()=>this._handlePress(major.id,major.name)}
                   selected={selectedId===major.id} 
@@ -179,4 +189,16 @@ export default  class SelectSchool extends Component {
     );
   }
 }
+
+const styles=StyleSheet.create({
+  left:{
+    flex:0.3
+  },
+  body:{
+    flex:0.5
+  },
+  right:{
+    flex:0.2
+  }
+})
 

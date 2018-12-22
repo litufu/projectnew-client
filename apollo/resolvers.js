@@ -26,6 +26,28 @@ export const resolvers = {
         cache.writeData({ data });
         return null;
       },
+      selectNewUniversity:(_, { universityId,universityName }, { cache }) => {
+        const data = {
+          searchNewUniversity: {
+              __typename: 'NewSchool',
+              id: universityId,
+              name:universityName,
+            },
+          };
+        cache.writeData({ data });
+        return null;
+      },
+      selectNewMajor:(_, { majorId,majorName }, { cache }) => {
+        const data = {
+          searchNewMajor: {
+              __typename: 'NewMajor',
+              id: majorId,
+              name:majorName,
+            },
+          };
+        cache.writeData({ data });
+        return null;
+      },
       addNewGradeAndClass:(_, { grade,className }, { cache }) => {
         console.log('grade',grade)
         console.log('clasname',className)

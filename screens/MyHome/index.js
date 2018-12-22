@@ -10,7 +10,9 @@ import MyIcon from '../../Components/MyIcon'
 
 export default class Home extends React.Component {
 
-    _handleCollegeEntranceExam=(data)=>{
+    _handleCollegeEntranceExam=(data,loading,error)=>{
+        if(loading) return
+        if(error) return 
         if(!(data.me.studies.length!==0 && data.me.studies.filter(study=>study.school.kind==="HighSchool").length!==0)){
             Alert.alert('请在“我-学习经历”中添加学习经历至高中')
             return 
@@ -48,7 +50,7 @@ export default class Home extends React.Component {
                                             iconName={loading?'spinner':'road'}
                                             iconType='font-awesome'
                                             color="#517fa4"
-                                            handlePress={()=>this._handleCollegeEntranceExam(data)}
+                                            handlePress={()=>this._handleCollegeEntranceExam(data,loading,error)}
                                             name="高考报名"
                                         />
                                         {error && Alert.alert(errorMessage(error))}

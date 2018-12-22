@@ -2,23 +2,34 @@ import React from 'react'
 import { StyleSheet, View ,Alert} from 'react-native'
 import { Container, Header, Title, Content, Footer, Spinner, Button, Left, Right, Body, Icon, Text, List, ListItem,Item } from 'native-base';
 import {Query} from 'react-apollo'
-import GET_ME from '../../graphql/get_me.query'
 import { errorMessage } from '../../utils/tools';
+import GET_EXAMBASICINFO from '../../graphql/get_exam_basicInfo.query'
 
 
 export default class CollegeEntranceExam extends React.Component {
-
-    state={
-        selectedItem:""
-    }
 
     _handleBasicInfo=()=>{
         const data=this.props.navigation.getParam('data', '')
         this.props.navigation.navigate('QueryExamBasicInfo',{data})
     }
 
+    _handleUniversityAndMajor=(data,loading,error)=>{
+        if(loading) return
+        if(error) return 
+        if(data && data.getExamBasicInfo){
+            this.props.navigation.navigate('UniversityAndMajor',{data})
+        }else{
+            Alert.alert('需要先填写高考基本信息')
+            return
+        }
+    }
+
+    _handleApplicationResult=()=>{
+        const data=this.props.navigation.getParam('data', '')
+        this.props.navigation.navigate('QueryResult')
+    }
+
     render() {
-        const {selectedItem} = this.state
         return (
             <Container style={{flex:1}}>
                 <Header >
@@ -44,26 +55,37 @@ export default class CollegeEntranceExam extends React.Component {
                                 <Text >高考基本信息</Text>
                             </Left>
                             <Right>
-                                <Icon name="arrow-forward" />
+                                <Icon type="FontAwesome" name="arrow-right" />
                             </Right>
                         </ListItem>
-                    
-                        <ListItem
-                        >
-                            <Left>
-                                <Text >选择学校和专业</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
-                        </ListItem>
+                        <Query query={GET_EXAMBASICINFO}>
+                            {
+                                ({loading,error,data})=>{
+                                    return (
+                                        <ListItem
+                                        onPress={()=>this._handleUniversityAndMajor(data,loading,error)}
+                                            >
+                                            <Left>
+                                                <Text >选择学校和专业</Text>
+                                            </Left>
+                                            <Right>
+                                                <Icon type="FontAwesome" name={loading ? "spinner":"arrow-right"} />
+                                            </Right>
+                                            {error && Alert.alert(errorMessage(error))}
+                                        </ListItem>
+                                    )
+                                }
+                            }
+                        </Query>
+                        
                         <ListItem 
+                            onPress={this._handleApplicationResult}
                         >
                             <Left>
                                 <Text>报名结果</Text>
                             </Left>
                             <Right>
-                                <Icon name="arrow-forward" />
+                                <Icon type="FontAwesome" name="arrow-right" />
                             </Right>
                         </ListItem>
                     </List>

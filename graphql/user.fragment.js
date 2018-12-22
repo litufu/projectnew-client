@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 
 import SCHOOLEDU_FRAGMENT from './schooledu.fragment'
 import WORK_FRAGMENT from './work.fragment'
-import FAMILY_FRAGMENT from './family.fragment'
-
+import EXAMBASICINFO_FRAGMENT from './exam_basicInfo.fragment'
+import REGSTATUS_FRAGMENT from './regStatus.fragment'
 const USER_FRAGMENT = gql`
   fragment UserFragment on User {
     id
@@ -36,18 +36,23 @@ const USER_FRAGMENT = gql`
         name
       }
     }
-    families{
-      ...FamilyFragment
-    }
+  
     studies{
       ...SchoolEduFragment
     }
     works{
       ...WorkFragment
     }
+    exam{
+      ...ExamBasicInfoFragment
+    }
+    regStatus{
+      ...RegStatusFragment
+    }
  }
- ${FAMILY_FRAGMENT}
  ${SCHOOLEDU_FRAGMENT}
  ${WORK_FRAGMENT}
+ ${EXAMBASICINFO_FRAGMENT}
+ ${REGSTATUS_FRAGMENT}
 `
 export default USER_FRAGMENT;

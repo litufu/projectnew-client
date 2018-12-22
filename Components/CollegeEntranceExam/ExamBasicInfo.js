@@ -41,7 +41,7 @@ class ExamBasicInfo extends React.Component {
         hasSpecial: this.props.hasSpecial || false,
         score: this.props.score || '0',
         specialScore: this.props.specialScore || '0',
-        examineeCardNumber: this.props.specialScore || '',
+        examineeCardNumber: this.props.examineeCardNumber || '',
         updateInfo: this.props.updateInfo || false,
         editable: this.props.updateInfo ? false : true,
         times:this.props.times || 0
@@ -75,7 +75,8 @@ class ExamBasicInfo extends React.Component {
            return false     
         }
         // 检查5-8位
-        if(this.props.data) {
+        const data=this.props.data
+        if(data) {
             const highschoolAreaCode = data.me.studies.filter(study=>study.school.kind==="HighSchool").sort((a,b)=>new Date(b) - new Date(a))[0].school.location.area.code
             if(actualSecondTwo===highschoolAreaCode.slice(0,2)){
                 if(examineeCardNumber.slice(4,8) !== highschoolAreaCode.slice(2,6)){
