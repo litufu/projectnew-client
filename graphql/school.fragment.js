@@ -8,6 +8,21 @@ const SCHOOL_FRAGMENT = gql`
     location{
       id
       name
+      province{
+        id
+        code
+        name
+      }
+      city{
+        id
+        code
+        name
+      }
+      area{
+        id
+        code
+        name
+      }
     }
   }
 `

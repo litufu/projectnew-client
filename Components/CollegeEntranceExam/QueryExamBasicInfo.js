@@ -36,6 +36,7 @@ export default class QueryExamBasicInfo extends React.Component{
                     return (
                         <ExamBasicInfo 
                         updateInfo={false}
+                        data={this.props.navigation.getParam('data', '')}
                         />
                     ) 
                     

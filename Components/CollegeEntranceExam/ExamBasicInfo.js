@@ -65,20 +65,29 @@ class ExamBasicInfo extends React.Component {
         const year = new Date().getFullYear().toString()
         const firstTwo = year.slice(2,4)
         const actualFirstTwo = examineeCardNumber.slice(0,2)
+        console.log(firstTwo)
+        console.log(actualFirstTwo)
         if(firstTwo!==actualFirstTwo){
             return false
         }
         // 检查3-4位
+
         const secondTwo = this.state.province.toString()
         const actualSecondTwo = examineeCardNumber.slice(2,4)
+        console.log(secondTwo)
+        console.log(actualSecondTwo)
         if(secondTwo!==actualSecondTwo){
            return false     
         }
         // 检查5-8位
         const data=this.props.data
         if(data) {
-            const highschoolAreaCode = data.me.studies.filter(study=>study.school.kind==="HighSchool").sort((a,b)=>new Date(b) - new Date(a))[0].school.location.area.code
+            console.log(data.me.studies.filter(study=>study.school.kind==="HighSchool").sort((a,b)=>new Date(b.startTime) - new Date(a.startTime))[0].school.location)
+            const highschoolAreaCode = data.me.studies.filter(study=>study.school.kind==="HighSchool").sort((a,b)=>new Date(b.startTime) - new Date(a.startTime))[0].school.location.area.code
+            console.log(highschoolAreaCode)
             if(actualSecondTwo===highschoolAreaCode.slice(0,2)){
+                console.log(examineeCardNumber.slice(4,8))
+                console.log( highschoolAreaCode.slice(2,6))
                 if(examineeCardNumber.slice(4,8) !== highschoolAreaCode.slice(2,6)){
                     return false
                 }
@@ -110,12 +119,12 @@ class ExamBasicInfo extends React.Component {
             return
         }
 
-        if(this._checkScore(score)){
+        if(!this._checkScore(score)){
             Alert.alert('请检查你输入的文化课分数是否正确')
             return
         }
 
-        if(this._checkScore(specialScore)){
+        if(!this._checkScore(specialScore)){
             Alert.alert('请检查你输入的专业课分数是否正确')
             return
         }
@@ -150,12 +159,12 @@ class ExamBasicInfo extends React.Component {
             return
         }
 
-        if(this._checkScore(score)){
+        if(!this._checkScore(score)){
             Alert.alert('请检查你输入的文化课分数是否正确')
             return
         }
 
-        if(this._checkScore(specialScore)){
+        if(!this._checkScore(specialScore)){
             Alert.alert('请检查你输入的专业课分数是否正确')
             return
         }
@@ -344,21 +353,22 @@ class ExamBasicInfo extends React.Component {
                             updateInfo
                                 ? (
                                     times<3 && (<View style={styles.btnContainer}>
-                                        <Left style={{flex:1,marginHorizontal:30}}>
-                                        <Button
+
+                                       {!editable && <Button
                                             block
+                                            style={{flex:1}}
                                             onPress={()=>this.setState({editable:true})}
                                         >
                                         <Text style={styles.bigText}>修改</Text>
-                                        </Button>
-                                        </Left>
-                                        <Right style={{flex:1,marginHorizontal:30}}>
-                                        <Mutation 
+                                        </Button>}
+
+                                        {editable && <Mutation 
                                         mutation={UPDATE_EXAMBASICINFO}
                                         onCompleted={()=>Alert.alert('修改完成')}
                                         >
                                             {(updateExamBasicInfo, { data, loading, error }) => (
                                                 <Button
+                                                style={{flex:1}}
                                                     onPress={() => { this._update(updateExamBasicInfo) }}
                                                     block
                                                 >
@@ -367,8 +377,7 @@ class ExamBasicInfo extends React.Component {
                                                     {error && Alert.alert(errorMessage(error))}
                                                 </Button>
                                             )}
-                                        </Mutation>
-                                        </Right>
+                                        </Mutation>}
                                     </View>)
                                 )
                                 : (

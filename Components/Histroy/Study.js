@@ -26,6 +26,7 @@ import { grades, errorMessage, educations } from '../../utils/tools'
 import ADD_LOCATION from '../../graphql/add_location.mutation'
 import GET_NEWSCHOOL from '../../graphql/get_newSchool.query'
 import GET_NEWGRADEANDCLASSES from '../../graphql/get_newGradeAndClasses.query'
+import GET_NEWMAJOR from '../../graphql/get_newMajor.query'
 import ADD_STUDY from '../../graphql/add_study.mutation'
 import GET_ME from '../../graphql/get_me.query'
 
@@ -299,9 +300,7 @@ class Study extends Component {
     _submit = (startYear, endYear, newSchool, newMajor, sortedNewGradeAndClasses, addStudy, client) => {
 
         const { me } = client.readQuery({ query: GET_ME })
-        console.log('me', me)
         const birthyear = new Date(me.birthday).getFullYear()
-        console.log(birthyear)
         if (birthyear > startYear) {
             Alert.alert('出生后才能上学，请检查出生日期是否正确')
             return
@@ -314,8 +313,6 @@ class Study extends Component {
             Alert.alert('入学年份必须小于毕业年份')
             return
         }
-        console.log(startYear + 10)
-        console.log(endYear)
         if ((parseInt(startYear) + 10) < parseInt(endYear)) {
             Alert.alert('你真行，这么久还没毕业')
             return
@@ -379,7 +376,6 @@ class Study extends Component {
                 update: (cache, { data }) => {
                     const data1 = cache.readQuery({ query: GET_ME });
                     data1.me.studies.push(data.addStudy);
-                    console.log(data1)
                     cache.writeQuery({
                         query: GET_ME,
                         data: data1

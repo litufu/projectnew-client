@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import {StyleSheet} from 'react-native'
-import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text,Button } from 'native-base';
+import { Container, Header,Title ,Content,Icon, List, ListItem, Left, Body, Right, Thumbnail, Text,Button } from 'native-base';
 import {withNavigation} from 'react-navigation'
 class Applicants extends Component {
   render() {
     const applicants = this.props.navigation.getParam('applicants',[])
     const sortedApplicants = applicants.sort((a,b)=>parseFloat(b.exam.culscore)-parseFloat(a.exam.culscore))
-    const hasPro = applicants.filter(applicant=>applicant.proscore!=='0').length!==0
-    
+    const hasPro = (applicants.filter(applicant=>applicant.exam.proscore!==0)).length>0
     return (
       <Container>
+        <Header>
         <Left>
             <Button 
             transparent
@@ -22,6 +22,7 @@ class Applicants extends Component {
             <Title>报考者详情</Title>
           </Body>
           <Right />
+          </Header>
         <Content>
           <List>
             <ListItem >
@@ -48,14 +49,14 @@ class Applicants extends Component {
               </Right>
             </ListItem>
             {
-              sortedApplicants.map(applicant=>(
+              sortedApplicants.map((applicant,index)=>(
                 <ListItem 
                 key={applicant.id}
                 // 此处应该查看个人profile
                 onPress={()=>console.log(applicant.id)}
                 >
                   <Left  style={styles.left}>
-                    <Text>{applicant.name}</Text>
+                    <Text>{`${index+1}、${applicant.name}`}</Text>
                   </Left>
                   
                     {
@@ -87,7 +88,9 @@ class Applicants extends Component {
 
 const styles = StyleSheet.create({
   left:{
-    flex:0.3
+    flex:0.3,
+    justifyContent:'center',
+    alignItems:'center'
   },
   body:{
     flex:0.6,
@@ -96,7 +99,9 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   right:{
-    flex:0.3
+    flex:0.3,
+    justifyContent:'center',
+    alignItems:'center'
   }
 })
 

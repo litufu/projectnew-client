@@ -154,12 +154,13 @@ export default class UniversityAndMajor extends React.Component {
                 });
             }
         })
-        this.props.navigation.navigate('Result')
+        this.props.navigation.navigate('QueryResult')
     }
 
     render() {
         const { checkUndergraduate,personNum,proLowwestScore,lowwestScore,universityName,majorName,displayApplicationCard } = this.state
         const education = checkUndergraduate ? "本科" :"专科"
+        const educationEn = checkUndergraduate ? "Undergraduate" : "JuniorCollege"
         const data=this.props.navigation.getParam('data', '')
         const subjectName = subjects[data.getExamBasicInfo.subject]
         const provinceName = data.getExamBasicInfo.province.name
@@ -245,7 +246,7 @@ export default class UniversityAndMajor extends React.Component {
                                         personNum={personNum}
                                         lowwestScore={lowwestScore}
                                         proLowwestScore={proLowwestScore}
-                                        handlePress={()=>this._hanleReg(addRegStatus,education,client)}
+                                        handlePress={()=>this._hanleReg(addRegStatus,educationEn,client)}
                                     />
                                 )
                             }
