@@ -6,6 +6,9 @@ const FAMILY_FRAGMENT = gql`
     to{
       id
       name
+      user{
+        id
+      }
     }
     spouse{
       id

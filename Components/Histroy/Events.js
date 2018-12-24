@@ -1,5 +1,6 @@
 import React from 'react'
 import {Query} from 'react-apollo'
+import {View}  from 'react-native'
 import {Spinner,Text } from 'native-base'
 import {gql} from 'graphql-tag'
 

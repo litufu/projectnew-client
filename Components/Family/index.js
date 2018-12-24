@@ -19,7 +19,7 @@ import { StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { Query, Mutation } from 'react-apollo'
 
 import Nav from '../Nav'
-import getRelationshipName from '../../utils/relationship'
+import {getRelationshipName} from '../../utils/relationship'
 import GET_FAMILIES from '../../graphql/get_families.query'
 import DELETE_FAMILY from '../../graphql/delete_family.mutation'
 import FAMILY_CONNECTED_SUBSCRIPTION from '../../graphql/family_connected.subscription'
@@ -101,15 +101,21 @@ export default class Family extends Component {
   }
 
   _subscribeChangedFamily = async (subscribeToMore, client) => {
-    subscribeToMore({
+    this.unsubscribeHandle = subscribeToMore({
       document: FAMILY_CHANGED_SUBSCRIPTION,
-      updateQuery: async () => {
+      updateQuery: async (prev,{ subscriptionData }) => {
         const { data } = await client.query({
           query: GET_FAMILIES,
+          fetchPolicy:'network-only'
         });
-        return data.family
+        return Object.assign({},prev,data)
       }
     })
+  }
+
+  componentWillUnmount () {
+    // Unsibscribe subscription
+    this.unsubscribeHandle();
   }
 
   render() {
@@ -124,7 +130,7 @@ export default class Family extends Component {
           // }
           this._subscribeChangedFamily(subscribeToMore,client)
           let spouseId = ''
-          if(data.family.length>0){
+          if(data.family && data.family.length>0){
             const wifeOrHusband = data.family.filter(f=>{return f.relationship==="wife"||f.relationship==="husband" })
             if(wifeOrHusband.length>0){
               spouseId = wifeOrHusband[0].id
@@ -221,6 +227,7 @@ export default class Family extends Component {
                                               __typename: "Person",
                                               id: who.to.id,
                                               name: who.to.name,
+                                              user:null
                                             },
                                             spouse:{
                                               __typename:Family,

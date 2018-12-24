@@ -13,11 +13,11 @@ export default class Home extends React.Component {
     _handleCollegeEntranceExam=(data,loading,error)=>{
         if(loading) return
         if(error) return 
-        if(!(data.me.studies.length!==0 && data.me.studies.filter(study=>study.school.kind==="HighSchool").length!==0)){
+        if(!(data.me.studies && data.me.studies.length!==0 && data.me.studies.filter(study=>study.school.kind==="HighSchool").length!==0)){
             Alert.alert('请在“我-学习经历”中添加学习经历至高中')
             return 
         }
-        if(!(data.me.families.length!==0 && data.me.families.filter(family=>family.status==='3').length!==0)){
+        if(!(data.me.families && data.me.families.length!==0 && data.me.families.filter(family=>family.status==='3').length!==0)){
             Alert.alert('请在“我-家庭成员”的界面添加家庭成员，并至少与一人连接')
             return 
         }
@@ -53,6 +53,13 @@ export default class Home extends React.Component {
                                             handlePress={()=>this._handleCollegeEntranceExam(data,loading,error)}
                                             name="高考报名"
                                         />
+                                        <MyIcon
+                                            iconName='road'
+                                            iconType='font-awesome'
+                                            color="blue"
+                                            handlePress={()=>this.props.navigation.navigate('QueryFamilies',{data})}
+                                            name="高考报名"
+                                        />
                                         {error && Alert.alert(errorMessage(error))}
                                         </View>
                                     )
@@ -60,13 +67,7 @@ export default class Home extends React.Component {
                             }
                         </Query>
                             
-                            <MyIcon
-                                iconName='road'
-                                iconType='font-awesome'
-                                color="blue"
-                                handlePress={() => console.log('123')}
-                                name="高考报名"
-                            />
+                            
                             <MyIcon
                                 iconName='road'
                                 iconType='font-awesome'

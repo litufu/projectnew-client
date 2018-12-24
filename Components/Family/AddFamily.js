@@ -25,7 +25,7 @@ export default class AddFamily extends Component {
   state = {
     name: this.props.navigation.getParam('name', ''),
     relationship: this.props.navigation.getParam('relationship', 'father'),
-    spouseId:'',
+    spouseId:this.props.navigation.getParam('spouseId', ''),
     disabled:false,
   }
 
@@ -90,6 +90,7 @@ export default class AddFamily extends Component {
             __typename: "Person",
             id: Math.floor(Math.random() * 200).toString(),
             name: name,
+            user:null,
           },
           spouse:{
             __typename:"Family",
@@ -125,6 +126,7 @@ export default class AddFamily extends Component {
             __typename: "Person",
             id: toId,
             name: name,
+            user:null
           },
           spouse:{
             __typename:"Family",
