@@ -19,6 +19,7 @@ import { Container,
 
  import {grades} from '../../utils/tools'
  import GET_NEWGRADEANDCLASSES from '../../graphql/get_newGradeAndClasses.query'
+ import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 export default class SelectClass extends Component {
 
@@ -48,14 +49,14 @@ export default class SelectClass extends Component {
                 {({ data,client}) => {
         return(
             <Container>
-                <Header >
+                <Header style={{backgroundColor:headerBackgroundColor,marginTop:statusBarHeight}} >
                     <Left style={{ justifyContent: 'flex-end' }}>
                         <Button transparent onPress={() => this.props.navigation.goBack()}>
-                            <Icon name="arrow-back" />
+                            <Icon name="arrow-back" style={{color:headerButtonColor}} />
                         </Button>
                     </Left>
                     <Body style={{ alignItems: 'center' }}>
-                        <Title>学习经历</Title>
+                        <Title style={{color:headerFontColor}}>学习经历</Title>
                     </Body>
                     <Right>
                         <Button

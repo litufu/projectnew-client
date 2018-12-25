@@ -72,64 +72,8 @@ class SettingsScreen extends Component {
         </View>
         <View style={styles.lineContainer} />
         <View>
-
-          <ListItem
-            // chevron
-            title="工作经历"
-            onPress={() => this.props.navigation.navigate('Work')}
-            containerStyle={styles.listItemContainer}
-            badge={{
-              value: 5,
-              textStyle: { color: 'white' },
-              containerStyle: { backgroundColor: 'gray', marginTop: 0 },
-            }}
-            leftIcon={
-              <BaseIcon
-                containerStyle={{ backgroundColor: '#FAD291' }}
-                icon={{
-                  type: 'font-awesome',
-                  name: 'comment',
-                }}
-              />
-            }
-            rightIcon={<Chevron />}
-          />
-
-          <ListItem
-            // chevron
-            title="学习经历"
-            onPress={() => this.props.navigation.navigate('Histroy')}
-            containerStyle={styles.listItemContainer}
-            leftIcon={
-              <BaseIcon
-                containerStyle={{ backgroundColor: '#57DCE7' }}
-                icon={{
-                  type: 'font-awesome',
-                  name: 'book',
-                }}
-              />
-            }
-            rightIcon={<Chevron />}
-          />
-
-          <ListItem
-            // chevron
-            title="家庭成员"
-            onPress={() => this.props.navigation.navigate('Family')}
-            containerStyle={styles.listItemContainer}
-            leftIcon={
-              <BaseIcon
-                containerStyle={{ backgroundColor: '#FEA8A1' }}
-                icon={{
-                  type: 'font-awesome',
-                  name: 'link',
-                }}
-              />
-            }
-            rightIcon={<Chevron />}
-          />
-
-          <ListItem
+          
+        <ListItem
             // chevron
             title="我的信息"
             onPress={() => this.props.navigation.navigate('BasicInfo')}
@@ -145,6 +89,58 @@ class SettingsScreen extends Component {
             }
             rightIcon={<Chevron />}
           />
+
+          <ListItem
+            // chevron
+            title="家庭成员"
+            onPress={() => this.props.navigation.navigate('FamilyRelationship')}
+            containerStyle={styles.listItemContainer}
+            leftIcon={
+              <BaseIcon
+                containerStyle={{ backgroundColor: '#FEA8A1' }}
+                icon={{
+                  type: 'font-awesome',
+                  name: 'link',
+                }}
+              />
+            }
+            rightIcon={<Chevron />}
+          />
+
+            <ListItem
+            // chevron
+            title="学习经历"
+            onPress={() => this.props.navigation.navigate('StudyHistroy')}
+            containerStyle={styles.listItemContainer}
+            leftIcon={
+              <BaseIcon
+                containerStyle={{ backgroundColor: '#57DCE7' }}
+                icon={{
+                  type: 'font-awesome',
+                  name: 'book',
+                }}
+              />
+            }
+            rightIcon={<Chevron />}
+          />
+
+          <ListItem
+            // chevron
+            title="工作经历"
+            onPress={() => this.props.navigation.navigate('Work')}
+            containerStyle={styles.listItemContainer}
+            leftIcon={
+              <BaseIcon
+                containerStyle={{ backgroundColor: '#FAD291' }}
+                icon={{
+                  type: 'material-community',
+                  name: 'worker',
+                }}
+              />
+            }
+            rightIcon={<Chevron />}
+          />
+          
         </View>
         <View style={styles.lineContainer} />
         <View>

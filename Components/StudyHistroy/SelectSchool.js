@@ -7,6 +7,7 @@ import {trim,errorMessage} from '../../utils/tools'
 import GET_SCHOOLS from '../../graphql/get_schools.query'
 import ADD_SCHOOL from '../../graphql/add_school.mutation'
 import ADD_NEWSCHOOL from '../../graphql/add_newSchool.mutation'
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 export default  class SelectSchool extends Component {
   
@@ -54,7 +55,10 @@ export default  class SelectSchool extends Component {
             location:{
               __typename:'Location',
               id:'456',
-              name:locationName
+              name:locationName,
+              province:null,
+              city:null,
+              area:null
             }
           }
         }
@@ -84,14 +88,14 @@ export default  class SelectSchool extends Component {
     const kind = navigation.getParam('kind', '');
     return (
       <Container>
-         <Header >
+         <Header style={{backgroundColor:headerBackgroundColor,marginTop:statusBarHeight}}>
           <Left style={{justifyContent:'flex-end'}}>
             <Button transparent onPress={()=>this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
+              <Icon name="arrow-back" style={{color:headerButtonColor}} />
             </Button>
           </Left>
           <Body style={{alignItems:'center'}}>
-            <Title>学习经历</Title>
+            <Title style={{color:headerFontColor}}>学习经历</Title>
           </Body>
           <Right>
             <Mutation 

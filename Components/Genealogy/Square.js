@@ -1,14 +1,15 @@
 import React from 'react'
-import {View ,Text,TouchableHighlight,StyleSheet} from 'react-native'
+import {View ,Text,TouchableHighlight,StyleSheet,Alert} from 'react-native'
 
 import {SQURE_HEIGHT,SQURE_WIDTH,BORDER_WIDTH} from './settings'
 
 export default class Square extends React.Component{
 
-    state={
-        relationship:'父亲',
-        name:'李土福的',
-        isUser:true
+    handlePress=()=>{
+        const {isUser,user} = this.props
+        if(isUser){
+            this.props.handlePress(user.id)
+        }
     }
 
     render(){
@@ -17,8 +18,12 @@ export default class Square extends React.Component{
         const isUser = this.props.isUser || false
         const color =  isUser ? "#3385ff" : 'gray'
         const newName = name.length===2?name.slice(0,1)+' '+name.slice(1,2) : name
+        const meBackgroudColor = relationship==='我'?'red':'white'
         return(
-            <View style={[styles.container,{borderColor:color,borderWidth:BORDER_WIDTH}]}>
+            <TouchableHighlight
+            onPress={this.handlePress}
+            >
+            <View style={[styles.container,{borderColor:color,borderWidth:BORDER_WIDTH,backgroundColor:meBackgroudColor}]}>
                 <View style={[styles.top,{borderBottomColor:color}]}>
                     <Text style={[styles.relationship,{color:color}]}>{relationship}</Text>
                 </View>
@@ -26,6 +31,7 @@ export default class Square extends React.Component{
                     <Text style={{fontSize:80/(newName.length+1),color:color}}>{newName}</Text>
                 </View>
             </View>
+            </TouchableHighlight>
         )
     }
 }

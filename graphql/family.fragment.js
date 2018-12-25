@@ -10,6 +10,9 @@ const FAMILY_FRAGMENT = gql`
         id
       }
     }
+    from{
+      name
+    }
     spouse{
       id
     }

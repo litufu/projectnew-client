@@ -98,23 +98,22 @@ import SearchMajor from '../Components/CollegeEntranceExam/SearchMajor'
 import SelectUniversity from '../Components/CollegeEntranceExam/SelectUniversity'
 import QueryResult from '../Components/CollegeEntranceExam/QueryResult'
 import Applicants from '../Components/CollegeEntranceExam/Applicants'
-import QueryFamilies from '../Components/Genealogy/QueryFamilies'
 // 引入profile
 import ChangePassword from '../Components/ChangePassword'
 import BasicInfo from '../Components/BasicInfo'
 import Region from '../Components/Region'
 import MyDatetime from '../Components/MyDatetime'
-import Family from '../Components/Family'
-import Histroy from '../Components/Histroy'
+import FamilyRelationship from '../Components/FamilyRelationship'
+import StudyHistroy from '../Components/StudyHistroy'
 import Work from '../Components/Work'
 import AddFamily from '../Components/Family/AddFamily'
 import SearchFamily from '../Components/SearchFamily'
-import SelectSchool from '../Components/Histroy/SelectSchool'
-import SelectMajor from '../Components/Histroy/SelectMajor'
-import SelectClass from '../Components/Histroy/SelectClass'
-import CreateClass from '../Components/Histroy/CreateClass'
-import Events from '../Components/Histroy/Events'
-import Study from '../Components/Histroy/Study'
+import SelectSchool from '../Components/StudyHistroy/SelectSchool'
+import SelectMajor from '../Components/StudyHistroy/SelectMajor'
+import SelectClass from '../Components/StudyHistroy/SelectClass'
+import CreateClass from '../Components/StudyHistroy/CreateClass'
+import Events from '../Components/StudyHistroy/Events'
+import Study from '../Components/StudyHistroy/Study'
 import MyIcon from '../Components/MyIcon'
 
 const HomeNavigation = createStackNavigator(
@@ -143,9 +142,6 @@ const HomeNavigation = createStackNavigator(
         Applicants:{
             screen:Applicants
         },
-        QueryFamilies:{
-            screen:QueryFamilies
-        }
        
     },
     {
@@ -167,8 +163,8 @@ const ProfileNavigation = createStackNavigator(
         BasicInfo: {
             screen: BasicInfo,
         },
-        Histroy: {
-            screen: Histroy,
+        StudyHistroy: {
+            screen: StudyHistroy,
         },
         Work: {
             screen: Work,
@@ -191,8 +187,8 @@ const ProfileNavigation = createStackNavigator(
         SelectClass: {
             screen: SelectClass,
         },
-        Family: {
-            screen: Family,
+        FamilyRelationship: {
+            screen: FamilyRelationship,
         },
         AddFamily: {
             screen: AddFamily,

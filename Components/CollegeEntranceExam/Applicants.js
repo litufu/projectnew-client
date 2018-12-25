@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import {StyleSheet} from 'react-native'
 import { Container, Header,Title ,Content,Icon, List, ListItem, Left, Body, Right, Thumbnail, Text,Button } from 'native-base';
 import {withNavigation} from 'react-navigation'
+
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
+
 class Applicants extends Component {
   render() {
     const applicants = this.props.navigation.getParam('applicants',[])
@@ -9,17 +12,17 @@ class Applicants extends Component {
     const hasPro = (applicants.filter(applicant=>applicant.exam.proscore!==0)).length>0
     return (
       <Container>
-        <Header>
+        <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
         <Left>
             <Button 
             transparent
             onPress={()=>this.props.navigation.goBack()}
             >
-              <Icon name='arrow-back' />
+              <Icon name='arrow-back' style={{color:headerButtonColor}}/>
             </Button>
             </Left>
           <Body>
-            <Title>报考者详情</Title>
+            <Title style={{color:headerFontColor}}>报考者详情</Title>
           </Body>
           <Right />
           </Header>

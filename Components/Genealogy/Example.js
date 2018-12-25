@@ -3,8 +3,6 @@ import { View, StyleSheet, ScrollView, Dimensions, Text } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
 import Square from './Square'
-import HorizontalLine from './HorizontalLine'
-import VerticalLine from './VerticalLine'
 import FatherAndMotherLine from './FatherAndMotherLine'
 import FirstMiddleLevel from './FirstMiddleLevel'
 import SecondLevelTop from './SecondLevelTop'
@@ -32,19 +30,21 @@ class Example extends React.Component {
     }
 
     render() {
-        const { me } = this.props.navigation.getParam('data', '')
         // 家人数据整理
-        const familiesdata = this.props.data
+        const families = this.props.families
+        if(families.length===0){
+            return null
+        }
         // 父母数据
-        const father = familiesdata.family.filter(f => f.relationship === "father")
-        const mother = familiesdata.family.filter(f => f.relationship === "mother")
+        const father = families.filter(f => f.relationship === "father")
+        const mother = families.filter(f => f.relationship === "mother")
         // 兄弟姐妹数据
         const sistersAndBrothersRelaionship = ["oldbrother", "youngbrother", "oldsister", "youngsister", 'sister', 'brother']
-        const sistersAndBrothers = familiesdata.family.filter(f => !!~sistersAndBrothersRelaionship.indexOf(f.relationship))
+        const sistersAndBrothers = families.filter(f => !!~sistersAndBrothersRelaionship.indexOf(f.relationship))
         const brotherAndSisterNum = sistersAndBrothers.length
         // 配偶数据
         const spouseRelationship = ['wife', 'husband']
-        const spouses = familiesdata.family.filter(f => !!~spouseRelationship.indexOf(f.relationship)).sort(
+        const spouses = families.filter(f => !!~spouseRelationship.indexOf(f.relationship)).sort(
             (a,b)=>{
                 if(a.id>b.id){
                     return 1
@@ -55,7 +55,7 @@ class Example extends React.Component {
         const spouseNum = spouses.length
         // 子女数据
         const sonAndDaughterRelationship = ['son', 'daughter']
-        const sonAndDaughters = familiesdata.family.filter(f => !!~sonAndDaughterRelationship.indexOf(f.relationship))
+        const sonAndDaughters = families.filter(f => !!~sonAndDaughterRelationship.indexOf(f.relationship))
         let sortedSonAndDaughters = []
         const spouseIdAndSonDaughter = []
         for(let spouse of spouses){
@@ -67,6 +67,7 @@ class Example extends React.Component {
         const sonAndDaughterNum = sonAndDaughters.length
 
         let { height,width} = Dimensions.get('window');
+        height = height -200
         const width1 = (spouseNum+1+brotherAndSisterNum)>sonAndDaughterNum ? (spouseNum+1+brotherAndSisterNum)*120 :sonAndDaughterNum*120
         width1>width ? width=width1 : width
 
@@ -88,12 +89,15 @@ class Example extends React.Component {
             >
                 <View style={{width,height}}>
 
+
                     <View style={{ flexDirection: 'row', marginLeft: firstLevelMarginLeft, marginTop: firstLevelMarginTop }}   >
                         <View >
                             <Square
                                 relationship={getRelationshipNameTwo('father')}
                                 name={father.length > 0 ? father[0].to.name : "未填写"}
-                                isUser={father.length > 0 ? !!father[0].to.user : false}
+                                isUser={father.length > 0 ? (father[0].status==='3' && !!father[0].to.user)  : false}
+                                user = {father.length > 0 ? father[0].to.user : null}
+                                handlePress={this.props.handlePress}
                             />
                         </View>
 
@@ -107,7 +111,9 @@ class Example extends React.Component {
                             <Square
                                 relationship={getRelationshipNameTwo('mother')}
                                 name={mother.length > 0 ? mother[0].to.name : "未填写"}
-                                isUser={mother.length > 0 ? !!mother[0].to.user : false}
+                                isUser={mother.length > 0 ? (mother[0].status==='3' && !!mother[0].to.user) : false}
+                                user={mother.length > 0 ? mother[0].to.user : null}
+                                handlePress={this.props.handlePress}
                             />
                         </View>
                     </View>
@@ -124,14 +130,16 @@ class Example extends React.Component {
 
                     <View style={{ marginLeft: secondLevelMarginLeft, flexDirection: 'row'}}>
                         {
-                            sistersAndBrothers.map((sisterAndBrother, index) => (
+                            sistersAndBrothers.map((family, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
                                     <View key={index}>
                                         <SecondLevelTop />
                                         <Square
-                                            relationship={getRelationshipNameTwo(sisterAndBrother.relationship)}
-                                            name={sisterAndBrother.to.name}
-                                            isUser={!!sisterAndBrother.to.user}
+                                            relationship={getRelationshipNameTwo(family.relationship)}
+                                            name={family.to.name}
+                                            isUser={family.status==='3' && !!family.to.user}
+                                            user={family.to.user}
+                                            handlePress={this.props.handlePress}
                                         />
                                     </View>
                                     <View style={{ width: SQURE_H_DISTANCE }}></View>
@@ -142,9 +150,11 @@ class Example extends React.Component {
                         <View>
                             <SecondLevelTop />
                             <Square
-                                relationship="自己"
-                                name={me ? me.name: ""}
-                                isUser={true}
+                                relationship="我"
+                                name={families[0].from.name}
+                                isUser={false}
+                                user={null}
+                                handlePress={this.props.handlePress}
                             />
                         </View>
 
@@ -165,7 +175,9 @@ class Example extends React.Component {
                                         <Square
                                             name={family.to.name}
                                             relationship={getRelationshipNameTwo(family.relationship)}
-                                            isUser={!!family.to.user}
+                                            isUser={family.status==='3' && !!family.to.user}
+                                            user={family.to.user}
+                                            handlePress={this.props.handlePress}
                                         />
                                     </View>
                                 </View>
@@ -173,7 +185,6 @@ class Example extends React.Component {
                         }
 
                     </View>
-
 
                     <View >
                         <SecondMiddleLevel
@@ -196,7 +207,9 @@ class Example extends React.Component {
                                         <Square
                                         relationship={getRelationshipNameTwo(family.relationship)} 
                                         name={family.to.name}
-                                        isUser={!!family.to.user}
+                                        isUser={family.status==='3' && !!family.to.user}
+                                        user={family.to.user}
+                                        handlePress={this.props.handlePress}
                                         />
                                     </View>
                                     <View style={{ marginLeft: SQURE_H_DISTANCE }}></View>

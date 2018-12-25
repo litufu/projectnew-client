@@ -53,7 +53,7 @@ class UserList extends React.Component {
                                                 }
                                             });
                                         }}
-                                    onCompleted={(data)=>navigation.navigate('Family') }
+                                    onCompleted={(data)=>navigation.navigate('FamilyRelationship') }
                                     onError={(error)=>Alert.alert(error.message)}
                                     >
                                         {(connectFamily, { loading }) => {
@@ -81,7 +81,12 @@ class UserList extends React.Component {
                                                                             to: {
                                                                                 id: who.to.id,
                                                                                 __typename: "Person",
-                                                                                name: who.to.name
+                                                                                name: who.to.name,
+                                                                                user:null
+                                                                            },
+                                                                            from:{
+                                                                                __typename:'User',
+                                                                                name:''
                                                                             },
                                                                             status: "1",
                                                                             relationship: who.relationship,

@@ -17,10 +17,11 @@ import {
   Right,
   ListItem,
   List,
-  Picker
+  Picker,
+  Text,
+
 } from 'native-base'
 import {
-  Text,
   Alert,
   TouchableOpacity,
   View,

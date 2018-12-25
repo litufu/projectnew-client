@@ -92,6 +92,10 @@ export default class AddFamily extends Component {
             name: name,
             user:null,
           },
+          from:{
+            __typename:'User',
+            name:''
+          },
           spouse:{
             __typename:"Family",
             id:spouseId
@@ -99,7 +103,7 @@ export default class AddFamily extends Component {
         }
       }
     })
-    this.props.navigation.navigate("Family")
+    this.props.navigation.navigate("FamilyRelationship")
   }
 
   updateRelationship = (updateFamily, client) => {
@@ -128,6 +132,10 @@ export default class AddFamily extends Component {
             name: name,
             user:null
           },
+          from:{
+            __typename:'User',
+            name:''
+          },
           spouse:{
             __typename:"Family",
             id:spouseId
@@ -135,7 +143,7 @@ export default class AddFamily extends Component {
         }
       }
     })
-    this.props.navigation.navigate("Family")
+    this.props.navigation.navigate("FamilyRelationship")
   }
 
   renderAddFamily = () => (
@@ -250,7 +258,7 @@ export default class AddFamily extends Component {
                       placeholderStyle={{ color: "#bfc6ea" }}
                       placeholderIconColor="#007aff"
                       selectedValue={relationship}
-                      onValueChange={(relationship) => this.setState({ relationship })}
+                      onValueChange={(relationship) => this.setState({ relationship,disabled:false })}
                     >
                       <Picker.Item label="父亲" value="father" />
                       <Picker.Item label="母亲" value="mother" />

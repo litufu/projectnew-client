@@ -11,6 +11,7 @@ import ADD_REGSTATUS from '../../graphql/add_regStatus.mutation'
 import ApplicationCard from  './ApplicationCard'
 import {subjects} from './settings'
 import { errorMessage } from '../../utils/tools';
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 export default class UniversityAndMajor extends React.Component {
 
@@ -144,13 +145,13 @@ export default class UniversityAndMajor extends React.Component {
         const major = result1.data.searchNewMajor
         const result2 = await client.query({query:GET_SEARCHNEWUNIVERSITY})
         const university = result2.data.searchNewUniversity
-        addRegStatus({
+        await addRegStatus({
             variables:{education,majorId:major.id,universityId:university.id},
             update: (cache, { data }) => {
                 const data1 = cache.readQuery({ query: GET_ME });
                 cache.writeQuery({
                     query: GET_ME,
-                    data: {me:{...data1.me,...data}}
+                    data: {me:{...data1.me,regStatus:data.addRegStatus}}
                 });
             }
         })
@@ -166,17 +167,17 @@ export default class UniversityAndMajor extends React.Component {
         const provinceName = data.getExamBasicInfo.province.name
         return (
             <Container>
-                <Header>
+                <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
                     <Left>
                         <Button
                             transparent
                             onPress={() => this.props.navigation.goBack()}
                         >
-                            <Icon name='arrow-back' />
+                            <Icon name='arrow-back' style={{color:headerButtonColor}} />
                         </Button>
                     </Left>
                     <Body>
-                        <Title>选择学校和专业</Title>
+                        <Title style={{color:headerFontColor}}>选择学校和专业</Title>
                     </Body>
                     <Right />
                 </Header>

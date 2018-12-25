@@ -154,7 +154,9 @@ export default class ChangePassword extends Component {
                 onChangeText={(confirmPassword) => this.setState({confirmPassword})}
                 />
              </Item>
+             <View style={{padding:10}}>
             {this.renderChangePwdBtn(currentPassword,newPassword,confirmPassword)}
+            </View>
             </Container>
         );
     }

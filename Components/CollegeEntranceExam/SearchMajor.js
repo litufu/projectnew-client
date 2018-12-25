@@ -6,6 +6,7 @@ import { Container, Header, Item, Input, Icon, Button, Text, Content,List, ListI
 import {trim,errorMessage} from '../../utils/tools'
 import GET_MAJORS from '../../graphql/get_majors.query'
 import SELECT_NEWMAJOR from '../../graphql/add_selectNewMajor.mutation'
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 export default  class SearchMajor extends Component {
   
@@ -98,14 +99,14 @@ export default  class SearchMajor extends Component {
     const {selectedId,majorName,majors,loading} = this.state
     return (
       <Container>
-         <Header >
+         <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
           <Left style={{justifyContent:'flex-end'}}>
             <Button transparent onPress={()=>this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
+              <Icon name="arrow-back"style={{color:headerButtonColor}} />
             </Button>
           </Left>
           <Body style={{alignItems:'center'}}>
-            <Title>选择专业</Title>
+            <Title style={{color:headerFontColor}}>选择专业</Title>
           </Body>
           <Right>
             <Mutation 

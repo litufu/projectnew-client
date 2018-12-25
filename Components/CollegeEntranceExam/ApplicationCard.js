@@ -1,8 +1,21 @@
 import React, { Component } from "react";
-import { StyleSheet,Alert } from 'react-native'
-import { Content, Left, Right, Card, CardItem, Text, Body, Button } from "native-base";
+import { StyleSheet, Alert } from 'react-native'
+import { Mutation } from 'react-apollo'
+import { Content, Left, Right, Card, CardItem, Text, Body, Button, Spinner } from "native-base";
+
+import CANCEL_REGSTATUS from '../../graphql/cancel_regStatus.mutation'
+import GET_ME from '../../graphql/get_me.query'
+import {errorMessage} from '../../utils/tools'
 
 export default class ApplicationCard extends Component {
+
+    handleCancel=async (cancelRegStatus)=>{
+        const id = this.props.id
+        await cancelRegStatus({
+            variables:{id},
+        })
+        Alert.alert('取消报名成功')
+    }
 
     render() {
         const education = this.props.education || ""
@@ -60,41 +73,68 @@ export default class ApplicationCard extends Component {
                 </CardItem>
                 {
                     twoBtn
-                    ?(
-                        <CardItem
-                            footer
+                        ? (
+                            <CardItem
+                                footer
                             >
-                            <Left>
-                                <Button
-                                onPress={this.props.handleToDetail}
-                                >
-                                <Text  >查看报名者详情</Text>
-                                </Button>
-                                </Left>
-                            <Right >
-                                <Button
-                                onPress={this.props.handleToChat}
-                                >
-                                    <Text  >进入群聊</Text>
+                                <Left>
+                                    <Button
+                                        onPress={this.props.handleToApplicants}
+                                    >
+                                        <Text  >报名者详情</Text>
                                     </Button>
+                                </Left>
+                                <Body>
+                                    <Button
+                                        onPress={this.props.handleToChat}
+                                    >
+                                        <Text  >进入群聊</Text>
+                                    </Button>
+                                </Body>
+                                <Right >
+                                    <Mutation 
+                                    mutation={CANCEL_REGSTATUS}
+                                    update={(cache, { data: { cancelRegStatus } }) => {
+                                        const { me } = cache.readQuery({ query: GET_ME });
+                                        cache.writeQuery({
+                                          query: GET_ME,
+                                          data: { me: {...me,regStatus:null} }
+                                        });
+                                      }}
+                                    >
+                                        {
+                                            (cancelRegStatus, { loading, error }) => {
+                                                return (
+                                                    <Button
+                                                        onPress={() => this.handleCancel(cancelRegStatus)}
+                                                    >
+                                                        <Text>取消报名 </Text>
+                                                        {loading && <Spinner />}
+                                                        {error && Alert.alert(errorMessage(error))}
+                                                    </Button>
+
+                                                )
+                                            }
+                                        }
+                                    </Mutation>
                                 </Right>
-                        </CardItem>
-                    )
-                    :(
-                        <CardItem
-                            footer
-                            button
-                            onPress={this.props.handlePress}>
-                            <Left />
-                            <Body>
-                                <Text style={styles.text}>报 名</Text>
-                            </Body>
-                            <Right />
-                        </CardItem>
-                    )
+                            </CardItem>
+                        )
+                        : (
+                            <CardItem
+                                footer
+                                button
+                                onPress={this.props.handlePress}>
+                                <Left />
+                                <Body>
+                                    <Text style={styles.text}>报 名</Text>
+                                </Body>
+                                <Right />
+                            </CardItem>
+                        )
                 }
 
-                
+
             </Card>
 
         );

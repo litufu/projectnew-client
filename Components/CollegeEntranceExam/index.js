@@ -4,6 +4,7 @@ import { Container, Header, Title, Content, Footer, Spinner, Button, Left, Right
 import {Query} from 'react-apollo'
 import { errorMessage } from '../../utils/tools';
 import GET_EXAMBASICINFO from '../../graphql/get_exam_basicInfo.query'
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 
 export default class CollegeEntranceExam extends React.Component {
@@ -32,17 +33,17 @@ export default class CollegeEntranceExam extends React.Component {
     render() {
         return (
             <Container style={{flex:1}}>
-                <Header >
+                <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
                     <Left>
                         <Button 
                         transparent
                         onPress={()=>this.props.navigation.goBack()}
                         >
-                            <Icon name='arrow-back' />
+                            <Icon name='arrow-back' style={{color:headerButtonColor}}/>
                         </Button>
                     </Left>
                     <Body>
-                        <Title>高考报名</Title>
+                        <Title style={{color:headerFontColor}}>高考报名</Title>
                     </Body>
                     <Right />
                 </Header>

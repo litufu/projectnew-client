@@ -6,6 +6,7 @@ import { Container, Header, Item, Input, Icon, Button, Text, Content,List, ListI
 import {trim,errorMessage} from '../../utils/tools'
 import GET_MAJORS from '../../graphql/get_majors.query'
 import ADD_NEWMAJOR from '../../graphql/add_newMajor.mutation'
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 export default  class SelectSchool extends Component {
   
@@ -98,14 +99,14 @@ export default  class SelectSchool extends Component {
     const {selectedId,majorName,majors,loading} = this.state
     return (
       <Container>
-         <Header >
+         <Header style={{backgroundColor:headerBackgroundColor,marginTop:statusBarHeight}} >
           <Left style={{justifyContent:'flex-end'}}>
             <Button transparent onPress={()=>this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
+              <Icon name="arrow-back" style={{color:headerButtonColor}} />
             </Button>
           </Left>
           <Body style={{alignItems:'center'}}>
-            <Title>学习经历</Title>
+            <Title style={{color:headerFontColor}}>学习经历</Title>
           </Body>
           <Right>
             <Mutation 

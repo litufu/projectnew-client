@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Segment, Content, Text } from 'native-base';
 
-import Events from './Events'
-import Study from './Study'
+import Genealogy from '../Genealogy'
+import Family from '../Family'
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 export default class Example extends Component {
 
@@ -13,31 +14,31 @@ export default class Example extends Component {
   render() {
     return (
       <Container>
-        <Header hasSegment>
+        <Header hasSegment style={{marginTop:statusBarHeight}}>
           <Left style={{justifyContent:'flex-end'}}>
             <Button transparent onPress={()=>this.props.navigation.goBack()}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body style={{alignItems:'center'}}>
-            <Title>学习经历</Title>
+            <Title>家庭成员</Title>
           </Body>
           <Right>
 
           </Right>
         </Header>
-        <Segment>
+        <Segment >
           <Button first active={this.state.selected===1} onPress={()=>this.setState({selected:1})}>
-            <Text>求学列表</Text>
+            <Text>关系图</Text>
           </Button>
           <Button last active={this.state.selected===2} onPress={()=>this.setState({selected:2})}>
-            <Text>添加</Text>
+            <Text>添加成员</Text>
           </Button>
         </Segment>
 
         <Content padder>
-          {this.state.selected===1 &&  <Events />}
-          {this.state.selected===2 &&  <Study />}
+          {this.state.selected===1 &&  <Genealogy />}
+          {this.state.selected===2 &&  <Family />}
         </Content>
       </Container>
       

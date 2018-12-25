@@ -17,6 +17,7 @@ import {
 import { Avatar } from 'react-native-elements';
 import { StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { Query, Mutation } from 'react-apollo'
+import {withNavigation} from 'react-navigation'
 
 import Nav from '../Nav'
 import {getRelationshipName} from '../../utils/relationship'
@@ -26,7 +27,7 @@ import FAMILY_CONNECTED_SUBSCRIPTION from '../../graphql/family_connected.subscr
 import FAMILY_CHANGED_SUBSCRIPTION from '../../graphql/family_changed.subscription'
 import CONFIRM_FAMILY from '../../graphql/confirm_family.mutation'
 
-export default class Family extends Component {
+class Family extends Component {
 
   state={
     connect:false
@@ -229,6 +230,10 @@ export default class Family extends Component {
                                               name: who.to.name,
                                               user:null
                                             },
+                                            from:{
+                                              __typename:'User',
+                                              name:who.from.name
+                                            },
                                             spouse:{
                                               __typename:Family,
                                               id:''
@@ -281,21 +286,9 @@ export default class Family extends Component {
   }
 }
 
-Family.navigationOptions = ({ navigation }) => ({
-  header: (
-    <Nav
-      title="家庭成员"
-      navigation={navigation}
-      leftIcon={{
-        type: 'ionicon',
-        name: 'md-arrow-back',
-        size: 26,
-      }}
-      hasLeftIcon={true}
-      hasLogoutText={false}
-    />
-  ),
-})
+export default withNavigation(Family)
+
+
 
 const styles = StyleSheet.create({
   name: {

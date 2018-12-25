@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, TextInput, Alert } from 'react-native'
+import { StyleSheet, View,  TextInput, Alert } from 'react-native'
 import {
     Container,
     Header,
@@ -14,6 +14,7 @@ import {
     Icon,
     List,
     ListItem,
+    Text,
     Form,
     Item,
     Picker,
@@ -31,7 +32,7 @@ import { errorMessage } from '../../utils/tools'
 import {sections,noSectionProvinces} from './settings'
 import GET_EXAMBASICINFO from '../../graphql/get_exam_basicInfo.query'
 import GET_ME from '../../graphql/get_me.query'
-
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 class ExamBasicInfo extends React.Component {
 
@@ -187,14 +188,14 @@ class ExamBasicInfo extends React.Component {
         const { province, section, score, specialScore, examineeCardNumber, hasSpecial, updateInfo, editable,times } = this.state
         return (
             <Container >
-                <Header >
+                <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
                     <Left>
                         <Button transparent onPress={() => this.props.navigation.goBack()}>
-                            <Icon name='arrow-back' />
+                            <Icon name='arrow-back' style={{color:headerButtonColor}}/>
                         </Button>
                     </Left>
                     <Body>
-                        <Title>高考基本信息</Title>
+                        <Title style={{color:headerFontColor}}>高考基本信息</Title>
                     </Body>
                     <Right />
                 </Header>

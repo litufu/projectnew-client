@@ -368,7 +368,10 @@ class Study extends Component {
                             location: {
                                 __typename: "Location",
                                 id: i.toString(),
-                                name: display(this.state.location)
+                                name: display(this.state.location),
+                                province:null,
+                                city:null,
+                                area:null,
                             }
                         }
                     }
@@ -402,7 +405,7 @@ class Study extends Component {
         client.writeQuery({ query: GET_NEWMAJOR, data: clearNewMajor })
         client.writeQuery({ query: GET_NEWGRADEANDCLASSES, data: { newGradeAndClasses: [] } })
 
-        this.props.navigation.navigate('Histroy')
+        this.props.navigation.navigate('StudyHistroy')
     }
 
     _renderPlace = () => (

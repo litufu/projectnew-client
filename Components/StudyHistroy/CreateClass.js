@@ -22,6 +22,7 @@ import {
 import {Mutation} from 'react-apollo'
 import {checkNum, errorMessage} from '../../utils/tools'
 import ADD_NEWGRADEANDCLASS from '../../graphql/add_newGradeAndClass.mutation'
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 class CreateClass extends Component {
     state = {
@@ -66,14 +67,14 @@ class CreateClass extends Component {
         const data2 = data1.filter(num => num >= startGrade)
         return (
             <Container style={styles.container}>
-                <Header >
+                <Header style={{backgroundColor:headerBackgroundColor,marginTop:statusBarHeight}} >
                     <Left style={{ justifyContent: 'flex-end' }}>
                         <Button transparent onPress={() => this.props.navigation.goBack()}>
-                            <Icon name="arrow-back" />
+                            <Icon name="arrow-back" style={{color:headerButtonColor}}  />
                         </Button>
                     </Left>
                     <Body style={{ alignItems: 'center' }}>
-                        <Title>人生轨迹</Title>
+                        <Title style={{color:headerFontColor}}>添加班级</Title>
                     </Body>
                     <Right>
                     </Right>

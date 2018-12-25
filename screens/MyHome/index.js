@@ -6,6 +6,7 @@ import {Query} from 'react-apollo'
 import GET_ME from '../../graphql/get_me.query'
 import { errorMessage } from '../../utils/tools';
 import MyIcon from '../../Components/MyIcon'
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 
 export default class Home extends React.Component {
@@ -27,14 +28,11 @@ export default class Home extends React.Component {
     render() {
         return (
             <Container>
-                <Header>
+                <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
                     <Left>
-                        <Button transparent>
-                            <Icon name='menu' />
-                        </Button>
                     </Left>
-                    <Body>
-                        <Title>Header</Title>
+                    <Body style={{alignItems:'center'}}>
+                        <Title style={{color:headerFontColor,textAlign:'center'}}>找</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -53,13 +51,7 @@ export default class Home extends React.Component {
                                             handlePress={()=>this._handleCollegeEntranceExam(data,loading,error)}
                                             name="高考报名"
                                         />
-                                        <MyIcon
-                                            iconName='road'
-                                            iconType='font-awesome'
-                                            color="blue"
-                                            handlePress={()=>this.props.navigation.navigate('QueryFamilies',{data})}
-                                            name="高考报名"
-                                        />
+                                       
                                         {error && Alert.alert(errorMessage(error))}
                                         </View>
                                     )
@@ -73,29 +65,18 @@ export default class Home extends React.Component {
                                 iconType='font-awesome'
                                 color="red"
                                 handlePress={() => console.log('123')}
-                                name="高考报名"
+                                name="找对象"
                             />
                             <MyIcon
                                 iconName='road'
                                 iconType='font-awesome'
                                 color="yellow"
                                 handlePress={() => console.log('123')}
-                                name="高考报名"
+                                name="找工作"
                             />
                         </ListItem>
                     </List>
-
-
-                        
-                    
                 </Content>
-                <Footer>
-                    <FooterTab>
-                        <Button full>
-                            <Text>Footer</Text>
-                        </Button>
-                    </FooterTab>
-                </Footer>
             </Container>
         );
     }

@@ -8,6 +8,7 @@ import {errorMessage} from '../../utils/tools'
 import GET_REGSTATUSAPPLICANTSBYID from '../../graphql/get_regStatusApplicantsById.query'
 import ApplicationCard from './ApplicationCard'
 import {subjects} from './settings'
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 class Result extends Component {
 
@@ -47,7 +48,9 @@ _renderApplicationResult = (me)=>(
           proLowwestScore={proLowwestScore}
           twoBtn={true}
           handleToChat={()=>Alert.alert('开始聊天')}
-          handleToDetail={()=>this.props.navigation.navigate('Applicants',{applicants})}
+          handleToApplicants={()=>this.props.navigation.navigate('Applicants',{applicants})}
+          handleCancel = {()=>Alert.alert('取消报名')}
+          id={me.regStatus.id}
       />
       )
     }
@@ -67,22 +70,22 @@ _hanleEnter = ()=>{
     return (
 
       <Container>
-        <Header>
+        <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
           <Left>
             <Button 
             transparent
             onPress={()=>this.props.navigation.navigate('CollegeEntranceExam')}
             >
-              <Icon name='arrow-back' />
+              <Icon name='arrow-back' style={{color:headerButtonColor}}/>
             </Button>
           </Left>
           <Body>
-            <Title>报名结果</Title>
+            <Title style={{color:headerFontColor}}>报名结果</Title>
           </Body>
           <Right />
         </Header>
         <Content>
-            {me 
+            {me && me.regStatus && me.regStatus.id
               ? this._renderApplicationResult(me)
               :<Text>请先报名然后查看结果</Text>
             }
