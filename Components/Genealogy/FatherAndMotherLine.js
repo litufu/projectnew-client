@@ -13,6 +13,7 @@ export default class FatherAndMotherLine extends Component{
     render() {
         const height=this.props.height
         const width=this.props.width
+        const hasChild = this.props.hasChild
         return <Svg
             height={height}
             width={width}
@@ -26,6 +27,7 @@ export default class FatherAndMotherLine extends Component{
                 strokeWidth="3"
                 strokeLinecap="round"
             />
+            {hasChild &&
             <Line
                 x1={width/2}
                 y1={height/2}
@@ -34,7 +36,7 @@ export default class FatherAndMotherLine extends Component{
                 stroke="green"
                 strokeWidth="3"
                 strokeLinecap="round"
-            />
+            />}
 
         </Svg>;
     }

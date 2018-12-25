@@ -15,12 +15,20 @@ import { getRelationshipNameTwo } from '../../utils/relationship'
 import { SQURE_HEIGHT, SQURE_WIDTH, BORDER_WIDTH, SQURE_H_DISTANCE, SQURE_V_DISTANCE } from './settings'
 
 
-
-
 class Example extends React.Component {
 
     state = {
         layouts: {}
+    }
+
+    has_child=(id,arr)=>{
+        // arr:[{id1:[1,2,3],id2:[4,5,6]}]
+        for(let obj  of arr){
+            if(Object.keys(obj)[0]===id){
+                return (obj[id]).length > 0
+            }
+        }
+        return false
     }
 
     render() {
@@ -58,9 +66,9 @@ class Example extends React.Component {
         }
         const sonAndDaughterNum = sonAndDaughters.length
 
-        const { height} = Dimensions.get('window');
-        const width = (spouseNum+1+brotherAndSisterNum)>sonAndDaughterNum ? (spouseNum+1+brotherAndSisterNum)*120 :sonAndDaughterNum*120
-        
+        let { height,width} = Dimensions.get('window');
+        const width1 = (spouseNum+1+brotherAndSisterNum)>sonAndDaughterNum ? (spouseNum+1+brotherAndSisterNum)*120 :sonAndDaughterNum*120
+        width1>width ? width=width1 : width
 
         // firstLevel
         const firstLevelMarginLeft = (width - 2 * SQURE_WIDTH - SQURE_H_DISTANCE) / 2
@@ -92,6 +100,7 @@ class Example extends React.Component {
                         <FatherAndMotherLine
                             height={SQURE_HEIGHT}
                             width={SQURE_H_DISTANCE}
+                            hasChild={true}
                         />
 
                         <View  >
@@ -113,7 +122,7 @@ class Example extends React.Component {
                         />
                     </View>
 
-                    <View style={{ marginLeft: secondLevelMarginLeft, flexDirection: 'row', backgroundColor: 'yellow' }}>
+                    <View style={{ marginLeft: secondLevelMarginLeft, flexDirection: 'row'}}>
                         {
                             sistersAndBrothers.map((sisterAndBrother, index) => (
                                 <View style={{ flexDirection: 'row' }} key={index}>
@@ -134,7 +143,7 @@ class Example extends React.Component {
                             <SecondLevelTop />
                             <Square
                                 relationship="自己"
-                                name={me.name}
+                                name={me ? me.name: ""}
                                 isUser={true}
                             />
                         </View>
@@ -147,6 +156,7 @@ class Example extends React.Component {
                                         <FatherAndMotherLine
                                             height={SQURE_HEIGHT}
                                             width={SQURE_H_DISTANCE}
+                                            hasChild={this.has_child(family.id,spouseIdAndSonDaughter)}
                                         />
                                     </View>
 
@@ -202,11 +212,7 @@ class Example extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: 600,
-        height: 600,
-        backgroundColor: 'red'
-    },
+ 
     position1: {
         marginLeft: SQURE_H_DISTANCE
     },

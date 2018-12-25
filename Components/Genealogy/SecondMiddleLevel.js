@@ -15,6 +15,7 @@ const getLength=(obj,index)=>{
     const newArr = obj.slice(0,index)
     let length = 0
     for(let obj of newArr){
+        
         length += Object.values(obj)[0].length
     }
     
@@ -51,18 +52,20 @@ export default class FirstMiddleLevel extends Component{
             height={(SQURE_V_DISTANCE*spouseNum)/(spouseNum+1)}
             width={width}
         >
-            {spouseIdAndSonDaughter.map((spouse,index)=>(
-                <Line
-                key={index}
-                x1={fm_x1 + fm_distance*index}
-                y1={0}
-                x2={fm_x1 + fm_distance*index}
-                y2={SQURE_V_DISTANCE*(index+1)/(spouseNum+1)}
-                stroke="green"
-                strokeWidth="3"
-                strokeLinecap="round"
-            />
-            ))}
+            {spouseIdAndSonDaughter.map((spouse,index)=>{
+                if(Object.values(spouse)[0].length>0){
+                    return <Line
+                        key={index}
+                        x1={fm_x1 + fm_distance*index}
+                        y1={0}
+                        x2={fm_x1 + fm_distance*index}
+                        y2={SQURE_V_DISTANCE*(index+1)/(spouseNum+1)}
+                        stroke="green"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                    />
+                }
+            })}
 
             {spouseIdAndSonDaughter.map((spouse,index)=>{
                const leftSonAndDaughterNum = getLength(spouseIdAndSonDaughter,index)
@@ -82,17 +85,18 @@ export default class FirstMiddleLevel extends Component{
                    x1 = xa
                    x2 = xb
                }
-               
-               return <Line
-                key={index}
-                x1={x1}
-                y1={SQURE_V_DISTANCE*(index+1)/(spouseNum+1)}
-                x2={x2}
-                y2={SQURE_V_DISTANCE*(index+1)/(spouseNum+1)}
-                stroke="green"
-                strokeWidth="3"
-                strokeLinecap="round"
-            />
+               if(Object.values(spouse)[0].length>0){
+                return <Line
+                    key={index}
+                    x1={x1}
+                    y1={SQURE_V_DISTANCE*(index+1)/(spouseNum+1)}
+                    x2={x2}
+                    y2={SQURE_V_DISTANCE*(index+1)/(spouseNum+1)}
+                    stroke="green"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    />
+                }
             })}
 
             {spouseIdAndSonDaughter.map((spouse,index)=>{
@@ -103,17 +107,18 @@ export default class FirstMiddleLevel extends Component{
                     leftSonAndDaughterNum*(SQURE_WIDTH +SQURE_H_DISTANCE/2) +
                      ownSonAndDaughterNum/2*SQURE_WIDTH+(ownSonAndDaughterNum-1)*SQURE_H_DISTANCE/2
                  )
-                
-                return <Line
-                key={index}
-                x1={xa}
-                y1={SQURE_V_DISTANCE*(index+1)/(spouseNum+1)}
-                x2={xa}
-                y2={SQURE_V_DISTANCE*spouseNum/(spouseNum+1)}
-                stroke="green"
-                strokeWidth="3"
-                strokeLinecap="round"
-            />
+                 if(Object.values(spouse)[0].length>0){
+                    return <Line
+                    key={index}
+                    x1={xa}
+                    y1={SQURE_V_DISTANCE*(index+1)/(spouseNum+1)}
+                    x2={xa}
+                    y2={SQURE_V_DISTANCE*spouseNum/(spouseNum+1)}
+                    stroke="green"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                />
+                }
             })}
 
             {spouseIdAndSonDaughter.map((spouse,index)=>{
@@ -121,24 +126,24 @@ export default class FirstMiddleLevel extends Component{
                 const ownSonAndDaughterNum = Object.values(spouse)[0].length
                 const x1 = (
                     thirdLevelMarginLeft + 
-                    leftSonAndDaughterNum*(SQURE_WIDTH +SQURE_H_DISTANCE/2) + SQURE_WIDTH/2
+                    leftSonAndDaughterNum*(SQURE_WIDTH +SQURE_H_DISTANCE) + SQURE_WIDTH/2
                  )
                 const x2 = (
                     thirdLevelMarginLeft + 
-                    leftSonAndDaughterNum*(SQURE_WIDTH +SQURE_H_DISTANCE/2) + 
+                    leftSonAndDaughterNum*(SQURE_WIDTH +SQURE_H_DISTANCE) + 
                     (ownSonAndDaughterNum-1)*(SQURE_H_DISTANCE + SQURE_WIDTH) + SQURE_WIDTH/2
                 )
-                
-                return <Line
-                key={index}
-                x1={x1}
-                y1={SQURE_V_DISTANCE*spouseNum/(spouseNum+1)}
-                x2={x2}
-                y2={SQURE_V_DISTANCE*spouseNum/(spouseNum+1)}
-                stroke="green"
-                strokeWidth="3"
-                strokeLinecap="round"
-            />
+                if(Object.values(spouse)[0].length>0){
+                    return <Line
+                    key={index}
+                    x1={x1}
+                    y1={SQURE_V_DISTANCE*spouseNum/(spouseNum+1)}
+                    x2={x2}
+                    y2={SQURE_V_DISTANCE*spouseNum/(spouseNum+1)}
+                    stroke="green"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                />}
         })}
         
         </Svg>;
