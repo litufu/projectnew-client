@@ -105,6 +105,7 @@ class Family extends Component {
     this.unsubscribeHandle = subscribeToMore({
       document: FAMILY_CHANGED_SUBSCRIPTION,
       updateQuery: async (prev,{ subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
         const { data } = await client.query({
           query: GET_FAMILIES,
           fetchPolicy:'network-only'
@@ -232,6 +233,7 @@ class Family extends Component {
                                             },
                                             from:{
                                               __typename:'User',
+                                              id:Math.floor(Math.random() * 200).toString(),
                                               name:who.from.name
                                             },
                                             spouse:{

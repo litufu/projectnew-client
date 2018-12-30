@@ -1,92 +1,8 @@
 import { createStackNavigator,createBottomTabNavigator } from 'react-navigation'
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-// import Feed from '../Components/Feed'
-// import Camera from '../Components/Camera'
-// import Profile from '../Components/Profile'
-// import Explore from '../Components/Explore'
-// import Notifications from '../Components/Notifications'
-// import Comments from '../Components/Comments'
-// import ProfileOptions from '../Components/ProfileOptions'
-// import EditProfile from '../Components/EditProfile'
-// import AddPhoto from '../Components/AddPhoto'
-// import UsersList from '../Components/UsersList'
-// import UserProfile from '../Components/UserProfile'
-// import Photo from '../Components/Photo'
-//
-// const FeedNavigation = createStackNavigator(
-//     {
-//         Main: {
-//             screen: Feed
-//         },
-//         Comments: {
-//             screen: Comments
-//         }
-//     },
-//     {
-//         navigationOptions: {
-//             header: null
-//         }
-//     }
-// )
-//
-// const ExploreNavigation = createStackNavigator(
-//     {
-//         Main: {
-//             screen: Explore
-//         },
-//         UsersList: {
-//             screen: UsersList
-//         },
-//         UserProfile: {
-//             screen: UserProfile
-//         },
-//         Photo: {
-//             screen: Photo
-//         },
-//         Comments: {
-//             screen: Comments
-//         }
-//     },
-//     {
-//         navigationOptions: {
-//             header: null
-//         }
-//     }
-// )
-//
-// const CameraNavigation = createStackNavigator(
-//     {
-//         Main: {
-//             screen: Camera
-//         },
-//         AddPhoto: {
-//             screen: AddPhoto
-//         }
-//     },
-    // {
-    //     navigationOptions: {
-    //         header: null
-    //     }
-    // }
-// )
-//
 
-
-// const NotificationsNavigation = createStackNavigator(
-//     {
-//         Main: {
-//             screen: Notifications
-//         }
-//     },
-//     {
-        // navigationOptions: {
-        //     header: null
-        // }
-//     }
-// )
-
-import Group from '../Components/Group'
+import Group from '../screens/Group'
 import Home from '../screens/MyHome'
 import Profile from '../screens/Profile'
 
@@ -98,6 +14,17 @@ import SearchMajor from '../Components/CollegeEntranceExam/SearchMajor'
 import SelectUniversity from '../Components/CollegeEntranceExam/SelectUniversity'
 import QueryResult from '../Components/CollegeEntranceExam/QueryResult'
 import Applicants from '../Components/CollegeEntranceExam/Applicants'
+
+// 引入group
+import FamilyGroup from '../Components/Groups/FamilyGroup'
+import ClassGroup from '../Components/Groups/ClassGroup'
+import LocationGroup from '../Components/Groups/LocationGroup'
+import WorkGroup from '../Components/Groups/WorkGroup'
+import Content from '../Components/Groups/Content'
+import FamilyContent from '../Components/Groups/FamilyContent'
+import FamilyList from '../Components/Groups/FamilyList'
+
+
 // 引入profile
 import ChangePassword from '../Components/ChangePassword'
 import BasicInfo from '../Components/BasicInfo'
@@ -115,6 +42,7 @@ import CreateClass from '../Components/StudyHistroy/CreateClass'
 import Events from '../Components/StudyHistroy/Events'
 import Study from '../Components/StudyHistroy/Study'
 import MyIcon from '../Components/MyIcon'
+import AddPhoto from '../Components/AddPhoto'
 
 const HomeNavigation = createStackNavigator(
     {
@@ -146,6 +74,45 @@ const HomeNavigation = createStackNavigator(
     },
     {
         initialRouteName:"Home",
+        navigationOptions: {
+            header: null
+        },
+    }
+)
+
+
+const GroupNavigation = createStackNavigator(
+    {
+        Group: {
+            screen: Group,
+        },
+        FamilyGroup:{
+            screen: FamilyGroup,
+        },
+        ClassGroup:{
+            screen: ClassGroup,
+        },
+        LocationGroup:{
+            screen: LocationGroup,
+        },
+        WorkGroup:{
+            screen: WorkGroup,
+        },
+        Content:{
+            screen:Content,
+        },
+        FamilyList:{
+            screen:FamilyList,
+        },
+        FamilyContent:{
+            screen:FamilyContent,
+        },
+
+        
+       
+    },
+    {
+        initialRouteName:"Group",
         navigationOptions: {
             header: null
         },
@@ -205,6 +172,9 @@ const ProfileNavigation = createStackNavigator(
         MyIcon: {
             screen: MyIcon,
         },
+        AddPhoto: {
+            screen: AddPhoto,
+        },
     },
     {
         initialRouteName:"Profile",
@@ -220,7 +190,7 @@ export default createBottomTabNavigator(
             screen: HomeNavigation
         },
         Group: {
-            screen: Group
+            screen: GroupNavigation
         },
         Profile: {
             screen: ProfileNavigation

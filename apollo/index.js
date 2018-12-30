@@ -106,3 +106,6 @@ const client = new ApolloClient({
 client.onResetStore(stateLink.writeDefaults);
 
 export default client
+
+// 192.168.0.102
+// 192.168.56.1

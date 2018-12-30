@@ -1,41 +1,37 @@
-import React, { Component } from 'react'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
+import React from 'react';
+import { Button, Image, View } from 'react-native';
+import { ImagePicker } from 'expo';
 
-import AddPhoto from './AddPhoto'
+export default class ImagePickerExample extends React.Component {
+  state = {
+    image: null,
+  };
 
-class AddPhotoContainer extends Component {
-    state = {
-        text: ''
+  render() {
+    let { image } = this.state;
+
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Button
+          title="Pick an image from camera roll"
+          onPress={this._pickImage}
+        />
+        {image &&
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+      </View>
+    );
+  }
+
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
     }
-
-    handleChangeState = (key, value) => this.setState({ [key]: value })
-
-    addPhoto = () =>
-        this.props.addPhoto({
-            variables: {
-                url: this.props.navigation.state.params.url,
-                text: this.state.text
-            }
-        })
-
-    render() {
-        return (
-            <AddPhoto
-                addPhoto={this.addPhoto}
-                url={this.props.navigation.state.params.url}
-                changeState={this.handleChangeState}
-            />
-        )
-    }
+  };
 }
-
-const addPhotoMutation = gql`
-    mutation addPhoto($url: String!, $text: String!) {
-        addPhoto(url: $url, text: $text)
-    }
-`
-
-export default graphql(addPhotoMutation, {
-    name: 'addPhoto'
-})(AddPhotoContainer)

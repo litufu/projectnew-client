@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-keyboard-aware-scroll-view
+  C:\Program Files\nodejs\node.exe C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add realtionship.js
 
 PATH: 
   C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\java\jdk1.8.0_92\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Common Files\lenovo\easyplussdk\bin;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\IDM Computer Solutions\UltraCompare;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\Program Files\MySQL\MySQL Server 5.5\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Tesseract-OCR;C:\Program Files\Git\cmd;C:\Program Files\OpenSSH\bin;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Users\28521\AppData\Local\Android\Sdk\tools;C:\Users\28521\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\nodejs\;C:\Users\28521\AppData\Local\Programs\Python\Python36\Scripts\;C:\Users\28521\AppData\Local\Programs\Python\Python36\;C:\Users\28521\AppData\Local\Microsoft\WindowsApps;C:\Users\28521\AppData\Local\atom\bin;C:\ProgramData\phantomjs-2.1.1-windows\bin;C:\Users\28521\AppData\Local\Microsoft\WindowsApps;C:\Program Files\PostgreSQL\10\bin;H:\Docker Toolbox;C:\Users\28521\AppData\Local\Android\Sdk\platform-tools;C:\Users\28521\AppData\Local\Android\Sdk\tools;C:\Program Files\ArangoDB3 3.3.15\usr\bin;C:\Users\28521\AppData\Local\ArangoDB3-client 3.3.15\usr\bin;H:\project\stock_xuxiang\aria2-1.34.0-win-64bit-build1\aria2-1.34.0-win-64bit-build1;F:\system_path\watchman;C:\Users\28521\AppData\Roaming\npm;C:\Program Files (x86)\Google\Chrome\Application\chrome.exe;;C:\Users\28521\AppData\Local\Programs\Microsoft VS Code\bin
@@ -14,7 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'H:\projectNew\client\node_modules\react-native-keyboard-aware-scroll-view\node_modules\.bin'
+  Error: https://registry.npm.taobao.org/realtionship.js: Not found
+      at Request.params.callback [as _callback] (C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:65656:18)
+      at Request.self.callback (C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:134675:22)
+      at Request.emit (events.js:182:13)
+      at Request.<anonymous> (C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:135658:10)
+      at Request.emit (events.js:182:13)
+      at IncomingMessage.<anonymous> (C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:135578:12)
+      at Object.onceWrapper (events.js:273:13)
+      at IncomingMessage.emit (events.js:187:15)
+      at endReadableNT (_stream_readable.js:1094:12)
+      at process._tickCallback (internal/process/next_tick.js:63:19)
 
 npm manifest: 
   {
@@ -51,6 +61,8 @@ npm manifest:
       "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
       "react-native-elements": "^0.19.1",
       "react-native-expo-image-cache": "^3.2.0",
+      "react-native-gifted-chat": "^0.5.0",
+      "react-native-modal": "^7.0.2",
       "react-native-modal-datetime-picker": "^6.0.0",
       "react-native-timeline-feed": "^0.1.2",
       "react-navigation": "^2.18.3",
@@ -636,6 +648,13 @@ Lockfile:
     version "0.7.3"
     resolved "http://registry.npm.taobao.org/@emotion/unitless/download/@emotion/unitless-0.7.3.tgz#6310a047f12d21a1036fb031317219892440416f"
   
+  "@expo/react-native-action-sheet@^1.0.1":
+    version "1.1.2"
+    resolved "http://registry.npm.taobao.org/@expo/react-native-action-sheet/download/@expo/react-native-action-sheet-1.1.2.tgz#4c2f9b8190678799552e83134a975ec370a694d9"
+    dependencies:
+      hoist-non-react-statics "^2.2.2"
+      prop-types "^15.5.10"
+  
   "@expo/vector-icons@^8.0.0":
     version "8.0.0"
     resolved "http://registry.npm.taobao.org/@expo/vector-icons/download/@expo/vector-icons-8.0.0.tgz#29c91778aee02b92b045914bbed8eec299a84e5e"
@@ -1131,7 +1150,7 @@ Lockfile:
     dependencies:
       babel-runtime "^6.22.0"
   
-  babel-plugin-check-es2015-constants@^6.5.0, babel-plugin-check-es2015-constants@^6.8.0:
+  babel-plugin-check-es2015-constants@6.22.0, babel-plugin-check-es2015-constants@^6.5.0, babel-plugin-check-es2015-constants@^6.8.0:
     version "6.22.0"
     resolved "http://registry.npm.taobao.org/babel-plugin-check-es2015-constants/download/babel-plugin-check-es2015-constants-6.22.0.tgz#35157b101426fd2ffd3da3f75c7d1e91835bbf8a"
     dependencies:
@@ -2849,7 +2868,7 @@ Lockfile:
     version "1.2.0"
     resolved "http://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
   
-  hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
+  hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.2.2, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
     version "2.5.5"
     resolved "http://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   
@@ -3782,7 +3801,7 @@ Lockfile:
     dependencies:
       minimist "0.0.8"
   
-  moment@^2.22.2:
+  moment@^2.19.0, moment@^2.22.2:
     version "2.23.0"
     resolved "http://registry.npm.taobao.org/moment/download/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
   
@@ -4415,6 +4434,10 @@ Lockfile:
     version "2.2.5"
     resolved "http://registry.npm.taobao.org/react-native-branch/download/react-native-branch-2.2.5.tgz#4074dd63b4973e6397d9ce50e97b57c77a518e9d"
   
+  react-native-communications@2.2.1:
+    version "2.2.1"
+    resolved "http://registry.npm.taobao.org/react-native-communications/download/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
+  
   "react-native-deprecated-custom-components@github:facebookarchive/react-native-custom-components":
     version "0.1.1"
     resolved "https://codeload.github.com/facebookarchive/react-native-custom-components/tar.gz/d5201e53221a2460b096ee82ff4480f3b0de7fe4"
@@ -4482,6 +4505,17 @@ Lockfile:
       invariant "^2.2.2"
       prop-types "^15.5.10"
   
+  react-native-gifted-chat@^0.5.0:
+    version "0.5.0"
+    resolved "http://registry.npm.taobao.org/react-native-gifted-chat/download/react-native-gifted-chat-0.5.0.tgz#ac56668c57d4bba238ca6dd8bced1f47895a6be1"
+    dependencies:
+      "@expo/react-native-action-sheet" "^1.0.1"
+      moment "^2.19.0"
+      react-native-communications "2.2.1"
+      react-native-lightbox "^0.7.0"
+      react-native-parsed-text "^0.0.20"
+      uuid "3.3.0"
+  
   react-native-iphone-x-helper@^1.0.1:
     version "1.2.0"
     resolved "http://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"
@@ -4493,7 +4527,13 @@ Lockfile:
       prop-types "^15.6.0"
       react-native-iphone-x-helper "^1.0.1"
   
-  "react-native-maps@github:expo/react-native-maps#v0.22.1-exp.0":
+  react-native-lightbox@^0.7.0:
+    version "0.7.0"
+    resolved "http://registry.npm.taobao.org/react-native-lightbox/download/react-native-lightbox-0.7.0.tgz#e52b4d7fcc141f59d7b23f0180de535e35b20ec9"
+    dependencies:
+      prop-types "^15.5.10"
+  
+  react-native-maps@expo/react-native-maps#v0.22.1-exp.0:
     version "0.22.1"
     resolved "https://codeload.github.com/expo/react-native-maps/tar.gz/e6f98ff7272e5d0a7fe974a41f28593af2d77bb2"
   
@@ -4510,6 +4550,20 @@ Lockfile:
     dependencies:
       prop-types "^15.6.1"
       react-native-animatable "^1.2.4"
+  
+  react-native-modal@^7.0.2:
+    version "7.0.2"
+    resolved "http://registry.npm.taobao.org/react-native-modal/download/react-native-modal-7.0.2.tgz#6048217807e03cd585204dace2e1ca1726c0b647"
+    dependencies:
+      prop-types "^15.6.1"
+      react-native-animatable "^1.2.4"
+  
+  react-native-parsed-text@^0.0.20:
+    version "0.0.20"
+    resolved "http://registry.npm.taobao.org/react-native-parsed-text/download/react-native-parsed-text-0.0.20.tgz#7bd35fec88c3ca0eb0e8250a98e24092b4ee7fef"
+    dependencies:
+      babel-plugin-check-es2015-constants "6.22.0"
+      prop-types "^15.5.10"
   
   react-native-reanimated@1.0.0-alpha.10:
     version "1.0.0-alpha.10"
@@ -5479,6 +5533,10 @@ Lockfile:
   uuid@3.0.1:
     version "3.0.1"
     resolved "http://registry.npm.taobao.org/uuid/download/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
+  
+  uuid@3.3.0:
+    version "3.3.0"
+    resolved "http://registry.npm.taobao.org/uuid/download/uuid-3.3.0.tgz#b237147804881d7b86f40a7ff8f590f15c37de32"
   
   v8flags@^2.1.1:
     version "2.1.1"

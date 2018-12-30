@@ -94,6 +94,7 @@ export default class AddFamily extends Component {
           },
           from:{
             __typename:'User',
+            id:Math.floor(Math.random() * 200).toString(),
             name:''
           },
           spouse:{
@@ -134,6 +135,7 @@ export default class AddFamily extends Component {
           },
           from:{
             __typename:'User',
+            id:Math.floor(Math.random() * 200).toString(),
             name:''
           },
           spouse:{

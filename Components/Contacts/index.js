@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View ,ScrollView,StyleSheet,StatusBar} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-export default class Group extends Component {
+export default class Groups extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -13,7 +13,7 @@ export default class Group extends Component {
         <View style={styles.container}>
 
           <ScrollView >
-            <Text>hello group</Text>
+            <Text>hello contacts</Text>
           </ScrollView>
         </View>
       </View>

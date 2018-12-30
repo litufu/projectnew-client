@@ -19,7 +19,6 @@ import {
   List,
   Picker,
   Text,
-
 } from 'native-base'
 import {
   Alert,
@@ -58,53 +57,48 @@ export default class Info extends Component{
   }
 
   validate=(name,gender,birthday,placeCode)=>{
-    let pass = true
     if(name===""){
       Alert.alert('姓名未填写')
-      pass = false
+      return false
     }
     const rxName =/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/
     if(!rxName.test(name)){
       Alert.alert('姓名格式暂不支持')
-      pass = false
+      return false
     }
     if(gender!=='male' && gender !== 'female'){
       Alert.alert('性别未选择')
-      pass = false
+      return false
     }
     if(birthday.calendar!=='lunar' && birthday.calendar!=='gregorian'){
       Alert.alert('未选择日历类别')
-      pass = false
+      return false
     }
     if(isNaN(Date.parse(birthday.date))){
     　　Alert.alert(`生日选择错误 ${birthday.date}`)
-        pass = false
+      return false
     }
     if(!placeCode.province){
         Alert.alert(`未选择所在省 ${placeCode.province}`)
-        pass = false
+        return false
     }
-    if (placeCode.province!=null && placeCode.province !="" && isNaN(placeCode.province)){
-        Alert.alert(`未选择所在省 ${placeCode.province}`)
-        pass = false
-    }
-    if (placeCode.city!=null && placeCode.city !="" && isNaN(placeCode.city)){
+    if (!placeCode.city){
       Alert.alert('未选择所在市')
-      pass = false
+      return false
     }
-    if (placeCode.area==null && placeCode.area =="" && isNaN(placeCode.area)){
+    if (!placeCode.area){
       Alert.alert('未选择所在区')
-      pass = false
+      return false
     }
-    if (placeCode.street==null && placeCode.street =="" && isNaN(placeCode.street)){
+    if (!placeCode.street){
       Alert.alert('未选择所在乡镇')
-      pass = false
+      return false
     }
-    if (placeCode.village==null && placeCode.village =="" && isNaN(placeCode.village)){
+    if (!placeCode.village){
       Alert.alert('未选择所在村')
-      pass = false
+      return false
     }
-    return pass
+    return true
   }
 
   handleSubmit=(addBasicInfo)=>{
@@ -173,7 +167,7 @@ export default class Info extends Component{
             </Right>
           </ListItem>
           <ListItem>
-            <Left>
+            <Left style={{flex:0.4}}>
               <Text>出生日期</Text>
             </Left>
             {
@@ -182,7 +176,7 @@ export default class Info extends Component{
                 <View style={styles.birthday}>
                   <Picker
                     mode="dropdown"
-                    style={{height:20,alignItems:"center"}}
+                    style={{height:20,alignItems:"center",width:10}}
                     selectedValue={birthday.calendar}
                     onValueChange={value=>this.setState({birthday:Object.assign(this.state.birthday,{calendar:value})})}
                   >
@@ -196,7 +190,7 @@ export default class Info extends Component{
                   />
               </View>
             )
-              :(<View>
+              :(<View style={styles.birthday}>
                 {
                   this.state.birthday.date
                   ? (
@@ -253,7 +247,6 @@ export default class Info extends Component{
                {error && Alert.alert(error.message.replace(/GraphQL error:/g, ""))}
               </TouchableOpacity>
             )}
-
             </Mutation>
            </Right>
           </View>
