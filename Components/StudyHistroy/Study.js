@@ -360,6 +360,12 @@ class Study extends Component {
                             id: newMajor.id,
                             name: newMajor.name,
                         },
+                        students:{
+                            __typename:'User',
+                            id:me.id,
+                            name:me.name,
+                            avatar:me.avatar,
+                        },
                         school: {
                             __typename: "School",
                             id: newSchool.id,
@@ -596,6 +602,7 @@ class Study extends Component {
                                         (addStudy, { loading, error, client }) => {
                                             return (<Button
                                                 block
+                                                disabled={loading?true:false}
                                                 onPress={() => this._reconfirm(addStudy, client)}
                                             >
                                                 <Text>确定</Text>

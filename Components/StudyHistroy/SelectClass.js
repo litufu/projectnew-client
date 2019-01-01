@@ -59,9 +59,14 @@ export default class SelectClass extends Component {
                         <Title style={{color:headerFontColor}}>学习经历</Title>
                     </Body>
                     <Right>
-                        <Button
-                        onPress={()=>this.submitClasses(data.newGradeAndClasses)}
-                        ><Text>确认</Text></Button>
+                        {
+                            data.newGradeAndClasses.length>0 && (
+                                <Button
+                                    onPress={()=>this.submitClasses(data.newGradeAndClasses)}
+                                    ><Text>确认</Text></Button>
+                            )
+                        }
+                        
                     </Right>
                 </Header>
                 <Content>

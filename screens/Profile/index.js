@@ -34,7 +34,7 @@ const ProfileScreen = ({ navigation }) => (
 
       return (
         <Profile
-          avatar={data.me.avatar}
+          avatar=''
           name={data.me.name}
           username={data.me.username}
           navigation={navigation}

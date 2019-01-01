@@ -13,6 +13,11 @@ const SCHOOLEDU_FRAGMENT = gql`
     }
     grade
     className
+    students{
+      id
+      name
+      avatar
+    }
   }
   ${SCHOOL_FRAGMENT}
 `

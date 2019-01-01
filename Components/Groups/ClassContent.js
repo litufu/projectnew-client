@@ -4,10 +4,11 @@ import { Container, Header, Content, Icon,Text,Item, Button, Left,Right,Body ,Ti
 
 import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
-class FamilyContent extends Component {
+class ClassContent extends Component {
   render() {
-    const group = this.props.navigation.getParam('group','')
-    const me = this.props.navigation.getParam('me','')
+    const schoolEdu = this.props.navigation.getParam('schoolEdu','')
+    const schoolEduName = this.props.navigation.getParam('schoolEduName','')
+    const me =  this.props.navigation.getParam('me','')
     return (
       <Container>
         <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
@@ -20,7 +21,7 @@ class FamilyContent extends Component {
             </Button>
             </Left>
           <Body>
-            <Title style={{color:headerFontColor}}>{group?group.name:""}</Title>
+            <Title style={{color:headerFontColor}}>{schoolEduName}</Title>
           </Body>
           <Right />
           </Header>
@@ -29,7 +30,7 @@ class FamilyContent extends Component {
             <Button 
             transparent 
             vertical
-            onPress={()=>this.props.navigation.navigate('FamilyList',{group,me})}
+            onPress={()=>this.props.navigation.navigate('ClassList',{schoolEdu,schoolEduName,me})}
              >
               <Icon name="list" type="FontAwesome" />
               <Text>成员列表</Text>
@@ -55,4 +56,4 @@ class FamilyContent extends Component {
   }
 }
 
-export default withNavigation(FamilyContent)
+export default withNavigation(ClassContent)
