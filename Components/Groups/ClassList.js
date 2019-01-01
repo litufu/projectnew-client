@@ -11,6 +11,7 @@ import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonCo
 import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
 import ADD_CLASSGROUP from '../../graphql/add_classGroup.mutation'
 import CONFIRM_CLASSGROUP from '../../graphql/confirm_classGroup.mutation'
+import CLASSGROUP_CHANGED_SUBSCRIPTION from '../../graphql/classGroup_changed.subscription'
 
 export default class ClassList extends Component {
 
@@ -62,7 +63,6 @@ export default class ClassList extends Component {
                 confirmClassGroup({ 
                   variables: { schoolEduId, studentId },
                  })
-                 refetch()
               } }
             >
               <Text>确认</Text>
@@ -159,6 +159,17 @@ export default class ClassList extends Component {
     return (this._renderAddBtn(schoolEduName, schoolEduId, studentId))
   }
 
+  _subscribeClassGroupChanged = async (subscribeToMore, refetch) => {
+    subscribeToMore({
+      document: CLASSGROUP_CHANGED_SUBSCRIPTION,
+      updateQuery: async (prev,{ subscriptionData }) => {
+        refetch()
+        return prev
+      
+      }
+    })
+  }
+
   render() {
     const schoolEdu = this.props.navigation.getParam('schoolEdu')
     const schoolEduName = this.props.navigation.getParam('schoolEduName', '')
@@ -184,11 +195,13 @@ export default class ClassList extends Component {
           <Query
             query={GET_CLASSGROUPS}
             variables={{ schoolEduId: schoolEdu.id }}
+            
           >
             {
-              ({ loading, error, data, refetch , networkStatus  }) => {
+              ({ loading, error, data, refetch , networkStatus,subscribeToMore ,client  }) => {
                 if (loading) return <Spinner />
                 if (error) return <Text>{errorMessage(error)}</Text>
+                this._subscribeClassGroupChanged(subscribeToMore,refetch)
 
                 return (
                   <List>

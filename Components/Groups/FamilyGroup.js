@@ -72,25 +72,24 @@ class FamilyGroup extends Component {
               )}
 
             </Mutation>
+
           <List>
-          <Query 
-          query={GET_FAMILYGROUPS}
-          >
-            {({ loading, error, data ,subscribeToMore ,client}) => {
-              if (loading) return <Spinner />;
-              if(error) return <Container><Text>{errorMessage(error)}</Text></Container>
-              this._subscribeFamilyGroupChanged(subscribeToMore,client)
-              return (
-                data.getFamilyGroups.map(group=>(
-                  <ListItem key={group.id} onPress={()=>{this.props.navigation.navigate('FamilyContent',{group,me})}}>
-                    <Text>{group.name}</Text>
-                  </ListItem>
-                ))
-              );
-            }}
-          </Query>
-     
-            />
+            <Query 
+            query={GET_FAMILYGROUPS}
+            >
+              {({ loading, error, data ,subscribeToMore ,client}) => {
+                if (loading) return <Spinner />;
+                if(error) return <Container><Text>{errorMessage(error)}</Text></Container>
+                this._subscribeFamilyGroupChanged(subscribeToMore,client)
+                return (
+                  data.getFamilyGroups.map(group=>(
+                    <ListItem key={group.id} onPress={()=>{this.props.navigation.navigate('FamilyContent',{group,me})}}>
+                      <Text>{group.name}</Text>
+                    </ListItem>
+                  ))
+                );
+              }}
+            </Query>
           </List>
         </Content>
       </Container>
