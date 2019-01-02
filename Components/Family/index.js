@@ -1,31 +1,20 @@
 import React, { Component } from 'react';
 import {
   Container,
-  Header,
   Content,
-  List,
-  ListItem,
-  Thumbnail,
   Text,
-  Left,
-  Body,
-  Right,
   Button,
-  Badge,
-  Spinner,
 } from 'native-base';
 import { Avatar } from 'react-native-elements';
 import { StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { Query, Mutation } from 'react-apollo'
+import {  Mutation } from 'react-apollo'
 import {withNavigation} from 'react-navigation'
 
-import Nav from '../Nav'
 import {getRelationshipName} from '../../utils/relationship'
 import GET_FAMILIES from '../../graphql/get_families.query'
 import DELETE_FAMILY from '../../graphql/delete_family.mutation'
-import FAMILY_CONNECTED_SUBSCRIPTION from '../../graphql/family_connected.subscription'
-import FAMILY_CHANGED_SUBSCRIPTION from '../../graphql/family_changed.subscription'
 import CONFIRM_FAMILY from '../../graphql/confirm_family.mutation'
+import QueryFamilies from './QueryFamilies'
 
 class Family extends Component {
 
@@ -101,196 +90,139 @@ class Family extends Component {
 
   }
 
-  _subscribeChangedFamily = async (subscribeToMore, client) => {
-    this.unsubscribeHandle = subscribeToMore({
-      document: FAMILY_CHANGED_SUBSCRIPTION,
-      updateQuery: async (prev,{ subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        const { data } = await client.query({
-          query: GET_FAMILIES,
-          fetchPolicy:'network-only'
-        });
-        return Object.assign({},prev,data)
-      }
-    })
-  }
 
-  componentWillUnmount () {
-    // Unsibscribe subscription
-    this.unsubscribeHandle();
-  }
+  _renderConnectBtn=(who)=>(
+    <Button
+      style={styles.button}
+      onPress={() => this.connect(who)}
+    >
+      <Text>连接</Text>
+    </Button>
+  )
+
+  _renderConfirmBtn=(who)=>(
+    <Mutation 
+      mutation={CONFIRM_FAMILY}
+      update={(cache, { data: { confirmFamily } }) => {
+        const { family } = cache.readQuery({ query: GET_FAMILIES });
+        cache.writeQuery({
+          query: GET_FAMILIES,
+          data: { family: family.map((who) => { 
+            if(who.id===confirmFamily.id){
+              return Object.assign({},who,{status:confirmFamily.status})
+            }else{
+              return who
+            }
+            }) }
+        });
+      }}
+      >
+      {
+        confirmFamily=>(
+          <Button 
+        warning
+        onPress={()=>confirmFamily({ 
+          variables: { familyId: who.id },
+          optimisticResponse: {
+            __typename: "Mutation",
+            confirmFamily: {
+              __typename: "Family",
+              id: who.id,
+              relationship: who.relationship,
+              status: '3',
+              to: {
+                __typename: "Person",
+                id: who.to.id,
+                name: who.to.name,
+                user:null
+              },
+              from:{
+                __typename:'User',
+                id:Math.floor(Math.random() * 200).toString(),
+                name:who.from.name
+              },
+              spouse:{
+                __typename:'Family',
+                id:''
+              }
+            }
+          }
+        })}
+        >
+          <Text>确认</Text>
+        </Button>
+        )
+      }
+      </Mutation>
+  )
+
+  _renderLeft=(who,spouseId)=>(
+    <Avatar
+      size="xlarge"
+      rounded
+      title={getRelationshipName(who.relationship)}
+      onPress={() => this._onPressButton(who,spouseId)}
+      overlayContainerStyle={{ backgroundColor: 'red' }}
+      activeOpacity={0.7}
+    />
+  )
+
+  _renderBody=(who,spouseId)=>(
+    <Mutation
+      mutation={DELETE_FAMILY}
+      update={(cache, { data: { deleteFamily } }) => {
+        const { family } = cache.readQuery({ query: GET_FAMILIES });
+        cache.writeQuery({
+          query: GET_FAMILIES,
+          data: { family: family.filter((who) => { return who.id !== deleteFamily.id }) }
+        });
+      }}
+    >
+      {deleteFamily => (
+        <TouchableOpacity
+          onPress={() => this._onPressButton(who,spouseId)}
+          onLongPress={() => this.handleLongPress(who,deleteFamily)}
+        >
+          <Text style={styles.name}>{who.to.name}</Text>
+        </TouchableOpacity>
+      )}
+    </Mutation>
+  )
+
+  _renderAddBtn=(spouseId)=>(
+    <Button block
+      style={styles.addButton}
+      onPress={() => this.props.navigation.navigate("AddFamily", {
+        isAdd: true,
+        familyId: '',
+        name: '',
+        toId: '',
+        relationship: 'father',
+        spouseId:spouseId
+      })}
+    >
+      <Text>添加成员</Text>
+    </Button>
+  )
 
   render() {
     return (
-      <Query query={GET_FAMILIES} >
-        {({ loading, error, data, subscribeToMore ,client}) => {
-          if (loading) return <Spinner />;
-          if (error) return <Text>`Error! ${error.message}`</Text>;
-          console.log(data)
-          // if(data.family && data.family.filter(f=>f.status==="0").length>0) {
-          //   this._subscribeConnectedFamily(subscribeToMore, data)
-          // }
-          this._subscribeChangedFamily(subscribeToMore,client)
-          let spouseId = ''
-          if(data.family && data.family.length>0){
-            const wifeOrHusband = data.family.filter(f=>{return f.relationship==="wife"||f.relationship==="husband" })
-            if(wifeOrHusband.length>0){
-              spouseId = wifeOrHusband[0].id
-            }
-          }
-          
-          return (
-            <Container>
+      <Container>
               <Content>
-                <List>
-                  {
-                    data.family.length > 0 && data.family.map((who, index) => (
-                      <ListItem key={index}>
-                        <Left style={styles.left}>
-                          <Avatar
-                            size="xlarge"
-                            rounded
-                            title={getRelationshipName(who.relationship)}
-                            onPress={() => this._onPressButton(who,spouseId)}
-                            overlayContainerStyle={{ backgroundColor: 'red' }}
-                            activeOpacity={0.7}
-                          />
-                        </Left>
-                        <Body style={styles.center}>
-                          <Mutation
-                            mutation={DELETE_FAMILY}
-                            update={(cache, { data: { deleteFamily } }) => {
-                              const { family } = cache.readQuery({ query: GET_FAMILIES });
-                              cache.writeQuery({
-                                query: GET_FAMILIES,
-                                data: { family: family.filter((who) => { return who.id !== deleteFamily.id }) }
-                              });
-                            }}
-                          >
-                            {deleteFamily => (
-                              <TouchableOpacity
-                                onPress={() => this._onPressButton(who,spouseId)}
-                                onLongPress={() => this.handleLongPress(who,deleteFamily)}
-                              >
-                                <Text style={styles.name}>{who.to.name}</Text>
-                              </TouchableOpacity>
-                            )}
-                          </Mutation>
-                        </Body>
-
-                        <Right style={styles.right}>
-                          {
-                            (() => {
-                              switch (who.status) {
-                                case "0":
-                                  return (
-                                    <Button
-                                      style={styles.button}
-                                      onPress={() => this.connect(who)}
-                                    >
-                                      <Text>连接</Text>
-                                    </Button>)
-                                  break;
-                                case "1":
-                                  return (<Text>等待认证</Text>)
-                                  break;
-                                case '2':
-                                  return (
-                                    <Mutation 
-                                    mutation={CONFIRM_FAMILY}
-                                    update={(cache, { data: { confirmFamily } }) => {
-                                      const { family } = cache.readQuery({ query: GET_FAMILIES });
-                                      cache.writeQuery({
-                                        query: GET_FAMILIES,
-                                        data: { family: family.map((who) => { 
-                                          if(who.id===confirmFamily.id){
-                                            return Object.assign({},who,{status:confirmFamily.status})
-                                          }else{
-                                            return who
-                                          }
-                                         }) }
-                                      });
-                                    }}
-                                    >
-                                    {
-                                      confirmFamily=>(
-                                        <Button 
-                                      warning
-                                      onPress={()=>confirmFamily({ 
-                                        variables: { familyId: who.id },
-                                        optimisticResponse: {
-                                          __typename: "Mutation",
-                                          confirmFamily: {
-                                            __typename: "Family",
-                                            id: who.id,
-                                            relationship: who.relationship,
-                                            status: '3',
-                                            to: {
-                                              __typename: "Person",
-                                              id: who.to.id,
-                                              name: who.to.name,
-                                              user:null
-                                            },
-                                            from:{
-                                              __typename:'User',
-                                              id:Math.floor(Math.random() * 200).toString(),
-                                              name:who.from.name
-                                            },
-                                            spouse:{
-                                              __typename:Family,
-                                              id:''
-                                            }
-                                          }
-                                        }
-                                      })}
-                                      >
-                                        <Text>确认</Text>
-                                      </Button>
-                                      )
-                                    }
-                                      
-                                    </Mutation>
-                                    
-                                    )
-                                  break;
-                                case '3':
-                                  return (<Text>已连接</Text>)
-                                  break;
-                                default:
-                                  return null
-                              }
-                            })()
-                          }
-                        </Right>
-                      </ListItem>
-                    ))
-                  }
-                </List>
-                <Button block
-                  style={styles.addButton}
-                  onPress={() => this.props.navigation.navigate("AddFamily", {
-                    isAdd: true,
-                    familyId: '',
-                    name: '',
-                    toId: '',
-                    relationship: 'father',
-                    spouseId:spouseId
-                  })}
-                >
-                  <Text>添加成员</Text>
-                </Button>
+                <QueryFamilies
+                  _renderLeft={this._renderLeft}
+                  _renderBody={this._renderBody}
+                  _renderConnectBtn={this._renderConnectBtn}
+                  _renderConfirmBtn={this._renderConfirmBtn}
+                />
+                {this._renderAddBtn()}
               </Content>
-            </Container>
-          );
-        }}
-      </Query>
+      </Container>
     );
   }
 }
 
 export default withNavigation(Family)
-
-
 
 const styles = StyleSheet.create({
   name: {

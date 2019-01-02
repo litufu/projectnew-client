@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native'
-import { Avatar } from 'react-native-elements'
-import { Query, Mutation } from 'react-apollo'
+import { Mutation} from 'react-apollo'
 import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, Title, Spinner } from 'native-base';
 
 import { errorMessage } from '../../utils/tools'
-import { relationCompute, } from './settings'
 import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
 
 import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
 import ADD_CLASSGROUP from '../../graphql/add_classGroup.mutation'
 import CONFIRM_CLASSGROUP from '../../graphql/confirm_classGroup.mutation'
 import CLASSGROUP_CHANGED_SUBSCRIPTION from '../../graphql/classGroup_changed.subscription'
+import QureyClassList from './QureyClassList'
 
 export default class ClassList extends Component {
 
@@ -126,7 +125,7 @@ export default class ClassList extends Component {
   }
 
 
-  _renderButton = (classGroups, studentId, myId, schoolEduId, schoolEduName,refetch, networkStatus ) => {
+  renderButton = (classGroups, studentId, myId, schoolEduId, schoolEduName,refetch, networkStatus ) => {
     const myGroups = this._getMyGroups(classGroups, myId)
     console.log('myGroups', myGroups)
     const myWillGroups = this._getMyWillGroups(classGroups, myId)
@@ -159,17 +158,6 @@ export default class ClassList extends Component {
     return (this._renderAddBtn(schoolEduName, schoolEduId, studentId))
   }
 
-  _subscribeClassGroupChanged = async (subscribeToMore, refetch) => {
-    subscribeToMore({
-      document: CLASSGROUP_CHANGED_SUBSCRIPTION,
-      updateQuery: async (prev,{ subscriptionData }) => {
-        refetch()
-        return prev
-      
-      }
-    })
-  }
-
   render() {
     const schoolEdu = this.props.navigation.getParam('schoolEdu')
     const schoolEduName = this.props.navigation.getParam('schoolEduName', '')
@@ -192,55 +180,15 @@ export default class ClassList extends Component {
           </Right>
         </Header>
         <Content>
-          <Query
-            query={GET_CLASSGROUPS}
-            variables={{ schoolEduId: schoolEdu.id }}
-            
-          >
-            {
-              ({ loading, error, data, refetch , networkStatus,subscribeToMore ,client  }) => {
-                if (loading) return <Spinner />
-                if (error) return <Text>{errorMessage(error)}</Text>
-                this._subscribeClassGroupChanged(subscribeToMore,refetch)
-
-                return (
-                  <List>
-                    {
-                      schoolEdu.students.map(student => {
-                        return (
-                          <ListItem thumbnail key={student.id}>
-                            <Left>
-                              <Avatar
-                                medium
-                                overlayContainerStyle={{ backgroundColor: "blue" }}
-                                title="水滴"
-                                onPress={() => console.log("Works!")}
-                                activeOpacity={0.7}
-                              />
-                            </Left>
-                            <Body>
-                              <Text>{student.name}</Text>
-                            </Body>
-                            <Right>
-                              {
-                                student.id !== me.id && (
-                                  this._renderButton(data.classGroups, student.id, me.id, schoolEdu.id, schoolEduName,refetch, networkStatus )
-                                )
-                              }
-
-                            </Right>
-                          </ListItem>
-                        )
-                      })
-                    }
-                  </List>
-                )
-              }
-            }
-
-          </Query>
+          <QureyClassList 
+          schoolEdu={schoolEdu}
+          schoolEduName={schoolEduName}
+          me={me}
+          renderButton={this.renderButton}
+          />
         </Content>
       </Container>
     );
   }
 }
+

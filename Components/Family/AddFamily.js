@@ -19,7 +19,6 @@ import MODIFY_FAMILY from '../../graphql/modify_family.mutation'
 import GET_FAMILIES from '../../graphql/get_families.query'
 import GET_ME from '../../graphql/get_me.query'
 import Nav from '../Nav'
-import Family from '.';
 
 export default class AddFamily extends Component {
   state = {
