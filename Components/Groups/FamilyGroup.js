@@ -6,32 +6,10 @@ import { Container, Header, Content, List, ListItem, Text,Left,Icon,Button,Right
 import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 import GET_FAMILYGROUPS from '../../graphql/get_familyGroups.query'
 import REFRESH_FAMILYGROUPS from '../../graphql/refresh_familyGroups.mutation'
-import FAMILYGROUP_CHANGED_SUBSCRIPTION from '../../graphql/familyGroup_changed.subscription'
 import {errorMessage} from '../../utils/tools'
 import QueryFamilyGroups from './QueryFamilyGroups'
 
 class FamilyGroup extends Component {
-
-  // _subscribeFamilyGroupChanged = async (subscribeToMore, client) => {
-  //   this.unsubscribeHandle = subscribeToMore({
-  //     document: FAMILYGROUP_CHANGED_SUBSCRIPTION,
-  //     updateQuery: async (prev,{ subscriptionData }) => {
-  //       if (!subscriptionData.data) return prev;
-  //       const { data } = await client.query({
-  //         query: GET_FAMILYGROUPS,
-  //         fetchPolicy:'network-only'
-  //       });
-  //       console.log('prev',prev)
-  //       console.log('data',data)
-  //       return Object.assign({},prev,data)
-  //     }
-  //   })
-  // }
-
-  // componentWillUnmount () {
-  //   // Unsibscribe subscription
-  //   this.unsubscribeHandle();
-  // }
 
   render() {
     const me = this.props.navigation.getParam('me')

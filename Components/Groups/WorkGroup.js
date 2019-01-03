@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, List, ListItem, Text,Left,Icon,Button,Right,Body,Title } from 'native-base';
+import { Query ,Mutation} from "react-apollo";
+import {Alert} from 'react-native'
+import { Container, Header, Content, List, ListItem, Text,Left,Icon,Button,Right,Body,Title, Spinner,Badge } from 'native-base';
 
 import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
+import GET_FAMILYGROUPS from '../../graphql/get_familyGroups.query'
+import REFRESH_FAMILYGROUPS from '../../graphql/refresh_familyGroups.mutation'
+import {errorMessage} from '../../utils/tools'
+import QueryFamilyGroups from './QueryFamilyGroups'
 
-export default class ListExample extends Component {
+class FamilyGroup extends Component {
+
   render() {
+    const me = this.props.navigation.getParam('me')
     return (
       <Container>
-           <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
+        <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
         <Left>
             <Button 
             transparent
@@ -19,19 +27,38 @@ export default class ListExample extends Component {
           <Body>
             <Title style={{color:headerFontColor}}>同事群</Title>
           </Body>
-          <Right />
+          <Right >
+            <Button transparent><Text>功能说明</Text></Button>
+            </Right>
           </Header>
         <Content>
-          <List>
-            <ListItem>
-              <Text>2010-2012华建会计师事务所</Text>
-            </ListItem>
-            <ListItem>
-              <Text>2012-2017瑞华会计师事务所</Text>
-            </ListItem>
-          </List>
+          <Mutation 
+          mutation={REFRESH_FAMILYGROUPS}
+          update={(cache, { data: { refreshMyFamilyGroups } }) => {
+            cache.writeQuery({
+              query: GET_FAMILYGROUPS,
+              data: { getFamilyGroups: refreshMyFamilyGroups }
+            });
+          }}
+          onCompleted={()=>Alert.alert('刷新成功')}
+          >
+          {(refreshMyFamilyGroups,{loading,error}) => (
+              <Button block onPress={()=>refreshMyFamilyGroups()} disabled={loading?true:false}>
+                <Text>刷新家人列表</Text>
+                {loading && <Spinner />}
+                {error && Alert.alert(errorMessage(error))}
+              </Button>
+            )}
+
+          </Mutation>
+          <QueryFamilyGroups 
+          me={me}
+          navigation={this.props.navigation}
+          />
         </Content>
       </Container>
     );
   }
 }
+
+export default FamilyGroup

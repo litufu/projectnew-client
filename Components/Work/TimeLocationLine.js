@@ -7,7 +7,7 @@ import Timeline from 'react-native-timeline-feed'
 
 const workdescription =(work)=>{
   const department = work.department 
-  const post = work.post
+  const post = work.post.name
   const description = department +" : "+ post 
   return description
 }
@@ -20,9 +20,9 @@ const worktitle = (work) =>{
 
 const timeTodate = (startTime,endTime) =>{
   const startYear = (new Date(startTime)).getFullYear()
-  const startMonth = (new Date(startTime)).getMonth()
+  const startMonth = (new Date(startTime)).getMonth() + 1
   const endYear = (new Date(endTime)).getFullYear()
-  const endMonth = (new Date(endTime)).getMonth()
+  const endMonth = (new Date(endTime)).getMonth() +1
   if(endYear===9999){
       return `${startYear}.${startMonth}-至今`
   }
@@ -35,7 +35,6 @@ export default class TimeLocationLine extends Component {
 
   render() {
     const { works } = this.props;
-    
 
     const data = works.map(work=>{return {time:timeTodate(work.startTime,work.endTime),title:worktitle(work),description:workdescription(work)}})
     return (

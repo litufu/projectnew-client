@@ -8,7 +8,10 @@ const WORK_FRAGMENT = gql`
     startTime
     endTime
     department
-    post
+    post{
+      id
+      name
+    }
     company{
       ...CompanyFragment
     }

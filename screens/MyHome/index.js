@@ -71,7 +71,7 @@ export default class Home extends React.Component {
                                 iconName='road'
                                 iconType='font-awesome'
                                 color="yellow"
-                                handlePress={() => console.log('123')}
+                                handlePress={() => this.props.navigation.navigate('FindJob')}
                                 name="找工作"
                             />
                         </ListItem>

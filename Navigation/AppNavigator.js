@@ -7,6 +7,7 @@ import Home from '../screens/MyHome'
 import Profile from '../screens/Profile'
 
 // 引入home
+//1、高考
 import CollegeEntranceExam from '../Components/CollegeEntranceExam'
 import QueryExamBasicInfo from '../Components/CollegeEntranceExam/QueryExamBasicInfo'
 import UniversityAndMajor from '../Components/CollegeEntranceExam/UniversityAndMajor'
@@ -14,6 +15,8 @@ import SearchMajor from '../Components/CollegeEntranceExam/SearchMajor'
 import SelectUniversity from '../Components/CollegeEntranceExam/SelectUniversity'
 import QueryResult from '../Components/CollegeEntranceExam/QueryResult'
 import Applicants from '../Components/CollegeEntranceExam/Applicants'
+//  2、 找工作
+import FindJob from '../Components/FindJob'
 
 // 引入group
 import FamilyGroup from '../Components/Groups/FamilyGroup'
@@ -72,6 +75,9 @@ const HomeNavigation = createStackNavigator(
         Applicants:{
             screen:Applicants
         },
+        FindJob:{
+            screen:FindJob
+        }
        
     },
     {

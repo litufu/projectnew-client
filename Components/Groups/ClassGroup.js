@@ -17,9 +17,7 @@ export default class ClassGroup extends Component {
     }
     const primarySchoolIds = primarySchools.map(schoolEdu=>schoolEdu.school.id)
     const primarySchoolIdsSet = new Set(primarySchoolIds)
-    console.log('primarySchoolIdsSet',primarySchoolIdsSet)
     const sortedprimarySchools = primarySchools.sort((a,b)=>(new Date(a.startTime) - new Date(b.startTime)))
-    console.log('sortedprimarySchools',sortedprimarySchools)
     if(primarySchoolIdsSet.size===1){
       return [sortedprimarySchools[0]]
     }else {

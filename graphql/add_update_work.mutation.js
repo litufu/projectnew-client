@@ -1,20 +1,22 @@
 import gql from "graphql-tag";
 import WORK_FRAGMENT from './work.fragment'
 
-const ADD_WORK = gql`
-mutation addWork(
+const ADDORUPDATE_WORK = gql`
+mutation addOrUpdateWork(
   $companyName: String!,
   $startTime:String,
   $endTime:String,
   $department:String,
-  $post:String
+  $stationId:String
+  $updateId:String
 ){
-addWork(
+  addOrUpdateWork(
     companyName:$companyName,
     startTime:$startTime,
     endTime:$endTime,
     department:$department,
-    post:$post
+    stationId:$stationId
+    updateId:$updateId
   ){
     ...WorkFragment
   }
@@ -23,4 +25,4 @@ ${WORK_FRAGMENT}
 `;
 
 
-export default ADD_WORK;
+export default ADDORUPDATE_WORK;
