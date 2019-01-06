@@ -60,6 +60,10 @@ export default class Job extends React.Component {
             Alert.alert('未选择离职时间')
             return
         }
+        
+
+
+        
         if (companyName === "") {
             Alert.alert('未输入单位名称')
             return
@@ -145,7 +149,31 @@ export default class Job extends React.Component {
                 Alert.alert('在职状态仅能选择一家公司')
                 return
             }
+            if(me.works.filter(work=>{
+                if(((new Date(startTime)> new Date(work.startTime)) && (new Date(startTime) < new Date(work.endTime)))||
+                ((new Date(endTime)> new Date(work.startTime)) && (new Date(endTime) < new Date(work.endTime)))
+                ){
+                    return true
+                }
+                return false
+            }).length>0){
+                Alert.alert('同一时间只能选择一家公司工作')
+                return
+            }
+        }else{
+            if(me.works.filter(work=>new Date(work.endTime).getFullYear()!==9999).filter(work=>{
+                if(((new Date(startTime)> new Date(work.startTime)) && (new Date(startTime) < new Date(work.endTime)))||
+                ((new Date(endTime)> new Date(work.startTime)) && (new Date(endTime) < new Date(work.endTime)))
+                ){
+                    return true
+                }
+                return false
+            }).length>0){
+                Alert.alert('同一时间只能选择一家公司工作')
+                return
+            }
         }
+      
             
         addOrUpdateWork({
             variables: {
@@ -156,26 +184,26 @@ export default class Job extends React.Component {
                 stationId:selectStaionId,
                 updateId:this.props.updateId
             },
-            optimisticResponse: {
-                __typename: "Mutation",
-                addOrUpdateWork: {
-                    __typename: "Work",
-                    id: '123',
-                    startTime: startTime,
-                    endTime: endTime,
-                    department: department,
-                    post: {
-                        __typename:"Station",
-                        id:'123',
-                        name:post,
-                    },
-                    company: {
-                        __typename: "Company",
-                        id: "456",
-                        name: companyName
-                    }
-                }
-            },
+            // optimisticResponse: {
+            //     __typename: "Mutation",
+            //     addOrUpdateWork: {
+            //         __typename: "Work",
+            //         id: '123',
+            //         startTime: startTime,
+            //         endTime: endTime,
+            //         department: department,
+            //         post: {
+            //             __typename:"Station",
+            //             id:'123',
+            //             name:post,
+            //         },
+            //         company: {
+            //             __typename: "Company",
+            //             id: "456",
+            //             name: companyName
+            //         }
+            //     }
+            // },
             update: (cache, { data }) => {
                 const {me} = cache.readQuery({ query: GET_ME });
                 const updates = me.works.filter(work=>work.id===data.addOrUpdateWork.id)

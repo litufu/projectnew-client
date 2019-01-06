@@ -15,6 +15,9 @@ const WORK_FRAGMENT = gql`
     company{
       ...CompanyFragment
     }
+    worker{
+      id
+    }
   }
   ${COMPANY_FRAGMENT}
 `

@@ -9,7 +9,6 @@ import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonCo
 import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
 import ADD_CLASSGROUP from '../../graphql/add_classGroup.mutation'
 import CONFIRM_CLASSGROUP from '../../graphql/confirm_classGroup.mutation'
-import CLASSGROUP_CHANGED_SUBSCRIPTION from '../../graphql/classGroup_changed.subscription'
 import QureyClassList from './QureyClassList'
 
 export default class ClassList extends Component {

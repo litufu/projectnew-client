@@ -1,64 +1,54 @@
 import React, { Component } from 'react';
-import { Query ,Mutation} from "react-apollo";
-import {Alert} from 'react-native'
-import { Container, Header, Content, List, ListItem, Text,Left,Icon,Button,Right,Body,Title, Spinner,Badge } from 'native-base';
+import { Query, Mutation } from "react-apollo";
+import { Alert } from 'react-native'
+import { Container, Header, Content, List, ListItem, Text, Left, Icon, Button, Right, Body, Title, Spinner, Badge } from 'native-base';
 
-import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
-import GET_FAMILYGROUPS from '../../graphql/get_familyGroups.query'
-import REFRESH_FAMILYGROUPS from '../../graphql/refresh_familyGroups.mutation'
-import {errorMessage} from '../../utils/tools'
-import QueryFamilyGroups from './QueryFamilyGroups'
+import { errorMessage, timeTodate } from '../../utils/tools'
+import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
 
-class FamilyGroup extends Component {
+class WorkGroup extends Component {
 
   render() {
     const me = this.props.navigation.getParam('me')
+    const nowWorks = me.works.filter(work => new Date(work.endTime).getFullYear() === 9999)
     return (
       <Container>
-        <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
-        <Left>
-            <Button 
-            transparent
-            onPress={()=>this.props.navigation.goBack()}
+        <Header style={{ marginTop: statusBarHeight, backgroundColor: headerBackgroundColor }}>
+          <Left>
+            <Button
+              transparent
+              onPress={() => this.props.navigation.goBack()}
             >
-              <Icon name='arrow-back' style={{color:headerButtonColor}}/>
+              <Icon name='arrow-back' style={{ color: headerButtonColor }} />
             </Button>
-            </Left>
+          </Left>
           <Body>
-            <Title style={{color:headerFontColor}}>同事群</Title>
+            <Title style={{ color: headerFontColor }}>同事群</Title>
           </Body>
           <Right >
             <Button transparent><Text>功能说明</Text></Button>
-            </Right>
-          </Header>
+          </Right>
+        </Header>
         <Content>
-          <Mutation 
-          mutation={REFRESH_FAMILYGROUPS}
-          update={(cache, { data: { refreshMyFamilyGroups } }) => {
-            cache.writeQuery({
-              query: GET_FAMILYGROUPS,
-              data: { getFamilyGroups: refreshMyFamilyGroups }
-            });
-          }}
-          onCompleted={()=>Alert.alert('刷新成功')}
-          >
-          {(refreshMyFamilyGroups,{loading,error}) => (
-              <Button block onPress={()=>refreshMyFamilyGroups()} disabled={loading?true:false}>
-                <Text>刷新家人列表</Text>
-                {loading && <Spinner />}
-                {error && Alert.alert(errorMessage(error))}
-              </Button>
-            )}
-
-          </Mutation>
-          <QueryFamilyGroups 
-          me={me}
-          navigation={this.props.navigation}
-          />
+        <List>
+            {
+              me.works.filter(work => (new Date(work.endTime) - new Date(work.startTime)) > 24 * 60 * 60 * 180 * 1000).sort((a, b) => (new Date(a.startTime) - new Date(b.startTime))).map(work => (
+                <ListItem key={work.id} onPress={() => this.props.navigation.navigate('OldWorkList', { work, me })}>
+                  <Text>{timeTodate(work.startTime, work.endTime)} {work.company.name}</Text>
+                </ListItem>
+              ))
+            }
+            {
+              (nowWorks.length > 0) &&
+              <ListItem onPress={() => this.props.navigation.navigate('WorkContent', { work:nowWorks[0], me })}>
+                <Text>{nowWorks[0].company.name}</Text>
+              </ListItem>
+            }
+          </List>
         </Content>
       </Container>
     );
   }
 }
 
-export default FamilyGroup
+export default WorkGroup

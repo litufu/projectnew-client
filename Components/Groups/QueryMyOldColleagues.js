@@ -5,17 +5,17 @@ import { Avatar } from 'react-native-elements'
 import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, Title, Spinner } from 'native-base';
 
 import { errorMessage } from '../../utils/tools'
-import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
-import CLASSGROUP_CHANGED_SUBSCRIPTION from '../../graphql/classGroup_changed.subscription'
-import QueryStudents from './QueryStudents'
+import GET_MYOLDCOLLEAGUES from '../../graphql/get_myOldColleagues.query'
+import OLDCOLLEAGUE_CHANGED_SUBSCRIPTION from '../../graphql/oldColleague_changed.subscription'
+import QueryOldColleagues from './QueryOldColleagues'
 
 
-class QureyClassList extends Component {
+class QueryMyOldColleagues extends Component {
     componentDidMount() {
         const { data: { refetch, subscribeToMore } } = this.props;
 
         this.unsubscribe = subscribeToMore({
-            document: CLASSGROUP_CHANGED_SUBSCRIPTION,
+            document: OLDCOLLEAGUE_CHANGED_SUBSCRIPTION,
             updateQuery: (prev) => {
                 refetch();
                 return prev;
@@ -28,29 +28,30 @@ class QureyClassList extends Component {
     }
 
     render() {
-        const { data: { classGroups, loading, error } } = this.props;
-        const {schoolEdu,schoolEduName,me,renderButton} = this.props
+        const { data: { myOldColleagues, loading, error } } = this.props;
+        const {work,me,renderButton} = this.props
 
         if (loading) return <Spinner />
         if (error) return <Text>{errorMessage(error)}</Text>
 
         return (
-            <QueryStudents 
-            schoolEdu={schoolEdu}
-            schoolEduName={schoolEduName}
+            <QueryOldColleagues 
+            work={work}
             me={me}
             renderButton={renderButton}
-            classGroups={classGroups}
+            myOldColleagues={myOldColleagues}
             />
         )
     }
 }
 
 
-export default graphql(GET_CLASSGROUPS, {
-    options: (props) => ({
-        variables: {
-            schoolEduId: props.schoolEdu.id,
-        },
-    }),
-})(QureyClassList)
+export default graphql(
+    GET_MYOLDCOLLEAGUES, {
+        options: (props) => ({
+            variables: {
+                companyId: props.work.company.id,
+            },
+        }),
+    }
+)(QueryMyOldColleagues)

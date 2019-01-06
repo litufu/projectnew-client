@@ -1,21 +1,20 @@
-import { graphql } from 'react-apollo';
+import { graphql ,Query} from 'react-apollo';
 import React, { Component } from 'react';
 import { Avatar } from 'react-native-elements'
 
 import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, Title, Spinner } from 'native-base';
 
 import { errorMessage } from '../../utils/tools'
-import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
-import CLASSGROUP_CHANGED_SUBSCRIPTION from '../../graphql/classGroup_changed.subscription'
-import QueryStudents from './QueryStudents'
+import GET_WORKGROUPS from '../../graphql/get_workGroups.query'
+import WORKGROUP_CHANGED_SUBSCRIPTION from '../../graphql/workGroup_changed.subscription'
+import QueryColleagues from './QueryColleagues'
 
-
-class QureyClassList extends Component {
+class QueryWorkList extends Component {
     componentDidMount() {
         const { data: { refetch, subscribeToMore } } = this.props;
 
         this.unsubscribe = subscribeToMore({
-            document: CLASSGROUP_CHANGED_SUBSCRIPTION,
+            document: WORKGROUP_CHANGED_SUBSCRIPTION,
             updateQuery: (prev) => {
                 refetch();
                 return prev;
@@ -28,29 +27,30 @@ class QureyClassList extends Component {
     }
 
     render() {
-        const { data: { classGroups, loading, error } } = this.props;
-        const {schoolEdu,schoolEduName,me,renderButton} = this.props
+        const { data: { workGroups, loading, error } } = this.props;
+        const {work,me,renderButton} = this.props
+        console.log('work',work.worker.id)
+        console.log('me',me.id)
 
         if (loading) return <Spinner />
         if (error) return <Text>{errorMessage(error)}</Text>
 
         return (
-            <QueryStudents 
-            schoolEdu={schoolEdu}
-            schoolEduName={schoolEduName}
+            <QueryColleagues
+            work={work}
             me={me}
             renderButton={renderButton}
-            classGroups={classGroups}
+            workGroups={workGroups}
             />
         )
     }
 }
 
 
-export default graphql(GET_CLASSGROUPS, {
+export default graphql(GET_WORKGROUPS, {
     options: (props) => ({
         variables: {
-            schoolEduId: props.schoolEdu.id,
+            companyId: props.work.company.id,
         },
     }),
-})(QureyClassList)
+})(QueryWorkList)

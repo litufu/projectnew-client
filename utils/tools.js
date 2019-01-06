@@ -29,3 +29,14 @@ export const educations = {
   "HighToCollege":"成人高等教育-高中起点升本科",
   "HighToJunior":"成人高等教育-高中起点升专科"
 }
+
+export const timeTodate = (startTime,endTime) =>{
+  const startYear = (new Date(startTime)).getFullYear()
+  const startMonth = (new Date(startTime)).getMonth() + 1
+  const endYear = (new Date(endTime)).getFullYear()
+  const endMonth = (new Date(endTime)).getMonth() +1
+  if(endYear===9999){
+      return `${startYear}.${startMonth}-至今`
+  }
+  return `${startYear}.${startMonth}-${endYear}.${endMonth}`
+}

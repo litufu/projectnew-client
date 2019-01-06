@@ -28,6 +28,9 @@ import FamilyContent from '../Components/Groups/FamilyContent'
 import FamilyList from '../Components/Groups/FamilyList'
 import ClassContent from '../Components/Groups/ClassContent'
 import ClassList from '../Components/Groups/ClassList'
+import WorkContent from '../Components/Groups/WorkContent'
+import WorkList from '../Components/Groups/WorkList'
+import OldWorkList from '../Components/Groups/OldWorkList'
 
 
 // 引入profile
@@ -120,6 +123,15 @@ const GroupNavigation = createStackNavigator(
         },
         ClassList:{
             screen:ClassList,
+        },
+        WorkContent:{
+            screen:WorkContent,
+        },
+        WorkList:{
+            screen:WorkList,
+        },
+        OldWorkList:{
+            screen:OldWorkList,
         },
 
         

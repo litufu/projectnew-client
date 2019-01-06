@@ -4,6 +4,7 @@ import {
   View,
 } from 'react-native';
 import Timeline from 'react-native-timeline-feed'
+import {timeTodate} from '../../utils/tools'
 
 const workdescription =(work)=>{
   const department = work.department 
@@ -18,17 +19,6 @@ const worktitle = (work) =>{
   return title
 }
 
-const timeTodate = (startTime,endTime) =>{
-  const startYear = (new Date(startTime)).getFullYear()
-  const startMonth = (new Date(startTime)).getMonth() + 1
-  const endYear = (new Date(endTime)).getFullYear()
-  const endMonth = (new Date(endTime)).getMonth() +1
-  if(endYear===9999){
-      return `${startYear}.${startMonth}-至今`
-  }
-  return `${startYear}.${startMonth}-${endYear}.${endMonth}`
-}
-
 export default class TimeLocationLine extends Component {
 
   _keyExtractor = (item, index) => index.toString();
@@ -36,7 +26,7 @@ export default class TimeLocationLine extends Component {
   render() {
     const { works } = this.props;
 
-    const data = works.map(work=>{return {time:timeTodate(work.startTime,work.endTime),title:worktitle(work),description:workdescription(work)}})
+    const data = works.sort((a,b)=>(new Date(a.startTime)- new Date(b.startTime))).map(work=>{return {time:timeTodate(work.startTime,work.endTime),title:worktitle(work),description:workdescription(work)}})
     return (
       <View style={styles.container}>
         <Timeline 
