@@ -5,6 +5,8 @@ import WORK_FRAGMENT from './work.fragment'
 import EXAMBASICINFO_FRAGMENT from './exam_basicInfo.fragment'
 import REGSTATUS_FRAGMENT from './regStatus.fragment'
 import LOCATION_FRAGMENT from './Location.fragment'
+import LOCATIONGROUP_FRAGMENT from './locationGroup.fragment'
+
 const USER_FRAGMENT = gql`
   fragment UserFragment on User {
     id
@@ -32,6 +34,9 @@ const USER_FRAGMENT = gql`
     regStatus{
       ...RegStatusFragment
     }
+    locationGroups{
+      ...LocationGroupFragment
+    }
  }
  ${LOCATION_FRAGMENT}
  ${LOCATION_FRAGMENT}
@@ -39,5 +44,6 @@ const USER_FRAGMENT = gql`
  ${WORK_FRAGMENT}
  ${EXAMBASICINFO_FRAGMENT}
  ${REGSTATUS_FRAGMENT}
+ ${LOCATIONGROUP_FRAGMENT}
 `
 export default USER_FRAGMENT;

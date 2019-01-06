@@ -31,6 +31,8 @@ import ClassList from '../Components/Groups/ClassList'
 import WorkContent from '../Components/Groups/WorkContent'
 import WorkList from '../Components/Groups/WorkList'
 import OldWorkList from '../Components/Groups/OldWorkList'
+import LocationContent from '../Components/Groups/LocationContent'
+import LocationList from '../Components/Groups/LocationList'
 
 
 // 引入profile
@@ -133,6 +135,12 @@ const GroupNavigation = createStackNavigator(
         OldWorkList:{
             screen:OldWorkList,
         },
+        LocationContent:{
+            screen:LocationContent,
+        },
+        LocationList:{
+            screen:LocationList,
+        }
 
         
        
