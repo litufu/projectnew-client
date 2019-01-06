@@ -19,6 +19,7 @@ import {
   List,
   Picker,
   Text,
+  CheckBox,
 } from 'native-base'
 import {
   Alert,
@@ -34,9 +35,8 @@ import { Mutation } from "react-apollo";
 import Region from '../Region'
 import MyDatetime from '../MyDatetime'
 import display from '../../utils/displayplace'
-import {trim} from '../../utils/tools'
+import {trim,errorMessage} from '../../utils/tools'
 import ADD_BASICKINFO from '../../graphql/add_basicinfo.mutation'
-import GET_ME from '../../graphql/get_me.query'
 
 export default class Info extends Component{
 
@@ -45,18 +45,24 @@ export default class Info extends Component{
     gender:this.props.gender||'male',
     birthday:this.props.birthday.calendar?this.props.birthday:{calendar:"gregorian",date:''},
     place:this.props.birthplace.province?this.props.birthplace:{province:'',city:'',area:'',street:'',village:''},
+    residence:this.props.residence.province?this.props.residence:{province:'',city:'',area:'',street:'',village:''},
     editable:this.props.editable||false,
+    checked:false
   }
 
   handlePlace=(place)=>{
     this.setState({place:place})
   }
 
+  handleResidence=(place)=>{
+    this.setState({residence:place})
+  }
+
   handleDate=(date)=>{
     this.setState({birthday:Object.assign(this.state.birthday,{date:date})})
   }
 
-  validate=(name,gender,birthday,placeCode)=>{
+  validate=(name,gender,birthday,placeCode,residenceCode)=>{
     if(name===""){
       Alert.alert('姓名未填写')
       return false
@@ -78,23 +84,23 @@ export default class Info extends Component{
     　　Alert.alert(`生日选择错误 ${birthday.date}`)
       return false
     }
-    if(!placeCode.province){
-        Alert.alert(`未选择所在省 ${placeCode.province}`)
+    if(!placeCode.province || !residenceCode.province  ){
+        Alert.alert(`未选择所在省`)
         return false
     }
-    if (!placeCode.city){
+    if (!placeCode.city || !residenceCode.city ){
       Alert.alert('未选择所在市')
       return false
     }
-    if (!placeCode.area){
+    if (!placeCode.area || !residenceCode.area ){
       Alert.alert('未选择所在区')
       return false
     }
-    if (!placeCode.street){
+    if (!placeCode.street || !residenceCode.street ){
       Alert.alert('未选择所在乡镇')
       return false
     }
-    if (!placeCode.village){
+    if (!placeCode.village || !residenceCode.village ){
       Alert.alert('未选择所在村')
       return false
     }
@@ -105,7 +111,7 @@ export default class Info extends Component{
     if(!this.state.editable){
       return null
     }
-    const {name,gender,birthday,place} = this.state
+    const {name,gender,birthday,place,residence} = this.state
     const placeCode = {
       province:place.province.code,
       city:place.city.code,
@@ -113,20 +119,36 @@ export default class Info extends Component{
       street:place.street.code,
       village:place.village.code,
     }
-    const pass = this.validate(name,gender,birthday,placeCode)
+    const residenceCode = {
+      province:residence.province.code,
+      city:residence.city.code,
+      area:residence.area.code,
+      street:residence.street.code,
+      village:residence.village.code,
+    }
+    const pass = this.validate(name,gender,birthday,placeCode,residenceCode)
     if(!pass){
       return null
     }
     this.setState({editable:false})
     addBasicInfo({ 
-      variables: { name,gender,birthday,birthplace:placeCode }
+      variables: { name,gender,birthday,birthplace:placeCode,residence:residenceCode }
     })
+  }
+
+  _handleChecked=()=>{
+    const {checked,place} = this.state
+    if(!checked){
+      this.setState({residence:place})
+    }
+    this.setState({ checked: !checked })
   }
 
   render(){
 
-    const {name,gender,birthday,editable,place} = this.state
+    const {name,gender,birthday,editable,place,residence,checked} = this.state
     const displayPlace = display(place)
+    const displayResidence = display(residence)
 
     return(
       <Container>
@@ -228,24 +250,61 @@ export default class Info extends Component{
               )
             }
           </ListItem>
+          {
+            editable && (<ListItem>
+            <CheckBox
+                checked={checked}
+                onPress={this._handleChecked}
+            />
+            <Body style={{ paddingHorizontal: 10 }}>
+                <Text >居住地同出生地</Text>
+            </Body>
+            </ListItem>)
+          }
+          
+          <ListItem >
+            <Left >
+              <Text>居住地</Text>
+            </Left>
+            {
+              editable ? (
+                <View  style={styles.birthplace}>
+                  <Region
+                  handlePlace={this.handleResidence}
+                  place={residence}
+                  />
+                </View>
+              )
+              :(<View style={styles.birthplace}>
+                  <Text>{displayResidence}</Text>
+                </View>
+              )
+            }
+          </ListItem>
         </List>
           <View style={styles.buttonContainer}>
-           <Left  style={{flex:1,alignItems:"center"}}>
-             <TouchableOpacity
+           <Left  style={{flex:1,alignItems:"center" }}>
+           <View>
+             <Button
                style={styles.button}
-               onPress={()=>this.setState({editable:true})}>
+               onPress={()=>this.setState({editable:true})}
+               disabled={editable?true:false}
+               >
               <Text style={styles.whiteText }>编辑</Text>
-             </TouchableOpacity>
+             </Button>
+             </View>
            </Left>
-           <Right style={{flex:1,alignItems:"center"}}>
+           <Right style={{flex:1,alignItems:"center" }}>
             <Mutation mutation={ADD_BASICKINFO}>
             {(addBasicInfo, { loading, error }) => (
-              <TouchableOpacity
+              <Button
                 style={styles.button}
-                onPress={()=>this.handleSubmit(addBasicInfo)}>
+                onPress={()=>this.handleSubmit(addBasicInfo)}
+                disabled={editable?false:true}
+                >
                 <Text style={styles.whiteText }>{ loading ? '保存中...':'保存'}</Text>
-               {error && Alert.alert(error.message.replace(/GraphQL error:/g, ""))}
-              </TouchableOpacity>
+               {error && Alert.alert(errorMessage(error))}
+              </Button>
             )}
             </Mutation>
            </Right>
@@ -274,6 +333,7 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     alignItems:"center",
     margin:5,
+    paddingHorizontal:10,
   },
   button: {
     alignItems: 'center',

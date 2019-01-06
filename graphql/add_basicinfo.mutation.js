@@ -8,13 +8,15 @@ mutation AddBasicInfo(
   $gender: String!,
   $birthday:BirthdayInput!,
   $birthplace:PlaceInput!
+  $residence:PlaceInput!
 
 ){
   addBasicInfo(
     name:$name,
     gender:$gender,
     birthday:$birthday,
-    birthplace:$birthplace
+    birthplace:$birthplace,
+    residence:$residence
   ){
     ...UserFragment
   }
