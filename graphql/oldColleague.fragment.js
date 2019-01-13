@@ -9,6 +9,11 @@ const OLDCOLLEAGUE_FRAGMENT = gql`
     }
     to{
         id
+        name
+        avatar{
+            id
+            url
+        }
     }
     company{
         id

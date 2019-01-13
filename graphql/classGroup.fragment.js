@@ -11,6 +11,12 @@ const CLASSGROUP_FRAGMENT = gql`
         id
         student{
             id
+            name
+            avatar{
+                id
+                url
+            }
+
         }
         status
     }

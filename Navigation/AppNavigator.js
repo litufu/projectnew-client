@@ -34,7 +34,6 @@ import OldWorkList from '../Components/Groups/OldWorkList'
 import LocationContent from '../Components/Groups/LocationContent'
 import LocationList from '../Components/Groups/LocationList'
 
-
 // 引入profile
 import UserProfile from '../Components/UserProfile'
 import ChangePassword from '../Components/ChangePassword'
@@ -141,7 +140,8 @@ const GroupNavigation = createStackNavigator(
         },
         LocationList:{
             screen:LocationList,
-        }
+        },
+       
     },
     {
         initialRouteName:"Group",

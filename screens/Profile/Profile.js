@@ -46,7 +46,7 @@ class SettingsScreen extends Component {
     return (
       <ScrollView style={styles.scroll}>
         <TouchableNativeFeedback
-          onPress={() => this.props.navigation.navigate('UserProfile',{id:me.id,me})}
+          onPress={() => this.props.navigation.navigate('UserProfile',{id:me.id,me,come:"Profile"})}
         >
           <View style={styles.userRow}  >
             <View style={styles.userImage}>

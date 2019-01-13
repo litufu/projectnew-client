@@ -17,6 +17,8 @@ import { Icon, List, ListItem } from 'react-native-elements';
 import { USER, FACEBOOK_LIST, SLACK_LIST, GENERIC_LIST, SCREEN_WIDTH, SCREEN_HEIGHT, DEFAULT_WINDOW_MULTIPLIER, DEFAULT_NAVBAR_HEIGHT } from './constants';
 import styles from './styles';
 import POST_PHOTO from '../../../graphql/post_photo.mutation'
+import GET_ME from '../../../graphql/get_me.query'
+import GET_USERINFO from '../../../graphql/get_userInfo.query'
 import GET_PHOTO from '../../../graphql/get_photo.query'
 
 const ScrollViewPropTypes = ScrollView.propTypes;
@@ -32,47 +34,47 @@ export default class ParallaxScrollView extends Component {
     };
   }
 
-  queryPhoto = (userImage, USER) => (
-    <Query
-      query={GET_PHOTO}
-      variables={{ 'name': this.props.data.userInfo.avatar.name }}
-      onCompleted={(data)=>this.setState({url:data.photo.url})}
-    >
-      {
-        ({ loading, error, data, client }) => {
-          if (loading) return <Text>loading</Text>
-          if (error) return <Text>error</Text>
-          if (this.props.me.id !== this.props.data.userInfo.id) {
-            return (
-              <TouchableNativeFeedback
-                style={styles.avatarView}
-              >
-                <Image source={{ uri: data.photo.url || USER.image }} style={{ height: 120, width: 120, borderRadius: 60 }} />
-              </TouchableNativeFeedback>
-            )
-          }
-          return (
-            <View>
-              {this.uploadAvatar(data.photo.url, userImage, USER, client)}
-            </View>
-          )
-        }
-      }
-    </Query>
-  )
+  // queryPhoto = (userImage, USER) => (
+  //   <Query
+  //     query={GET_PHOTO}
+  //     variables={{ 'id': this.props.data.userInfo.avatar.id }}
+  //     // onCompleted={(data) => this.setState({ url: data.photo.url })}
+  //   >
+  //     {
+  //       ({ loading, error, data, client }) => {
+  //         if (loading) return <Text>loading</Text>
+  //         if (error) return <Text>error</Text>
+  //         if (this.props.me.id !== this.props.data.userInfo.id) {
+  //           return (
+  //             <TouchableNativeFeedback
+  //               style={styles.avatarView}
+  //             >
+  //               <Image source={{ uri: data.photo.url || USER.image }} style={{ height: 120, width: 120, borderRadius: 60 }} />
+  //             </TouchableNativeFeedback>
+  //           )
+  //         }
+  //         return (
+  //           <View>
+  //             {this.uploadAvatar(data.photo, userImage, USER)}
+  //           </View>
+  //         )
+  //       }
+  //     }
+  //   </Query>
+  // )
 
-  uploadAvatar = (url, userImage, USER) => (
+  uploadAvatar = () => (
     <Mutation
       mutation={POST_PHOTO}
-      onCompleted={async (uploadData) => {
-        const { data } = await client.query({
-          query: GET_PHOTO,
-          variables: { name: uploadData.postPhoto.name },
-          fetchPolicy: "network-only",
-        })
-        this.setState({ url: data.photo.url })
-      }
-      }
+      
+      // onCompleted={async (uploadData) => {
+      //   const { data } = await client.query({
+      //     query: GET_PHOTO,
+      //     variables: { name: uploadData.postPhoto.name },
+      //     fetchPolicy: "network-only",
+      //   })
+      //   this.setState({ url: data.photo.url })
+      // }}
     >
       {
         (postPhoto, { loading, error, data }) => {
@@ -99,9 +101,9 @@ export default class ParallaxScrollView extends Component {
           return (
             <TouchableNativeFeedback
               style={styles.avatarView}
-              onPress={() => this.onPressAvatar(postPhoto)}
+              onPress={() => this.onPressAvatar(postPhoto,this.props.data.userInfo.avatar)}
             >
-              <Image source={{ uri: this.state.url || USER.image }} style={{ height: 120, width: 120, borderRadius: 60 }} />
+              <Image source={{ uri: this.props.data.userInfo.avatar.url || USER.image }} style={{ height: 120, width: 120, borderRadius: 60 }} />
             </TouchableNativeFeedback>
           )
         }
@@ -109,7 +111,7 @@ export default class ParallaxScrollView extends Component {
     </Mutation>
   )
 
-  _pickImage = async (postPhoto) => {
+  _pickImage = async (postPhoto,photo) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [1, 1],
@@ -117,18 +119,47 @@ export default class ParallaxScrollView extends Component {
     this.setState({ image: result.uri })
     if (!result.cancelled) {
       postPhoto({
-        variables: { uri: result.uri }
+        variables: { uri: result.uri },
+        optimisticResponse: {
+          __typename: "Mutation",
+          postPhoto: {
+            id: photo.id,
+            __typename: "Photo",
+            name: photo.name,
+            url:result.uri,
+          }
+        },
+        update: (cache, { data: { postPhoto } }) => {
+          // Read the data from our cache for this query.
+          const data = cache.readQuery({ query: GET_USERINFO,variables:{id:this.props.data.userInfo.id} });
+          // Add our comment from the mutation to the end.
+          const newData ={
+            'userInfo':{
+              ...data.userInfo,
+              avatar:{
+                __typename:'Photo',
+                id:this.props.data.userInfo.avatar.id,
+                name:postPhoto.name,
+                url:`https://gewu-avatar.oss-cn-hangzhou.aliyuncs.com/images/${postPhoto.name}`
+              }
+            }
+          } 
+          console.log('oldData',data)
+          console.log('newData',newData)
+          // Write our data back to the cache.
+          cache.writeQuery({ query: GET_USERINFO,variables:{id:this.props.data.userInfo.avatar.id} ,data:newData });
+        }
       })
     }
   };
 
-  onPressAvatar = (postPhoto) => {
+  onPressAvatar = (postPhoto,photo) => {
     const { data, me } = this.props
     if (data.userInfo.id !== me.id) {
       return
     } else {
       let items = [
-        { title: '从相册选取照片', onPress: () => this._pickImage(postPhoto) },
+        { title: '从相册选取照片', onPress: () => this._pickImage(postPhoto,photo) },
       ];
       let cancelItem = { title: '取消' };
       ActionSheet.show(items, cancelItem);
@@ -179,7 +210,6 @@ export default class ParallaxScrollView extends Component {
 
   renderHeaderView() {
     const { windowHeight, backgroundSource, userImage, userName, userTitle, navBarHeight, onPressAvatar } = this.props;
-    console.log(userImage)
     const { scrollY } = this.state;
     if (!windowHeight || !backgroundSource) {
       return null;
@@ -201,13 +231,17 @@ export default class ParallaxScrollView extends Component {
           {this.props.headerView ||
             (
               <View>
-                {this.queryPhoto(userImage, USER)}
-                {/* <TouchableNativeFeedback
+                {this.props.me.id===this.props.data.userInfo.id 
+                ? this.uploadAvatar()
+                :(
+                  <TouchableNativeFeedback
                   style={styles.avatarView}
-                  // onPress={onPressAvatar}
                 >
-                  <Image source={{uri: userImage || USER.image}} style={{height: 120, width: 120, borderRadius: 60}} />
-                </TouchableNativeFeedback> */}
+                  <Image source={{uri: (this.props.data.userInfo.avatar && this.props.data.userInfo.avatar.url) || USER.image}} style={{height: 120, width: 120, borderRadius: 60}} />
+                </TouchableNativeFeedback>
+                )
+                }
+               
                 <View style={{ paddingVertical: 10 }}>
                   <Text style={{ textAlign: 'center', fontSize: 22, color: 'black', paddingBottom: 5 }}>{userName || USER.name}</Text>
                   <Text style={{ textAlign: 'center', fontSize: 17, color: 'black', paddingBottom: 5 }}>{userTitle || USER.title}</Text>

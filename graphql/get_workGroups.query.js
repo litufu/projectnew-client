@@ -4,7 +4,7 @@ import WORKGROUP_FRAGMENT from './workGroup.fragment'
 
 const GET_WORKGROUPS = gql`
 query WorkGroups(
-    $companyId: String!,
+    $companyId: String,
 ) {
 workGroups(
     companyId: $companyId,

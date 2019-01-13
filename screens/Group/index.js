@@ -42,13 +42,15 @@ export default class Group extends React.Component{
               active={this.state.selected===3}
               onPress={()=>this.setState({selected:3})} 
               last
-
               >
               <Text>消息</Text>
               </Button>
             </Segment>
           </Body>
           <Right>
+            <Button transparent>
+              <Icon name="search" />
+            </Button>
           </Right>
         </Header>
         <Query query={GET_ME}>
@@ -60,7 +62,7 @@ export default class Group extends React.Component{
                         <Content padder>
                         {this.state.selected===1 &&  <Groups me={me}/>}
                         {this.state.selected===2 &&  <Contacts me={me}/>}
-                        {this.state.selected===2 &&  <Messages me={me}/>}
+                        {this.state.selected===3 &&  <Messages me={me}/>}
                     </Content>
                       )
                   }

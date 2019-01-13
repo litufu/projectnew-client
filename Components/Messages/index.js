@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View ,ScrollView,StyleSheet,StatusBar} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-export default class Groups extends Component {
+export default class Messages extends Component {
   render() {
     return (
       <View style={styles.container}>

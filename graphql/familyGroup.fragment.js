@@ -29,7 +29,12 @@ const FAMILYGROUP_FRAGMENT = gql`
         name
         user{
             id
+            name
             gender
+            avatar{
+                id
+                url
+            }
         }
         }
         from{

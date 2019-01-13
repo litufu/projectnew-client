@@ -4,7 +4,7 @@ import OLDCOLLEAGUE_FRAGMENT from './oldColleague.fragment'
 
 const GET_MYOLDCOLLEAGUES = gql`
 query MyOldColleagues(
-    $companyId: String!,
+    $companyId: String,
 ) {
 myOldColleagues(
   companyId:$companyId,

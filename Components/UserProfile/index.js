@@ -77,7 +77,8 @@ class UserProfile extends React.Component {
   render() {
     const id = this.props.navigation.getParam('id', '');
     const me = this.props.navigation.getParam('me', '');
-    
+    const come = this.props.navigation.getParam('come', '');
+
     if(!id){return <View></View>}
     return (
       <Query query={GET_USERINFO} variables={{ id }}>
@@ -90,16 +91,14 @@ class UserProfile extends React.Component {
               <ParallaxScrollView
                 style={{ marginTop: statusBarHeight }}
                 windowHeight={SCREEN_HEIGHT * 0.4}
-                // backgroundSource={{uri:data.userInfo.avatar.url}}
                 backgroundSource={{uri:'http://i.imgur.com/ao1nxlD.png'}}
                 navBarTitle={data.userInfo.name}
                 navBarTitleColor='black'
                 navBarColor='white'
                 userName={data.userInfo.name}
                 userTitle={data.userInfo.username}
-                userImage='http://i.imgur.com/ao1nxlD.png'
                 leftIcon={{ name: 'keyboard-backspace', color: 'blue', size: 30, type: 'material-community' }}
-                leftIconOnPress={() => this.props.navigation.goBack()}
+                leftIconOnPress={() => this.props.navigation.navigate(come)}
                 data={data}
                 me={me}
               >
