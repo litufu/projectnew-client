@@ -64,11 +64,6 @@ export default class ParallaxScrollView extends Component {
   uploadAvatar = (url, userImage, USER) => (
     <Mutation
       mutation={POST_PHOTO}
-      refetchQueries={({ data }) => {
-        console.log('refetchdata,', data)
-        return [{ query: GET_PHOTO, variables: { 'name': data.postPhoto.name } }]
-      }
-      }
       onCompleted={async (uploadData) => {
         const { data } = await client.query({
           query: GET_PHOTO,
