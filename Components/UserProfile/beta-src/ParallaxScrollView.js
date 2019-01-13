@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Query,Mutation} from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import {
   Text,
   View,
@@ -9,7 +9,7 @@ import {
   TouchableNativeFeedback,
   Image
 } from 'react-native';
-import {ActionSheet} from 'teaset'
+import { ActionSheet } from 'teaset'
 import { ImagePicker } from 'expo';
 import { Icon, List, ListItem } from 'react-native-elements';
 // import {Image} from "react-native-expo-image-cache";
@@ -27,77 +27,91 @@ export default class ParallaxScrollView extends Component {
 
     this.state = {
       scrollY: new Animated.Value(0),
-      image:null
+      image: null,
+      url: null,
     };
   }
 
-  queryPhoto=(userImage,USER)=>(
+  queryPhoto = (userImage, USER) => (
     <Query
-    query={GET_PHOTO}
-    variables={{'name':this.props.data.userInfo.avatar.name}}
+      query={GET_PHOTO}
+      variables={{ 'name': this.props.data.userInfo.avatar.name }}
+      onCompleted={(data)=>this.setState({url:data.photo.url})}
     >
       {
-        ({loading,error,data})=>{
-          if(loading) return <Text>loading</Text>
-          if(error) return <Text>error</Text>
-
-          return(
-            <View>
-              {this.uploadAvatar(data.photo.url,userImage,USER)}
-              </View>
-          )
-          }
-      }
-      </Query>
-  )
-
-  uploadAvatar=(url,userImage,USER)=>(
-    <Mutation
-          mutation={POST_PHOTO}
-          refetchQueries={({data})=>{
-            console.log('refetchdata,',data)
-            return [{ query: GET_PHOTO, variables: {'name':data.postPhoto.name}}] 
-          }
-           }
-          awaitRefetchQueries={true}
-          onCompleted={data => console.log(data)}
-        >
-          {
-            (postPhoto, { loading, error, data }) => {
-              if (loading) return <Text>loading</Text>
-              if (error) return <Text>{error.message}</Text>
-
-              if (data) {
-                console.log(data.postPhoto.url)
-                console.log(data.postPhoto.name)
-                console.log(this.state.image)
-                const xhr = new XMLHttpRequest()
-                xhr.open('PUT', data.postPhoto.url)
-                xhr.onreadystatechange = function () {
-                  if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                      console.log('Image successfully uploaded to oss')
-                    } else {
-                      console.log('Error while sending the image to oss')
-                    }
-                  }
-                }
-                xhr.setRequestHeader('Content-Type', 'image/jpeg')
-                xhr.send({ uri: this.state.image, type: 'image/jpeg', name: data.postPhoto.name })
-
-              }
-
-              return (
-                <TouchableNativeFeedback
+        ({ loading, error, data, client }) => {
+          if (loading) return <Text>loading</Text>
+          if (error) return <Text>error</Text>
+          if (this.props.me.id !== this.props.data.userInfo.id) {
+            return (
+              <TouchableNativeFeedback
                 style={styles.avatarView}
-                onPress={()=>this.onPressAvatar(postPhoto)}
               >
-                <Image source={{uri:  url||USER.image}} style={{height: 120, width: 120, borderRadius: 60}} /> 
+                <Image source={{ uri: data.photo.url || USER.image }} style={{ height: 120, width: 120, borderRadius: 60 }} />
               </TouchableNativeFeedback>
             )
-            }
           }
-        </Mutation>
+          return (
+            <View>
+              {this.uploadAvatar(data.photo.url, userImage, USER, client)}
+            </View>
+          )
+        }
+      }
+    </Query>
+  )
+
+  uploadAvatar = (url, userImage, USER) => (
+    <Mutation
+      mutation={POST_PHOTO}
+      refetchQueries={({ data }) => {
+        console.log('refetchdata,', data)
+        return [{ query: GET_PHOTO, variables: { 'name': data.postPhoto.name } }]
+      }
+      }
+      onCompleted={async (uploadData) => {
+        const { data } = await client.query({
+          query: GET_PHOTO,
+          variables: { name: uploadData.postPhoto.name },
+          fetchPolicy: "network-only",
+        })
+        this.setState({ url: data.photo.url })
+      }
+      }
+    >
+      {
+        (postPhoto, { loading, error, data }) => {
+          if (loading) return <Text>loading</Text>
+          if (error) return <Text>{error.message}</Text>
+
+          if (data) {
+            const xhr = new XMLHttpRequest()
+            xhr.open('PUT', data.postPhoto.url)
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  console.log('Image successfully uploaded to oss')
+                } else {
+                  console.log('Error while sending the image to oss')
+                }
+              }
+            }
+            xhr.setRequestHeader('Content-Type', 'image/jpeg')
+            xhr.send({ uri: this.state.image, type: 'image/jpeg', name: data.postPhoto.name })
+
+          }
+
+          return (
+            <TouchableNativeFeedback
+              style={styles.avatarView}
+              onPress={() => this.onPressAvatar(postPhoto)}
+            >
+              <Image source={{ uri: this.state.url || USER.image }} style={{ height: 120, width: 120, borderRadius: 60 }} />
+            </TouchableNativeFeedback>
+          )
+        }
+      }
+    </Mutation>
   )
 
   _pickImage = async (postPhoto) => {
@@ -105,22 +119,23 @@ export default class ParallaxScrollView extends Component {
       allowsEditing: true,
       aspect: [1, 1],
     });
-    this.setState({image:result.uri})
+    this.setState({ image: result.uri })
     if (!result.cancelled) {
-      postPhoto({ 
-        variables: { uri: result.uri } })
+      postPhoto({
+        variables: { uri: result.uri }
+      })
     }
   };
 
-  onPressAvatar=(postPhoto)=>{
-    const {data,me} = this.props
-    if(data.userInfo.id!==me.id){
+  onPressAvatar = (postPhoto) => {
+    const { data, me } = this.props
+    if (data.userInfo.id !== me.id) {
       return
-    }else{
+    } else {
       let items = [
-        {title: '从相册选取照片', onPress: () =>this._pickImage(postPhoto)},
+        { title: '从相册选取照片', onPress: () => this._pickImage(postPhoto) },
       ];
-      let cancelItem = {title: '取消'};
+      let cancelItem = { title: '取消' };
       ActionSheet.show(items, cancelItem);
     }
   }
@@ -168,7 +183,7 @@ export default class ParallaxScrollView extends Component {
   }
 
   renderHeaderView() {
-    const { windowHeight, backgroundSource, userImage, userName, userTitle, navBarHeight ,onPressAvatar} = this.props;
+    const { windowHeight, backgroundSource, userImage, userName, userTitle, navBarHeight, onPressAvatar } = this.props;
     console.log(userImage)
     const { scrollY } = this.state;
     if (!windowHeight || !backgroundSource) {
@@ -187,20 +202,20 @@ export default class ParallaxScrollView extends Component {
           })
         }}
       >
-        <View style={{height: newWindowHeight, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ height: newWindowHeight, justifyContent: 'center', alignItems: 'center' }}>
           {this.props.headerView ||
             (
               <View>
-                {this.queryPhoto(userImage,USER)}
+                {this.queryPhoto(userImage, USER)}
                 {/* <TouchableNativeFeedback
                   style={styles.avatarView}
                   // onPress={onPressAvatar}
                 >
                   <Image source={{uri: userImage || USER.image}} style={{height: 120, width: 120, borderRadius: 60}} />
                 </TouchableNativeFeedback> */}
-                <View style={{paddingVertical: 10}}>
-                  <Text style={{textAlign: 'center', fontSize: 22, color: 'black', paddingBottom: 5}}>{userName || USER.name}</Text>
-                  <Text style={{textAlign: 'center', fontSize: 17, color: 'black', paddingBottom: 5}}>{userTitle || USER.title}</Text>
+                <View style={{ paddingVertical: 10 }}>
+                  <Text style={{ textAlign: 'center', fontSize: 22, color: 'black', paddingBottom: 5 }}>{userName || USER.name}</Text>
+                  <Text style={{ textAlign: 'center', fontSize: 17, color: 'black', paddingBottom: 5 }}>{userTitle || USER.title}</Text>
                 </View>
               </View>
             )
@@ -227,9 +242,9 @@ export default class ParallaxScrollView extends Component {
         }}
       >
         {navBarTitleComponent ||
-        <Text style={{ fontSize: 18, fontWeight: '600', color: navBarTitleColor || 'white' }}>
-          {this.props.navBarTitle || USER.name}
-        </Text>}
+          <Text style={{ fontSize: 18, fontWeight: '600', color: navBarTitleColor || 'white' }}>
+            {this.props.navBarTitle || USER.name}
+          </Text>}
       </Animated.View>
     );
   }
@@ -246,39 +261,37 @@ export default class ParallaxScrollView extends Component {
 
     const newNavBarHeight = navBarHeight || DEFAULT_NAVBAR_HEIGHT;
 
-    if(this.props.navBarView)
-    {
-        return (
-          <Animated.View
-            style={{
-              height: newNavBarHeight,
-              width: SCREEN_WIDTH,
-              flexDirection: 'row',
-              backgroundColor: scrollY.interpolate({
-                inputRange: [-windowHeight, windowHeight * DEFAULT_WINDOW_MULTIPLIER, windowHeight * 0.8],
-                outputRange: ['transparent', 'transparent', navBarColor || 'rgba(0, 0, 0, 1.0)'],
-                extrapolate: 'clamp'
-              })
-            }}
-          >
+    if (this.props.navBarView) {
+      return (
+        <Animated.View
+          style={{
+            height: newNavBarHeight,
+            width: SCREEN_WIDTH,
+            flexDirection: 'row',
+            backgroundColor: scrollY.interpolate({
+              inputRange: [-windowHeight, windowHeight * DEFAULT_WINDOW_MULTIPLIER, windowHeight * 0.8],
+              outputRange: ['transparent', 'transparent', navBarColor || 'rgba(0, 0, 0, 1.0)'],
+              extrapolate: 'clamp'
+            })
+          }}
+        >
           {this.props.navBarView}
-          </Animated.View>
-        );
+        </Animated.View>
+      );
     }
-    else
-    {
-        return (
-          <Animated.View
-            style={{
-              height: newNavBarHeight,
-              width: SCREEN_WIDTH,
-              flexDirection: 'row',
-              backgroundColor: scrollY.interpolate({
-                inputRange: [-windowHeight, windowHeight * DEFAULT_WINDOW_MULTIPLIER, windowHeight * 0.8],
-                outputRange: ['transparent', 'transparent', navBarColor || 'rgba(0, 0, 0, 1.0)']
-              })
-            }}
-          >
+    else {
+      return (
+        <Animated.View
+          style={{
+            height: newNavBarHeight,
+            width: SCREEN_WIDTH,
+            flexDirection: 'row',
+            backgroundColor: scrollY.interpolate({
+              inputRange: [-windowHeight, windowHeight * DEFAULT_WINDOW_MULTIPLIER, windowHeight * 0.8],
+              outputRange: ['transparent', 'transparent', navBarColor || 'rgba(0, 0, 0, 1.0)']
+            })
+          }}
+        >
           {leftIcon &&
             <View
               style={{
@@ -297,16 +310,16 @@ export default class ParallaxScrollView extends Component {
               />
             </View>
           }
-            <View
-              style={{
-                flex: 5,
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignSelf: 'center'
-              }}
-            >
-              {this.renderNavBarTitle()}
-            </View>
+          <View
+            style={{
+              flex: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center'
+            }}
+          >
+            {this.renderNavBarTitle()}
+          </View>
           {rightIcon &&
             <View
               style={{
@@ -325,7 +338,7 @@ export default class ParallaxScrollView extends Component {
               />
             </View>
           }
-             {!rightIcon &&
+          {!rightIcon &&
             <View
               style={{
                 flex: 1,
@@ -333,11 +346,11 @@ export default class ParallaxScrollView extends Component {
                 alignItems: 'center'
               }}
             >
-            <Text></Text>
+              <Text></Text>
             </View>
           }
-          </Animated.View>
-        );
+        </Animated.View>
+      );
     }
   }
 
@@ -345,46 +358,46 @@ export default class ParallaxScrollView extends Component {
     return (
       <View style={styles.listView}>
         <List>
-        {
-          FACEBOOK_LIST.map((item, index) => (
-            <ListItem
-              key={index}
-              onPress={() => console.log('List item pressed')}
-              title={item.title}
-              leftIcon={{name: item.icon}} />
-          ))
-        }
+          {
+            FACEBOOK_LIST.map((item, index) => (
+              <ListItem
+                key={index}
+                onPress={() => console.log('List item pressed')}
+                title={item.title}
+                leftIcon={{ name: item.icon }} />
+            ))
+          }
         </List>
         <List>
-        {
-          SLACK_LIST.map((item, index) => (
-            <ListItem
-              key={index}
-              onPress={() => console.log('List item pressed')}
-              title={item.title}
-              leftIcon={{name: item.icon}} />
-          ))
-        }
+          {
+            SLACK_LIST.map((item, index) => (
+              <ListItem
+                key={index}
+                onPress={() => console.log('List item pressed')}
+                title={item.title}
+                leftIcon={{ name: item.icon }} />
+            ))
+          }
         </List>
         <List>
-        {
-          GENERIC_LIST.map((item, index) => (
-            <ListItem
-              key={index}
-              onPress={() => console.log('List item pressed')}
-              title={item.title}
-              leftIcon={{name: item.icon}} />
-          ))
-        }
+          {
+            GENERIC_LIST.map((item, index) => (
+              <ListItem
+                key={index}
+                onPress={() => console.log('List item pressed')}
+                title={item.title}
+                leftIcon={{ name: item.icon }} />
+            ))
+          }
         </List>
-        <List containerStyle={{marginBottom: 15}}>
+        <List containerStyle={{ marginBottom: 15 }}>
           <ListItem
             key={1}
             hideChevron={true}
             onPress={() => console.log('Logout Pressed')}
             title='LOGOUT'
             titleStyle={styles.logoutText}
-            icon={{name: ''}} />
+            icon={{ name: '' }} />
         </List>
       </View>
     );
@@ -419,7 +432,7 @@ export default class ParallaxScrollView extends Component {
 }
 
 ParallaxScrollView.defaultProps = {
-  backgroundSource: {uri: 'http://i.imgur.com/6Iej2c3.png'},
+  backgroundSource: { uri: 'http://i.imgur.com/6Iej2c3.png' },
   windowHeight: SCREEN_HEIGHT * DEFAULT_WINDOW_MULTIPLIER,
   leftIconOnPress: () => console.log('Left icon pressed'),
   rightIconOnPress: () => console.log('Right icon pressed')
