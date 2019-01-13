@@ -10,7 +10,11 @@ locationGroupUsers(
         ) {
       id
       name
-      avatar
+      avatar{
+        id
+        name
+        url
+      }
     }
   }
 `;

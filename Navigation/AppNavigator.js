@@ -36,6 +36,7 @@ import LocationList from '../Components/Groups/LocationList'
 
 
 // 引入profile
+import UserProfile from '../Components/UserProfile'
 import ChangePassword from '../Components/ChangePassword'
 import BasicInfo from '../Components/BasicInfo'
 import Region from '../Components/Region'
@@ -141,9 +142,6 @@ const GroupNavigation = createStackNavigator(
         LocationList:{
             screen:LocationList,
         }
-
-        
-       
     },
     {
         initialRouteName:"Group",
@@ -209,6 +207,9 @@ const ProfileNavigation = createStackNavigator(
         AddPhoto: {
             screen: AddPhoto,
         },
+        UserProfile:{
+            screen: UserProfile,
+        }
     },
     {
         initialRouteName:"Profile",

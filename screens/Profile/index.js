@@ -7,6 +7,7 @@ import { Alert } from 'react-native'
 import Nav from '../../Components/Nav'
 import Profile from './Profile'
 import GET_ME from '../../graphql/get_me.query'
+import {errorMessage} from '../../utils/tools'
 
 
 const ProfileScreen = ({ navigation }) => (
@@ -16,27 +17,15 @@ const ProfileScreen = ({ navigation }) => (
   >
     {({ loading,error, data }) => {
       if (loading) return  (
-        <Profile
-          avatar=""
-          name=""
-          username=""
-          navigation={navigation}
-        />
+        <Spinner />
       );
       if (error) return  (
-          <Profile
-            avatar=""
-            name=""
-            username=""
-            navigation={navigation}
-          />
+         <Text>{errorMessage(error)}</Text>
       );
 
       return (
         <Profile
-          avatar=''
-          name={data.me.name || ""}
-          username={data.me.username||""}
+          me={data.me}
           navigation={navigation}
         />
       );

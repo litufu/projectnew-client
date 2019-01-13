@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { ScrollView, Switch, StyleSheet, Text, View } from 'react-native'
-import {  ListItem } from 'react-native-elements'
-import {Thumbnail} from 'native-base'
+import { ScrollView, Switch, StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native'
+import { ListItem } from 'react-native-elements'
+import { Thumbnail } from 'native-base'
 import PropTypes from 'prop-types'
 
 import BaseIcon from './Icon'
@@ -36,44 +36,42 @@ const styles = StyleSheet.create({
 })
 
 class SettingsScreen extends Component {
-  static propTypes = {
-    avatar: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    navigation: PropTypes.object.isRequired,
-  }
-
 
   onPressOptions = () => {
     this.props.navigation.navigate('options')
   }
 
   render() {
-    const { avatar, name, username } = this.props
+    const { me } = this.props
     return (
       <ScrollView style={styles.scroll}>
-        <View style={styles.userRow}>
-          <View style={styles.userImage}>
-            <Thumbnail
-              large source={require('../../assets/RQ1iLOs.jpg')}
-            />
+        <TouchableNativeFeedback
+          onPress={() => this.props.navigation.navigate('UserProfile',{id:me.id,me})}
+        >
+          <View style={styles.userRow}  >
+            <View style={styles.userImage}>
+              <Thumbnail
+                large source={require('../../assets/RQ1iLOs.jpg')}
+              />
+            </View>
+            <View>
+              <Text style={{ fontSize: 16 }}>{me && me.name}</Text>
+              <Text
+                style={{
+                  color: 'gray',
+                  fontSize: 16,
+                }}
+              >
+                {me && me.username}
+              </Text>
+            </View>
           </View>
+          </TouchableNativeFeedback>
+          <View style={styles.lineContainer} />
+         
+
           <View>
-            <Text style={{ fontSize: 16 }}>{name}</Text>
-            <Text
-              style={{
-                color: 'gray',
-                fontSize: 16,
-              }}
-            >
-              {username}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.lineContainer} />
-        <View>
-          
-        <ListItem
+          <ListItem
             // chevron
             title="我的信息"
             onPress={() => this.props.navigation.navigate('BasicInfo')}
@@ -107,7 +105,7 @@ class SettingsScreen extends Component {
             rightIcon={<Chevron />}
           />
 
-            <ListItem
+          <ListItem
             // chevron
             title="学习经历"
             onPress={() => this.props.navigation.navigate('StudyHistroy')}

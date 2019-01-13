@@ -68,12 +68,12 @@ const requestLink = new ApolloLink((operation, forward) =>
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: 'http://192.168.56.1:4000/',
+  uri: 'http://192.168.0.102:4000/',
   credentials: 'include'
 });
 
 // Create a WebSocket link:
-export const wsClient = new SubscriptionClient(`ws://192.168.56.1:4000/graphql`, {
+export const wsClient = new SubscriptionClient(`ws://192.168.0.102:4000/graphql`, {
   reconnect: true,
   async connectionParams(){
     const authToken = await SecureStore.getItemAsync('token');

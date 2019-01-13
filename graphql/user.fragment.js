@@ -6,6 +6,7 @@ import EXAMBASICINFO_FRAGMENT from './exam_basicInfo.fragment'
 import REGSTATUS_FRAGMENT from './regStatus.fragment'
 import LOCATION_FRAGMENT from './Location.fragment'
 import LOCATIONGROUP_FRAGMENT from './locationGroup.fragment'
+import PHOTO_FRAGMENT from './photo.fragment'
 
 const USER_FRAGMENT = gql`
   fragment UserFragment on User {
@@ -13,7 +14,9 @@ const USER_FRAGMENT = gql`
     name
     username
     gender
-    avatar
+    avatar{
+      ...PhotoFragment
+    }
     birthdaycalendar
     birthday
     birthplace{
@@ -38,6 +41,7 @@ const USER_FRAGMENT = gql`
       ...LocationGroupFragment
     }
  }
+ ${PHOTO_FRAGMENT}
  ${LOCATION_FRAGMENT}
  ${LOCATION_FRAGMENT}
  ${SCHOOLEDU_FRAGMENT}

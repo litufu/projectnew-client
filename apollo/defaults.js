@@ -19,5 +19,11 @@ export const defaults = {
         id:"",
         name:"",
     },
+    me:{
+        __typename:"User",
+        id:"",
+        name:"",
+        username:"",
+    },
     newGradeAndClasses:[]
   };

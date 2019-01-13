@@ -16,7 +16,11 @@ const SCHOOLEDU_FRAGMENT = gql`
     students{
       id
       name
-      avatar
+      avatar{
+        id
+        name
+        url
+      }
     }
   }
   ${SCHOOL_FRAGMENT}

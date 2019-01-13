@@ -8,7 +8,11 @@ const LOCATIONGROUP_FRAGMENT = gql`
     users{
         id
         name
-        avatar
+        avatar{
+          id
+          name
+          url
+        }
     }
   }
 `

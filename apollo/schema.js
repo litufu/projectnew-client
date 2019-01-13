@@ -17,6 +17,12 @@ export const typeDefs = gql`
     className:String
   }
 
+  type User{
+    id:Striing
+    name:String
+    username:String
+  }
+
   type Mutation {
     addNewSchool(schoolId:String!,schoolName: String!): NewSchool
     addNewMajor(majorId:String!,majorName: String!): NewMajor
