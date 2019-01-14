@@ -8,7 +8,7 @@ import { withNavigation } from 'react-navigation';
 import ParallaxScrollView from './beta-src/ParallaxScrollView';
 import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
 import { errorMessage } from '../../utils/tools'
-
+import Chat from '../Chat'
 import GET_USERINFO from '../../graphql/get_userInfo.query'
 
 export const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -38,7 +38,8 @@ class UserProfile extends React.Component {
   constructor() {
     super();
     this.state={
-      image:null
+      image:null,
+      showChat:false
     }
   }
 
@@ -80,6 +81,7 @@ class UserProfile extends React.Component {
     const come = this.props.navigation.getParam('come', '');
 
     if(!id){return <View></View>}
+    
     return (
       <Query query={GET_USERINFO} variables={{ id }}>
         {
@@ -146,7 +148,11 @@ class UserProfile extends React.Component {
                 </List>
                 {
                   me.id!==id && (
-                    <Button style={{marginTop:15}}>
+                    <Button 
+                    block
+                    style={{marginTop:15,marginHorizontal:15}} 
+                    onPress={()=>this.props.navigation.navigate('Chat',{user:data.userInfo})}
+                    >
                       <Text>发送信息</Text>
                     </Button>
                   )

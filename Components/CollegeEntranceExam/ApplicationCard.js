@@ -36,21 +36,21 @@ export default class ApplicationCard extends Component {
                         <Text>{`学历:${education}`}</Text>
                     </Left>
                     <Right style={styles.right}>
-                        <Text>{`学校名称:${universityName}`}</Text>
+                        <Text>{`学校:${universityName}`}</Text>
                     </Right>
                 </CardItem>
                 <CardItem bordered>
                     <Left style={styles.left}>
-                        <Text>{`报考省份:${provinceName}`}</Text>
+                        <Text>{`省份:${provinceName}`}</Text>
                     </Left>
                     <Right style={styles.right}>
-                        <Text>{`专业名称:${majorName}`}</Text>
+                        <Text>{`专业:${majorName}`}</Text>
                     </Right>
                 </CardItem>
 
                 <CardItem>
                     <Left style={styles.left} >
-                        <Text>{`报考分科:${subjectName}`}</Text>
+                        <Text>{`分科:${subjectName}`}</Text>
                     </Left>
                     <Right style={styles.right}>
                         <Text>已报考人数:

@@ -33,6 +33,7 @@ import WorkList from '../Components/Groups/WorkList'
 import OldWorkList from '../Components/Groups/OldWorkList'
 import LocationContent from '../Components/Groups/LocationContent'
 import LocationList from '../Components/Groups/LocationList'
+import Chat from '../Components/Chat'
 
 // 引入profile
 import UserProfile from '../Components/UserProfile'
@@ -141,6 +142,9 @@ const GroupNavigation = createStackNavigator(
         LocationList:{
             screen:LocationList,
         },
+        Chat:{
+            screen:Chat,
+        }
        
     },
     {
