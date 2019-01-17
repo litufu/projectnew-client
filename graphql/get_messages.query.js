@@ -4,7 +4,7 @@ import Message_FRAGMENT from './message.fragment'
 
 const GET_MESSAGES = gql`
   {
-    messages {
+    messages{
       ...MessageFragment
     }
   }

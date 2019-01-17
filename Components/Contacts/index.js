@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button } from 'native-base';
+import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button,Spinner } from 'native-base';
 import {Query} from 'react-apollo'
 import {withNavigation} from 'react-navigation'
 import GET_FAMILYGROUPS from '../../graphql/get_familyGroups.query'
@@ -8,11 +8,12 @@ import GET_MYOLDCOLLEAGUES from '../../graphql/get_myOldColleagues.query'
 import GET_WORKGROUPS from '../../graphql/get_workGroups.query'
 
 import {defaultAvatar} from '../../utils/settings'
+import {errorMessage} from '../../utils/tools'
 
 class Contacts extends Component {
 
   state={
-    loading:false
+    loading:true,
   }
 
   _getFamilyUsers=(familyGroups,me)=>{
@@ -30,11 +31,12 @@ class Contacts extends Component {
   }
 
   _renderFamilyList=(me)=>(
-    <Query query={GET_FAMILYGROUPS}>
+    <Query 
+    query={GET_FAMILYGROUPS}>
       {
         ({loading,error,data})=>{
-          if(loading) return <Text>loading</Text>
-          if(error) <Text>{error}</Text>
+          if(loading) return <Spinner />
+          if(error) return <Text>{errorMessage(error)}</Text>
           return(
             <List>
             {  this._getFamilyUsers(data.getFamilyGroups,me).length>0 &&
@@ -81,8 +83,8 @@ class Contacts extends Component {
     >
       {
         ({loading,error,data})=>{
-          if(loading) return <Text>loading</Text>
-          if(error) return <Text>{error}</Text>
+          if(loading) return <Spinner />
+          if(error) return <Text>{errorMessage(error)}</Text>
           return(
             <List>
               {this._getClassmates(data.classGroups,me).length>0 && 
@@ -125,8 +127,8 @@ class Contacts extends Component {
     >
       {
         ({loading,error,data})=>{
-          if(loading) return <Text>loading</Text>
-          if(error) return <Text>{error}</Text>
+          if(loading) return  <Spinner />
+          if(error) return <Text>{errorMessage(error)}</Text>
           return(
             <List>
               {this._getOldColleages(data.myOldColleagues,me).length>0 && 
@@ -170,8 +172,8 @@ class Contacts extends Component {
     >
       {
         ({loading,error,data})=>{
-          if(loading) return <Text>loading</Text>
-          if(error) return <Text>{error}</Text>
+          if(loading) return  <Spinner />
+          if(error) return <Text>{errorMessage(error)}</Text>
           return(
             <List>
                   {this._getNowColleages(data.workGroups,me).length>0 && 
@@ -199,11 +201,8 @@ class Contacts extends Component {
     const me = this.props.me
     return (
           <List>
-      
             {this._renderFamilyList(me)}
-           
-          {this._renderClassMates(me)}
-           
+            {this._renderClassMates(me)}
             {this._renderOldColleages(me)}
             {this._renderNowColleages(me)}
           </List>

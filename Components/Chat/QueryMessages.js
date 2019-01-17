@@ -25,7 +25,10 @@ class QueryMessages extends Component {
                 console.log('subscriptionData',subscriptionData)
                 const newMessage = subscriptionData.data.messageAdded;
                 console.log('newMessage',newMessage)
-                return prev.messages.concat(newMessage)
+                console.log('prev1',prev)
+                prev.messages.push(newMessage)
+                console.log('prev2',prev)
+                return prev
             },
         });
     }

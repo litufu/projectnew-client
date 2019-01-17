@@ -27,7 +27,7 @@ export const defaults = {
     },
     newUnreadMessages:[],
     newGradeAndClasses:[],
-    getMessages:[],
+    getmessages:[],
     classGroupMessages:[],
     workGroupMessage:[],
     familyGroupMessage:[],

@@ -115,6 +115,9 @@ export default class Chat extends Component {
     }
 
     onSend = (messages = [], sendMessage, userInfo,me ) => {
+        if(!messages[0].text && !this.state.image){
+            return null
+        }
         sendMessage({
             variables: { toId: userInfo.id, text: messages[0].text, image: this.state.image },
             optimisticResponse: {
@@ -147,6 +150,7 @@ export default class Chat extends Component {
             update: (cache, { data: { sendMessage } }) => {
                 // Read the data from our cache for this query.
                 const data = cache.readQuery({ query: GET_MESSAGES });
+                console.log('sendMessage',sendMessage)
                 let newMessage
                 if(sendMessage.image){
                     newMessage = {
@@ -159,6 +163,7 @@ export default class Chat extends Component {
                 }else{
                     newMessage = sendMessage
                 }
+                console.log('newmessage',newMessage)
                 data.messages.push({ ...newMessage });
                 // Write our data back to the cache.
                 cache.writeQuery({ query: GET_MESSAGES,data });
