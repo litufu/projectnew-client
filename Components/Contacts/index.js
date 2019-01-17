@@ -7,7 +7,7 @@ import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
 import GET_MYOLDCOLLEAGUES from '../../graphql/get_myOldColleagues.query'
 import GET_WORKGROUPS from '../../graphql/get_workGroups.query'
 
-const defaultImage = 'http://i.imgur.com/uma9OfG.jpg'
+import {defaultAvatar} from '../../utils/settings'
 
 class Contacts extends Component {
 
@@ -20,7 +20,6 @@ class Contacts extends Component {
     let userIds = []
     for(const familyGroup of familyGroups){
       for(const family of familyGroup.families){
-        console.log(family)
         if(family.to.user && !~userIds.indexOf(family.to.user.id) && family.to.user.id!==me.id){
           users.push(family.to.user)
           userIds.push(family.to.user.id)
@@ -38,10 +37,14 @@ class Contacts extends Component {
           if(error) <Text>{error}</Text>
           return(
             <List>
+            {  this._getFamilyUsers(data.getFamilyGroups,me).length>0 &&
+              (<ListItem itemDivider>
+              <Text>家人</Text>
+            </ListItem> )}
            { (this._getFamilyUsers(data.getFamilyGroups,me)).map(user=>(
                 <ListItem thumbnail key={user.id}   onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:'Group'})}>
                 <Left>
-                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultImage  }} />
+                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
                 </Left>
                 <Body>
                   <Text>{user.name}</Text>
@@ -82,10 +85,14 @@ class Contacts extends Component {
           if(error) return <Text>{error}</Text>
           return(
             <List>
+              {this._getClassmates(data.classGroups,me).length>0 && 
+               (<ListItem itemDivider>
+              <Text>同学</Text>
+            </ListItem>) }
             {(this._getClassmates(data.classGroups,me)).map(user=>(
                 <ListItem thumbnail key={user.id}   onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:'Group'})}>
                 <Left>
-                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultImage  }} />
+                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
                 </Left>
                 <Body>
                   <Text>{user.name}</Text>
@@ -100,7 +107,6 @@ class Contacts extends Component {
   )
 
   _getOldColleages=(myOldColleagues,me)=>{
-    console.log(myOldColleagues)
     let users = []
     let userIds = []
     for(const myOldColleague of myOldColleagues){
@@ -109,7 +115,6 @@ class Contacts extends Component {
           userIds.push(myOldColleague.to.id)
       }
     }
-    console.log(users)
     return users
   }
 
@@ -122,13 +127,16 @@ class Contacts extends Component {
         ({loading,error,data})=>{
           if(loading) return <Text>loading</Text>
           if(error) return <Text>{error}</Text>
-          console.log(data)
           return(
             <List>
+              {this._getOldColleages(data.myOldColleagues,me).length>0 && 
+               (<ListItem itemDivider>
+              <Text>前同事</Text>
+            </ListItem> )}
             {(this._getOldColleages(data.myOldColleagues,me)).map(user=>(
                 <ListItem thumbnail key={user.id}  onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:"Group"})}>
                 <Left>
-                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultImage  }} />
+                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
                 </Left>
                 <Body>
                   <Text>{user.name}</Text>
@@ -166,10 +174,14 @@ class Contacts extends Component {
           if(error) return <Text>{error}</Text>
           return(
             <List>
+                  {this._getNowColleages(data.workGroups,me).length>0 && 
+               (<ListItem itemDivider>
+              <Text>现同事</Text>
+            </ListItem> )}
             {(this._getNowColleages(data.workGroups,me)).map(user=>(
                 <ListItem thumbnail key={user.id}  onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:'Group'})}>
                 <Left>
-                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultImage  }} />
+                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
                 </Left>
                 <Body>
                   <Text>{user.name}</Text>
@@ -187,17 +199,11 @@ class Contacts extends Component {
     const me = this.props.me
     return (
           <List>
-          <ListItem itemDivider>
-              <Text>家人</Text>
-            </ListItem> 
+      
             {this._renderFamilyList(me)}
-            <ListItem itemDivider>
-              <Text>同学</Text>
-            </ListItem> 
+           
           {this._renderClassMates(me)}
-            <ListItem itemDivider>
-              <Text>同事</Text>
-            </ListItem> 
+           
             {this._renderOldColleages(me)}
             {this._renderNowColleages(me)}
           </List>

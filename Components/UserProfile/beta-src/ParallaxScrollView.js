@@ -141,12 +141,10 @@ export default class ParallaxScrollView extends Component {
                 __typename:'Photo',
                 id:this.props.data.userInfo.avatar.id,
                 name:postPhoto.name,
-                url:`https://gewu-avatar.oss-cn-hangzhou.aliyuncs.com/images/${postPhoto.name}`
+                url:`https://gewu-avatar.oss-cn-hangzhou.aliyuncs.com/avatars/${postPhoto.name}`
               }
             }
           } 
-          console.log('oldData',data)
-          console.log('newData',newData)
           // Write our data back to the cache.
           cache.writeQuery({ query: GET_USERINFO,variables:{id:this.props.data.userInfo.avatar.id} ,data:newData });
         }

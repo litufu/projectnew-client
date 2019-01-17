@@ -1,8 +1,34 @@
 import GET_NEWGRADEANDCLASSES from '../graphql/get_newGradeAndClasses.query'
+import GET_MESSAGES from '../graphql/get_messages.query'
+import  GET_NEWUNREADMESSAGES from '../graphql/get_newUnReadMessages.query'
 
 let nextGradeAndClassId = 0;
 
 export const resolvers = {
+  
+    // Query:{
+    //   getmessages:(_, { first,after,toId }, { cache }) => {
+
+    //     const data = cache.readQuery({ GET_MESSAGES });
+    //     const allMessages = data.messages.filter(message=>(message.to.id===toId ||message.from.id===toId)).sort(
+    //       (a,b)=>(new Date(a.createdAt)-new Date(b.createdAt)
+    //       ))
+    //     let filterMessges = []
+    //     let count = 0
+    //     for(const message of allMessages){
+    //       if(count>=first){
+    //         count = 0
+    //         break
+    //       }
+    //       if(message.id===after){
+    //         filterMessges.push(message)
+    //         count = count + 1
+    //       }
+    //     }
+
+    //     return filterMessges;
+    //   },
+    // },
     Mutation: {
       addNewSchool:(_, { schoolId,schoolName }, { cache }) => {
         const data = {
@@ -48,6 +74,51 @@ export const resolvers = {
         cache.writeData({ data });
         return null;
       },
+      addNewUnReadMessages:(_, { type,id,lastMessageId }, { cache }) => {
+        console.log('type',type)
+        console.log('id',id)
+        console.log('lastMessageId',lastMessageId)
+        const previous = cache.readQuery({ query: GET_NEWUNREADMESSAGES });
+        console.log(previous)
+        // 检查是否存在，存在更新，不存在新增
+        const isExist = previous.newUnreadMessages.filter(unReadMessage=>{
+          if(unReadMessage.type===type && unReadMessage.typeId===id){
+            return true
+          }
+        }).length>0
+        let newUnreadMessages
+        if(isExist){
+          newUnreadMessages = previous.newUnreadMessages.map(
+            unReadMessage=>{
+              if(unReadMessage.type===type && unReadMessage.typeId===id){
+                return {
+                  ...unReadMessage,
+                  lastMessageId:lastMessageId
+                }
+              }else{
+                return unReadMessage
+              }
+            }
+          )
+        }else{
+          const newUnReadMessage = {
+            __typename:"UnReadMessage",
+            id:`${type}${id}`,
+            type,
+            typeId:id,
+            lastMessageId,
+          }
+          newUnreadMessages = [...previous.newUnreadMessages,newUnReadMessage]
+        }
+        console.log('newUnreadMessages',newUnreadMessages)
+       
+        const data = {
+          newUnreadMessages: newUnreadMessages,
+        };
+        cache.writeData({ data });
+        return newUnreadMessages;
+      },
+      
       addNewGradeAndClass:(_, { grade,className }, { cache }) => {
         console.log('grade',grade)
         console.log('clasname',className)

@@ -25,5 +25,13 @@ export const defaults = {
         name:"",
         username:"",
     },
-    newGradeAndClasses:[]
+    newUnreadMessages:[],
+    newGradeAndClasses:[],
+    getMessages:[],
+    classGroupMessages:[],
+    workGroupMessage:[],
+    familyGroupMessage:[],
+    locationGroupMessages:[],
+    regStatusMessages:[],
+
   };

@@ -88,7 +88,6 @@ class UserProfile extends React.Component {
           ({ loading, error, data }) => {
             if (loading) return <Spinner />
             if (error) return <Text>{errorMessage(error)}</Text>
-            console.log(data)
             return (
               <ParallaxScrollView
                 style={{ marginTop: statusBarHeight }}
@@ -151,7 +150,7 @@ class UserProfile extends React.Component {
                     <Button 
                     block
                     style={{marginTop:15,marginHorizontal:15}} 
-                    onPress={()=>this.props.navigation.navigate('Chat',{user:data.userInfo})}
+                    onPress={()=>this.props.navigation.navigate('Chat',{user:data.userInfo,me})}
                     >
                       <Text>发送信息</Text>
                     </Button>
