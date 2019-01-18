@@ -7,6 +7,7 @@ import REGSTATUS_FRAGMENT from './regStatus.fragment'
 import LOCATION_FRAGMENT from './Location.fragment'
 import LOCATIONGROUP_FRAGMENT from './locationGroup.fragment'
 import PHOTO_FRAGMENT from './photo.fragment'
+import Message_FRAGMENT from './message.fragment'
 
 const USER_FRAGMENT = gql`
   fragment UserFragment on User {
@@ -40,6 +41,9 @@ const USER_FRAGMENT = gql`
     locationGroups{
       ...LocationGroupFragment
     }
+    messages{
+      ...MessageFragment
+    }
  }
  ${PHOTO_FRAGMENT}
  ${LOCATION_FRAGMENT}
@@ -49,5 +53,6 @@ const USER_FRAGMENT = gql`
  ${EXAMBASICINFO_FRAGMENT}
  ${REGSTATUS_FRAGMENT}
  ${LOCATIONGROUP_FRAGMENT}
+ ${Message_FRAGMENT}
 `
 export default USER_FRAGMENT;

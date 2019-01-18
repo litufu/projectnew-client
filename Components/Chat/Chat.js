@@ -8,10 +8,8 @@ import 'moment/locale/zh-cn'
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
-import messagesData from './data';
 import SEND_MESSAGE from '../../graphql/send_message.mutation'
-import GET_MESSAGES from '../../graphql/get_messages.query'
-
+import GET_ME from '../../graphql/get_me.query'
 
 const skip = 20
 
@@ -71,6 +69,7 @@ export default class Chat extends Component {
                 });
                 this.setState({ image: result.uri })
                 this.onSend([{
+                    text:"",
                     image: result.uri,
                     _id: Math.round(Math.random() * 1000000).toString(),
                     user: {
@@ -124,7 +123,7 @@ export default class Chat extends Component {
                 __typename: "Mutation",
                 sendMessage: {
                   __typename: "Message",
-                  id: '123456',
+                  id: Math.round(Math.random() * 1000000).toString(),
                   text:messages[0].text,
                   to:{
                       __typename:"User",
@@ -140,8 +139,8 @@ export default class Chat extends Component {
                   },
                   image:this.state.image ? {
                     __typename:"Photo",
-                    id:"789456",
-                    name:"123456",
+                    id:Math.round(Math.random() * 1000000).toString(),
+                    name:Math.round(Math.random() * 1000000).toString(),
                     url:this.state.image
                   } : null,
                   createdAt: new Date().toLocaleString(),
@@ -149,24 +148,23 @@ export default class Chat extends Component {
               },
             update: (cache, { data: { sendMessage } }) => {
                 // Read the data from our cache for this query.
-                const data = cache.readQuery({ query: GET_MESSAGES });
-                console.log('sendMessage',sendMessage)
+                const data = cache.readQuery({ query: GET_ME });
                 let newMessage
                 if(sendMessage.image){
                     newMessage = {
                         ...sendMessage,
                         image:{
                             ...sendMessage.image,
-                            url:"https://gewu-avatar.oss-cn-hangzhou.aliyuncs.com/images/${sendMessage.image.name}"
+                            url:`https://gewu-avatar.oss-cn-hangzhou.aliyuncs.com/images/${sendMessage.image.name}`
                         }
                     }
                 }else{
                     newMessage = sendMessage
                 }
                 console.log('newmessage',newMessage)
-                data.messages.push({ ...newMessage });
+                data.me.messages.push({ ...newMessage });
                 // Write our data back to the cache.
-                cache.writeQuery({ query: GET_MESSAGES,data });
+                cache.writeQuery({ query: GET_ME,data });
             }
         })
     }
@@ -209,7 +207,7 @@ _goBack=()=>{
 }
 
 render() {
-    const {userInfo,me} = this.props
+    const {userInfo} = this.props
     if (!this.state.appIsReady) {
         return <AppLoading />;
     }
@@ -233,10 +231,7 @@ render() {
                 {
 
                     (sendMessage, { loading, error, data }) => {
-                        // if (loading) return <Text>loading</Text>
-                        // if (error) return <Text>{error.message}</Text>
-
-                        if (data && data.sendMessage.image) {
+                        if (data && data.sendMessage.image && data.sendMessage.image.url ) {
                             const xhr = new XMLHttpRequest()
                             xhr.open('PUT', data.sendMessage.image.url)
                             xhr.onreadystatechange = function () {
