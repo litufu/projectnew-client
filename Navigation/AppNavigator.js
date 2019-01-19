@@ -1,6 +1,17 @@
-import { createStackNavigator,createBottomTabNavigator } from 'react-navigation'
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
+import { graphql, compose, withApollo } from 'react-apollo';
+import React, { Component } from 'react';
 import { Ionicons } from '@expo/vector-icons'
-import React from 'react'
+import { wsClient } from '../apollo'
+
+import GET_ME from '../graphql/get_me.query'
+import MESSAGE_ADDED_SUBSCRIPTION from '../graphql/message_added.subscription'
+import FAMILYGROUP_CHANGED_SUBSCRIPTION from '../graphql/familyGroup_changed.subscription'
+
+import GET_FAMILYGROUPS from '../graphql/get_familyGroups.query'
+
+
+import { Spinner } from 'native-base';
 
 import Group from '../screens/Group'
 import Home from '../screens/MyHome'
@@ -63,31 +74,31 @@ const HomeNavigation = createStackNavigator(
         CollegeEntranceExam: {
             screen: CollegeEntranceExam,
         },
-        QueryExamBasicInfo:{
-            screen:QueryExamBasicInfo
+        QueryExamBasicInfo: {
+            screen: QueryExamBasicInfo
         },
-        UniversityAndMajor:{
-            screen:UniversityAndMajor
+        UniversityAndMajor: {
+            screen: UniversityAndMajor
         },
-        SearchMajor:{
-            screen:SearchMajor
+        SearchMajor: {
+            screen: SearchMajor
         },
-        SelectUniversity:{
-            screen:SelectUniversity
+        SelectUniversity: {
+            screen: SelectUniversity
         },
-        QueryResult:{
-            screen:QueryResult
+        QueryResult: {
+            screen: QueryResult
         },
-        Applicants:{
-            screen:Applicants
+        Applicants: {
+            screen: Applicants
         },
-        FindJob:{
-            screen:FindJob
+        FindJob: {
+            screen: FindJob
         }
-       
+
     },
     {
-        initialRouteName:"Home",
+        initialRouteName: "Home",
         navigationOptions: {
             header: null
         },
@@ -100,55 +111,58 @@ const GroupNavigation = createStackNavigator(
         Group: {
             screen: Group,
         },
-        FamilyGroup:{
+        FamilyGroup: {
             screen: FamilyGroup,
         },
-        ClassGroup:{
+        ClassGroup: {
             screen: ClassGroup,
         },
-        LocationGroup:{
+        LocationGroup: {
             screen: LocationGroup,
         },
-        WorkGroup:{
+        WorkGroup: {
             screen: WorkGroup,
         },
-        Content:{
-            screen:Content,
+        Content: {
+            screen: Content,
         },
-        FamilyList:{
-            screen:FamilyList,
+        FamilyList: {
+            screen: FamilyList,
         },
-        FamilyContent:{
-            screen:FamilyContent,
+        FamilyContent: {
+            screen: FamilyContent,
         },
-        ClassContent:{
-            screen:ClassContent,
+        ClassContent: {
+            screen: ClassContent,
         },
-        ClassList:{
-            screen:ClassList,
+        ClassList: {
+            screen: ClassList,
         },
-        WorkContent:{
-            screen:WorkContent,
+        WorkContent: {
+            screen: WorkContent,
         },
-        WorkList:{
-            screen:WorkList,
+        WorkList: {
+            screen: WorkList,
         },
-        OldWorkList:{
-            screen:OldWorkList,
+        OldWorkList: {
+            screen: OldWorkList,
         },
-        LocationContent:{
-            screen:LocationContent,
+        LocationContent: {
+            screen: LocationContent,
         },
-        LocationList:{
-            screen:LocationList,
+        LocationList: {
+            screen: LocationList,
         },
-        Chat:{
-            screen:Chat,
-        }
-       
+        Chat: {
+            screen: Chat,
+        },
+        UserProfile: {
+            screen: UserProfile,
+        },
+
     },
     {
-        initialRouteName:"Group",
+        initialRouteName: "Group",
         navigationOptions: {
             header: null
         },
@@ -211,19 +225,22 @@ const ProfileNavigation = createStackNavigator(
         AddPhoto: {
             screen: AddPhoto,
         },
-        UserProfile:{
+        UserProfile: {
             screen: UserProfile,
+        },
+        Chat: {
+            screen: Chat,
         }
     },
     {
-        initialRouteName:"Profile",
+        initialRouteName: "Profile",
         navigationOptions: {
             header: null
         },
     }
 )
 
-export default createBottomTabNavigator(
+const AppNavigator = createBottomTabNavigator(
     {
         Home: {
             screen: HomeNavigation
@@ -236,27 +253,112 @@ export default createBottomTabNavigator(
         }
     },
     {
-      navigationOptions: ({ navigation }) => ({
-        tabBarIcon: ({ focused, horizontal, tintColor }) => {
-          const { routeName } = navigation.state;
-          let iconName;
-          if (routeName === 'Home') {
-            iconName = 'md-home';
-          } else if (routeName === 'Group') {
-            iconName = 'md-people' ;
-          }else if (routeName === 'Profile') {
-            iconName = 'md-person' ;
-          }
+        navigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ focused, horizontal, tintColor }) => {
+                const { routeName } = navigation.state;
+                let iconName;
+                if (routeName === 'Home') {
+                    iconName = 'md-home';
+                } else if (routeName === 'Group') {
+                    iconName = 'md-people';
+                } else if (routeName === 'Profile') {
+                    iconName = 'md-person';
+                }
 
-          // You can return any component that you like here! We usually use an
-          // icon component from react-native-vector-icons
-          return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
+                // You can return any component that you like here! We usually use an
+                // icon component from react-native-vector-icons
+                return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
+            },
+        }),
+        tabBarOptions: {
+            activeTintColor: 'blue',
+            inactiveTintColor: 'gray',
+            showLabel: false,
         },
-      }),
-      tabBarOptions: {
-        activeTintColor: 'blue',
-        inactiveTintColor: 'gray',
-        showLabel:false,
-    },
-  }
+    }
 )
+
+class AppWithNavigationState extends Component {
+    static router = AppNavigator.router;
+    static navigationOptions = {
+        header: null,
+    };
+
+    async componentDidMount() {
+        const { subscribeToMore, client } = this.props;
+
+        this.familyGroupSubscription = await subscribeToMore({
+            document: FAMILYGROUP_CHANGED_SUBSCRIPTION,
+            updateQuery: (prev) => {
+                client.query({
+                    query: GET_FAMILYGROUPS,
+                    fetchPolicy: "network-only"
+                }).then(({ data }) => {
+                    const newMe = {
+                        ...prev.me,
+                        relativefamilyGroups: data.getFamilyGroups
+                    }
+                    const result = { ...prev, me: newMe }
+                    return result
+                });
+            },
+        });
+    }
+
+    componentWillUnmount() {
+        this.familyGroupSubscription();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.me) {
+            //   如果新的props当中没有me，则取消订阅
+            console.log('取消订阅')
+            if (this.messagesSubscription) {
+              this.messagesSubscription();
+            }
+
+            // clear the event subscription
+            // 关闭连接
+            if (this.reconnected) {
+                console.log('关闭连接')
+                this.reconnected();
+            }
+        } else if (!this.reconnected) {
+            //   重新连接，检查数据完整性。
+            console.log('重新连接')
+            this.reconnected = wsClient.onReconnected(() => {
+                this.props.refetch(); // check for any data lost during disconnect
+            }, this);
+        }
+
+          if (!this.messagesSubscription && nextProps.me ) {
+              console.log('开始订阅')
+              console.log(nextProps.me.id)
+            this.messagesSubscription = nextProps.subscribeToMore({
+                document: MESSAGE_ADDED_SUBSCRIPTION,
+                variables: { userId: nextProps.me.id },
+                updateQuery: (prev, { subscriptionData }) => {
+                    const newMessage = subscriptionData.data.messageAdded;
+                    prev.me.messages.push(newMessage)
+                    return prev
+                },
+            });
+          }
+    }
+
+
+    render() {
+        if (this.props.loading) return <Spinner />
+        if (this.props.error) return <Text>{"error"}</Text>
+        return (
+            <AppNavigator navigation={this.props.navigation} />
+        );
+    }
+}
+
+export default compose(
+    withApollo,
+    graphql(GET_ME, {
+        props: ({ data: { loading, me, refetch, subscribeToMore } }) => ({ loading, me, refetch, subscribeToMore })
+    }),
+)(AppWithNavigationState);

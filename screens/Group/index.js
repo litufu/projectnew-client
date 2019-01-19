@@ -10,6 +10,10 @@ import {errorMessage} from '../../utils/tools'
 import GET_ME from '../../graphql/get_me.query'
 
 export default class Group extends React.Component{
+  static navigationOptions = {
+    header:null,
+    
+  };
 
     state={
         selected:1

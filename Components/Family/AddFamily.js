@@ -69,8 +69,19 @@ export default class AddFamily extends Component {
   }
 
   submitRelationship = (createFamily, client) => {
-    this.setState({disabled:true})
+    
+    
     const { relationship, name,spouseId } = this.state
+    if((relationship==='son' || relationship==='daughter') && !spouseId){
+      console.log(relationship)
+      console.log(spouseId)
+      Alert.alert('未填写配偶前无法创建子女')
+      return null
+    }
+    if(relationship!=='son' && relationship!=='daughter'){
+
+    }
+    this.setState({disabled:true})
     const pass = this.validate(relationship, name, client)
 
     if (!pass) {
@@ -98,7 +109,7 @@ export default class AddFamily extends Component {
           },
           spouse:{
             __typename:"Family",
-            id:spouseId
+            id:spouseId ? spouseId :Math.floor(Math.random() * 200).toString(),
           }
         }
       }
@@ -109,6 +120,10 @@ export default class AddFamily extends Component {
   updateRelationship = (updateFamily, client) => {
     this.setState({disabled:true})
     const { relationship, name,spouseId } = this.state
+    if((relationship==='son' || relationship==='daughter') && !spouseId){
+      Alert.alert('未填写配偶前无法创建子女')
+      return null
+    }
     console.log(relationship)
     const pass = this.validate(relationship, name, client)
     const familyId = this.props.navigation.getParam('familyId')
@@ -139,7 +154,7 @@ export default class AddFamily extends Component {
           },
           spouse:{
             __typename:"Family",
-            id:spouseId
+            id:spouseId ? spouseId :Math.floor(Math.random() * 200).toString(),
           }
         }
       }
@@ -218,14 +233,9 @@ export default class AddFamily extends Component {
         </Item>
         )
       }else{
-        if(gender==="male"){
-          Alert.alert("请先添加配偶后，再添加子女")
-        }else{
-          Alert.alert("请先添加配偶后，再添加子女")
-        }
+        Alert.alert("请先添加配偶后，再添加子女")
         return null
       }
-      
     }
   }
 

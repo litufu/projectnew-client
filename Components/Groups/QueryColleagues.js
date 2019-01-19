@@ -70,5 +70,6 @@ export default graphql(GET_COLLEAGUES, {
         variables: {
             companyId: props.work.company.id,
         },
+        fetchPolicy:cache-and-network,
     }),
 })(QureyColleagues)

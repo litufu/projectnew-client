@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button,Badge, Spinner } from 'native-base';
 import {Query,Mutation} from 'react-apollo'
 
-import GET_MESSAGES from '../../graphql/get_messages.query'
 import GET_ME from '../../graphql/get_me.query'
 import GET_NEWUNREADMESSAGES from '../../graphql/get_newUnReadMessages.query'
 import {defaultAvatar} from '../../utils/settings'

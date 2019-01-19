@@ -52,5 +52,6 @@ export default graphql(GET_WORKGROUPS, {
         variables: {
             companyId: props.work.company.id,
         },
+        fetchPolicy:cache-and-network,
     }),
 })(QueryWorkList)

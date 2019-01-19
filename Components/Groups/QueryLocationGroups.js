@@ -50,6 +50,13 @@ class QueryLocationGroups extends Component {
 }
 
 
-export default graphql(GET_LOCATIONGROUPS)(QueryLocationGroups)
+export default graphql(
+    GET_LOCATIONGROUPS,
+    {
+        options: (props) => ({
+            fetchPolicy:cache-and-network,
+        }),
+    }
+    )(QueryLocationGroups)
     
 

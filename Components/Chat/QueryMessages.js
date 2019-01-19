@@ -43,6 +43,7 @@ export default class QueryMessages extends Component {
 
                         return (
                             < Chat
+                            me={data.me}
                             messages = { this._getNewMessages(data.me.messages,userInfo) }
                             userInfo = { userInfo }
                             navigation = { this.props.navigation }

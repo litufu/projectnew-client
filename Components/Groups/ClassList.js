@@ -126,9 +126,7 @@ export default class ClassList extends Component {
 
   renderButton = (classGroups, studentId, myId, schoolEduId, schoolEduName,refetch, networkStatus ) => {
     const myGroups = this._getMyGroups(classGroups, myId)
-    console.log('myGroups', myGroups)
     const myWillGroups = this._getMyWillGroups(classGroups, myId)
-    console.log('myWillGroups', myWillGroups)
     let studentStatus
     if (myGroups.length > 0) {
       studentStatus = this._checkStudentInGroup(myGroups[0], studentId)

@@ -1,49 +1,36 @@
-import { graphql } from 'react-apollo';
+import {Query } from 'react-apollo';
 import React, { Component } from 'react';
-
 import { List, ListItem, Text, Spinner } from 'native-base';
 
 import { errorMessage } from '../../utils/tools'
-import GET_FAMILYGROUPS from '../../graphql/get_familyGroups.query'
-import FAMILYGROUP_CHANGED_SUBSCRIPTION from '../../graphql/familyGroup_changed.subscription'
+import GET_ME from '../../graphql/get_me.query'
 
-class QueryFamilyGroups extends Component {
-    componentDidMount() {
-        const { data: { refetch, subscribeToMore } } = this.props;
+export default class QueryFamilyGroups extends Component{
 
-        this.unsubscribe = subscribeToMore({
-            document: FAMILYGROUP_CHANGED_SUBSCRIPTION,
-            updateQuery: (prev) => {
-                refetch();
-                return prev;
-            },
-        });
-    }
+    render(){
+        const {navigation}  = this.props
+        return(
+            <Query query={GET_ME}>
+            {
+                ({loading,error,data})=>{
+                    const me = data.me
+                    if (loading) return <Spinner />
+                    if (error) return <Text>{errorMessage(error)}</Text>
 
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-
-    render() {
-        const { data: { getFamilyGroups, loading, error } } = this.props;
-        const {me,navigation}  = this.props
-        if (loading) return <Spinner />
-        if (error) return <Text>{errorMessage(error)}</Text>
-
-        return (
-            <List>
-                {
-                getFamilyGroups.map(group=>(
-                    <ListItem key={group.id} onPress={()=>{navigation.navigate('FamilyContent',{group,me})}}>
-                        <Text>{group.name}</Text>
-                    </ListItem>
-                    ))
+                    return (
+                        <List>
+                            {
+                            me.relativefamilyGroups.map(group=>(
+                                <ListItem key={group.id} onPress={()=>{navigation.navigate('FamilyContent',{group,me})}}>
+                                    <Text>{group.name}</Text>
+                                </ListItem>
+                                ))
+                            }
+                        </List>
+                    )
                 }
-            </List>
+            }
+            </Query>
         )
     }
 }
-
-
-export default graphql(GET_FAMILYGROUPS)(QueryFamilyGroups)
-

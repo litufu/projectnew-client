@@ -67,6 +67,7 @@ export default graphql(
             variables: {
                 locationGroupId: props.locationGroup.id,
             },
+            fetchPolicy:cache-and-network,
         }),
     }
 )(QueryLocationGroupUsers)

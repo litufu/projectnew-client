@@ -56,7 +56,6 @@ export const relationCompute=(families,id,creater)=>{
     let createrRelationship
     let me
     let count=0
-    console.log('families',families)
 
     if(creater.id===id){
         me=creater
@@ -76,14 +75,11 @@ export const relationCompute=(families,id,creater)=>{
             if(family.to.user && family.to.user.id===id){
                 familyRelationships[family.id] = '我'
                 me=family.to.user
-                console.log(family.relationship)
-                console.log(family.from.gender)
                 const getRelationship = reverseRelationship(family.relationship,family.from.gender)
                 if(family.from.id===creater.id && !createrRelationship ){
                     createrRelationship = getRelationship
                 }
                 userFamilies[family.from.id] = getRelationship
-                console.log('userFamilies1',userFamilies)
             }else if(family.from.id===id){
                 me=family.from
                 familyRelationships[family.id] = relationshipMap[family.relationship]
@@ -98,7 +94,6 @@ export const relationCompute=(families,id,creater)=>{
     }
     
     while(otherfamilies.length>0 && count<4){
-        console.log('otherfamilies',otherfamilies)
         let tempfamilies = []
         for(const otherfamily of otherfamilies){
             if(otherfamily.from.id in userFamilies || ( otherfamily.to.user && otherfamily.to.user.id in userFamilies)){
@@ -110,14 +105,12 @@ export const relationCompute=(families,id,creater)=>{
                         reverse:false		//称呼方式：true对方称呼我,false我称呼对方
                     };
                     familyRelationships[otherfamily.id] = relationship(options)
-                    console.log('familyRelationships',familyRelationships)
                     if(otherfamily.from.id===creater.id && !createrRelationship) {
                         createrRelationship = userFamilies[otherfamily.from.id]
                     }
                     if(otherfamily.to.user){
                         userFamilies[otherfamily.to.user.id] = `${userFamilies[otherfamily.from.id]}的${relationshipMap[otherfamily.relationship]}`
                     }
-                    console.log('otherfamily',otherfamily)
                 }else{
                     const getRelationship = reverseRelationship(otherfamily.relationship,otherfamily.from.gender)
                     const options = {
@@ -134,11 +127,9 @@ export const relationCompute=(families,id,creater)=>{
                 tempfamilies.push(otherfamily)
             }
         }
-        console.log('tempfamilies',tempfamilies)
         otherfamilies = tempfamilies
         count++
     }
-    console.log('familyRelationships',familyRelationships)
 
     return {familyRelationships,createrRelationship}
 }

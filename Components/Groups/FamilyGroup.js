@@ -4,7 +4,7 @@ import {Alert} from 'react-native'
 import { Container, Header, Content, List, ListItem, Text,Left,Icon,Button,Right,Body,Title, Spinner,Badge } from 'native-base';
 
 import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
-import GET_FAMILYGROUPS from '../../graphql/get_familyGroups.query'
+import GET_ME from '../../graphql/get_me.query'
 import REFRESH_FAMILYGROUPS from '../../graphql/refresh_familyGroups.mutation'
 import {errorMessage} from '../../utils/tools'
 import QueryFamilyGroups from './QueryFamilyGroups'
@@ -35,9 +35,10 @@ class FamilyGroup extends Component {
           <Mutation 
           mutation={REFRESH_FAMILYGROUPS}
           update={(cache, { data: { refreshMyFamilyGroups } }) => {
+            const {me} = cache.readQuery({GET_ME})
             cache.writeQuery({
-              query: GET_FAMILYGROUPS,
-              data: { getFamilyGroups: refreshMyFamilyGroups }
+              query: GET_ME,
+              data: { me: {...me,relativefamilyGroups:refreshMyFamilyGroups} }
             });
           }}
           onCompleted={()=>Alert.alert('刷新成功')}

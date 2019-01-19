@@ -10,7 +10,10 @@ import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor}
 
 
 export default class Home extends React.Component {
-
+    static navigationOptions = {
+        header:null,
+      };
+      
     _handleCollegeEntranceExam=(data,loading,error)=>{
         if(loading) return
         if(error) return 

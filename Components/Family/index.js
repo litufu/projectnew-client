@@ -50,6 +50,17 @@ class Family extends Component {
 
   }
 
+  onPressAdd=(spouseId)=>{
+    this.props.navigation.navigate("AddFamily", {
+      isAdd: true,
+      familyId: '',
+      name: '',
+      toId: '',
+      relationship: 'father',
+      spouseId:spouseId
+    })
+  }
+
   handleLongPress = (who,deleteFamily) => {
     switch (who.status) {
       case "0":
@@ -189,7 +200,7 @@ class Family extends Component {
     </Mutation>
   )
 
-  _renderAddBtn=(spouseId)=>(
+  _renderAddBtn=()=>(
     <Button block
       style={styles.addButton}
       onPress={() => this.props.navigation.navigate("AddFamily", {
@@ -198,7 +209,7 @@ class Family extends Component {
         name: '',
         toId: '',
         relationship: 'father',
-        spouseId:spouseId
+        spouseId:''
       })}
     >
       <Text>添加成员</Text>
@@ -214,8 +225,9 @@ class Family extends Component {
                   _renderBody={this._renderBody}
                   _renderConnectBtn={this._renderConnectBtn}
                   _renderConfirmBtn={this._renderConfirmBtn}
+                  onPressAdd={this.onPressAdd}
                 />
-                {this._renderAddBtn()}
+                
               </Content>
       </Container>
     );

@@ -8,6 +8,7 @@ import LOCATION_FRAGMENT from './Location.fragment'
 import LOCATIONGROUP_FRAGMENT from './locationGroup.fragment'
 import PHOTO_FRAGMENT from './photo.fragment'
 import Message_FRAGMENT from './message.fragment'
+import FAMILYGROUP_FRAGMENT from './familyGroup.fragment'
 
 const USER_FRAGMENT = gql`
   fragment UserFragment on User {
@@ -44,6 +45,9 @@ const USER_FRAGMENT = gql`
     messages{
       ...MessageFragment
     }
+    relativefamilyGroups{
+      ...FamilyGroupFragment
+    }
  }
  ${PHOTO_FRAGMENT}
  ${LOCATION_FRAGMENT}
@@ -54,5 +58,6 @@ const USER_FRAGMENT = gql`
  ${REGSTATUS_FRAGMENT}
  ${LOCATIONGROUP_FRAGMENT}
  ${Message_FRAGMENT}
+ ${FAMILYGROUP_FRAGMENT}
 `
 export default USER_FRAGMENT;

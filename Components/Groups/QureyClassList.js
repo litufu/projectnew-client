@@ -52,5 +52,6 @@ export default graphql(GET_CLASSGROUPS, {
         variables: {
             schoolEduId: props.schoolEdu.id,
         },
+        fetchPolicy:cache-and-network,
     }),
 })(QureyClassList)

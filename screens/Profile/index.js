@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 import { Spinner } from 'native-base'
-import { Alert } from 'react-native'
+import { Alert ,Text} from 'react-native'
 
 import Nav from '../../Components/Nav'
 import Profile from './Profile'

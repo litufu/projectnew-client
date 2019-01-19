@@ -1,5 +1,4 @@
 import GET_NEWGRADEANDCLASSES from '../graphql/get_newGradeAndClasses.query'
-import GET_MESSAGES from '../graphql/get_messages.query'
 import  GET_NEWUNREADMESSAGES from '../graphql/get_newUnReadMessages.query'
 
 let nextGradeAndClassId = 0;

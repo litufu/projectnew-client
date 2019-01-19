@@ -33,8 +33,8 @@ export default class BasicInfo extends React.Component{
 
           return (
             <Info
-            name={data.me.name}
-            gender={data.me.gender}
+            name={data.me.name ? data.me.name:""}
+            gender={data.me.gender ? data.me.gender: ""}
             birthday={{
               calendar:data.me.birthdaycalendar,
               date:data.me.birthday

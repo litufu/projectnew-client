@@ -25,10 +25,25 @@ class QureyFamilies extends Component {
         this.unsubscribe();
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.data && this.props.data){
+            this.props = nextProps
+        }
+    }
+
+    _renderAddBtn=(spouseId)=>(
+        <Button block
+          style={styles.addButton}
+          onPress={()=>this.props.onPressAdd(spouseId)}
+        >
+          <Text>添加成员</Text>
+        </Button>
+      )
+
     render() {
         const { data: { family, loading, error } } = this.props;
         const {_renderLeft,_renderBody,_renderConnectBtn,_renderConfirmBtn} = this.props
-
+        console.log(family)
         if (loading) return <Spinner />
         if (error) return <Text>{errorMessage(error)}</Text>
         let spouseId = ''
@@ -40,6 +55,7 @@ class QureyFamilies extends Component {
         }
 
         return (
+            <Content>
             <List>
                 {
                     family.length > 0 && family.map((who, index) => (
@@ -77,6 +93,8 @@ class QureyFamilies extends Component {
                     ))
                 }
             </List>
+            {this._renderAddBtn(spouseId)}
+            </Content>
         )
     }
 }

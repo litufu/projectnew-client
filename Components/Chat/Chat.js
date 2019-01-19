@@ -186,28 +186,21 @@ onReceive = (text) => {
     });
 }
 
-parsePatterns = (linkStyle) => {
-    return [
-        {
-            pattern: /#(\w+)/,
-            style: { ...linkStyle, color: 'darkorange' },
-            onPress: () => Linking.openURL('http://gifted.chat'),
-        },
-    ];
-}
 
 _goBack=()=>{
     console.log('this.state.messages',this.state.messages)
-    this.props.addNewUnReadMessages({variables:{
-        type:"User",
-        id:this.props.userInfo.id,
-        lastMessageId:this.state.messages[0]._id
-    }})
+    if(this.state.messages.length>0){
+        this.props.addNewUnReadMessages({variables:{
+            type:"User",
+            id:this.props.userInfo.id,
+            lastMessageId:this.state.messages[0]._id
+        }})
+    }
     this.props.navigation.goBack()
 }
 
 render() {
-    const {userInfo} = this.props
+    const {userInfo,me} = this.props
     if (!this.state.appIsReady) {
         return <AppLoading />;
     }
@@ -256,7 +249,6 @@ render() {
                                 user={{
                                     _id: me.id,
                                 }}
-                                parsePatterns={this.parsePatterns}
                                 renderActions={() => this.renderCustomActions(sendMessage, userInfo,me)}
                                 locale="zh-cn"
                                 placeholder="输入信息..."

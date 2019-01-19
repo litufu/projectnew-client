@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button,Spinner } from 'native-base';
-import {Query} from 'react-apollo'
+import {Query,compose,graphql} from 'react-apollo'
 import {withNavigation} from 'react-navigation'
-import GET_FAMILYGROUPS from '../../graphql/get_familyGroups.query'
+import GET_ME from '../../graphql/get_me.query'
 import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
 import GET_MYOLDCOLLEAGUES from '../../graphql/get_myOldColleagues.query'
 import GET_WORKGROUPS from '../../graphql/get_workGroups.query'
@@ -11,10 +11,6 @@ import {defaultAvatar} from '../../utils/settings'
 import {errorMessage} from '../../utils/tools'
 
 class Contacts extends Component {
-
-  state={
-    loading:true,
-  }
 
   _getFamilyUsers=(familyGroups,me)=>{
     let users = []
@@ -30,36 +26,24 @@ class Contacts extends Component {
     return users
   }
 
-  _renderFamilyList=(me)=>(
-    <Query 
-    query={GET_FAMILYGROUPS}>
-      {
-        ({loading,error,data})=>{
-          if(loading) return <Spinner />
-          if(error) return <Text>{errorMessage(error)}</Text>
-          return(
-            <List>
-            {  this._getFamilyUsers(data.getFamilyGroups,me).length>0 &&
-              (<ListItem itemDivider>
-              <Text>家人</Text>
-            </ListItem> )}
-           { (this._getFamilyUsers(data.getFamilyGroups,me)).map(user=>(
-                <ListItem thumbnail key={user.id}   onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:'Group'})}>
-                <Left>
-                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
-                </Left>
-                <Body>
-                  <Text>{user.name}</Text>
-                </Body>
-              </ListItem>
-            ))}
-            </List>
-          )
-        }
-
-      }
-
-    </Query>
+  _renderFamilyList=(relativefamilyGroups,me)=>(
+   
+      <List>
+      {  this._getFamilyUsers(relativefamilyGroups,me).length>0 &&
+        (<ListItem itemDivider>
+        <Text>家人</Text>
+      </ListItem> )}
+      { (this._getFamilyUsers(relativefamilyGroups,me)).map(user=>(
+          <ListItem thumbnail key={user.id}   onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:'Group'})}>
+          <Left>
+            <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
+          </Left>
+          <Body>
+            <Text>{user.name}</Text>
+          </Body>
+        </ListItem>
+      ))}
+      </List>
   )
 
 
@@ -77,35 +61,23 @@ class Contacts extends Component {
     return users
   }
 
-  _renderClassMates=(me)=>(
-    <Query 
-    query={GET_CLASSGROUPS}
-    >
-      {
-        ({loading,error,data})=>{
-          if(loading) return <Spinner />
-          if(error) return <Text>{errorMessage(error)}</Text>
-          return(
-            <List>
-              {this._getClassmates(data.classGroups,me).length>0 && 
-               (<ListItem itemDivider>
-              <Text>同学</Text>
-            </ListItem>) }
-            {(this._getClassmates(data.classGroups,me)).map(user=>(
-                <ListItem thumbnail key={user.id}   onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:'Group'})}>
-                <Left>
-                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
-                </Left>
-                <Body>
-                  <Text>{user.name}</Text>
-                </Body>
-              </ListItem>
-            ))}
-            </List>
-          )
-        }
-      }
-    </Query>
+  _renderClassMates=(classGroups,me)=>(
+        <List>
+          {this._getClassmates(classGroups,me).length>0 && 
+            (<ListItem itemDivider>
+          <Text>同学</Text>
+        </ListItem>) }
+        {(this._getClassmates(classGroups,me)).map(user=>(
+            <ListItem thumbnail key={user.id}   onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:'Group'})}>
+            <Left>
+              <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
+            </Left>
+            <Body>
+              <Text>{user.name}</Text>
+            </Body>
+          </ListItem>
+        ))}
+        </List>
   )
 
   _getOldColleages=(myOldColleagues,me)=>{
@@ -121,35 +93,23 @@ class Contacts extends Component {
   }
 
 
-  _renderOldColleages=(me)=>(
-    <Query 
-    query={GET_MYOLDCOLLEAGUES}
-    >
-      {
-        ({loading,error,data})=>{
-          if(loading) return  <Spinner />
-          if(error) return <Text>{errorMessage(error)}</Text>
-          return(
-            <List>
-              {this._getOldColleages(data.myOldColleagues,me).length>0 && 
-               (<ListItem itemDivider>
-              <Text>前同事</Text>
-            </ListItem> )}
-            {(this._getOldColleages(data.myOldColleagues,me)).map(user=>(
-                <ListItem thumbnail key={user.id}  onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:"Group"})}>
-                <Left>
-                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
-                </Left>
-                <Body>
-                  <Text>{user.name}</Text>
-                </Body>
-              </ListItem>
-            ))}
-            </List>
-          )
-        }
-      }
-    </Query>
+  _renderOldColleages=(myOldColleagues,me)=>(
+      <List>
+        {this._getOldColleages(myOldColleagues,me).length>0 && 
+          (<ListItem itemDivider>
+        <Text>前同事</Text>
+      </ListItem> )}
+      {(this._getOldColleages(myOldColleagues,me)).map(user=>(
+          <ListItem thumbnail key={user.id}  onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:"Group"})}>
+          <Left>
+            <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
+          </Left>
+          <Body>
+            <Text>{user.name}</Text>
+          </Body>
+        </ListItem>
+      ))}
+      </List>
   )
 
   _getNowColleages=(workGroups,me)=>{
@@ -166,49 +126,63 @@ class Contacts extends Component {
     return users
   }
 
-  _renderNowColleages=(me)=>{
-    <Query 
-    query={GET_WORKGROUPS}
-    >
-      {
-        ({loading,error,data})=>{
-          if(loading) return  <Spinner />
-          if(error) return <Text>{errorMessage(error)}</Text>
-          return(
-            <List>
-                  {this._getNowColleages(data.workGroups,me).length>0 && 
-               (<ListItem itemDivider>
-              <Text>现同事</Text>
-            </ListItem> )}
-            {(this._getNowColleages(data.workGroups,me)).map(user=>(
-                <ListItem thumbnail key={user.id}  onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:'Group'})}>
-                <Left>
-                  <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
-                </Left>
-                <Body>
-                  <Text>{user.name}</Text>
-                </Body>
-              </ListItem>
-            ))}
-            </List>
-          )
-        }
-      }
-    </Query>
+  _renderNowColleages=(workGroups,me)=>{
+        <List>
+              {this._getNowColleages(workGroups,me).length>0 && 
+            (<ListItem itemDivider>
+          <Text>现同事</Text>
+        </ListItem> )}
+        {(this._getNowColleages(workGroups,me)).map(user=>(
+            <ListItem thumbnail key={user.id}  onPress={()=>this.props.navigation.navigate('UserProfile',{id:user.id,me,come:'Group'})}>
+            <Left>
+              <Thumbnail square source={{ uri: (user.avatar && user.avatar.url) || defaultAvatar  }} />
+            </Left>
+            <Body>
+              <Text>{user.name}</Text>
+            </Body>
+          </ListItem>
+        ))}
+        </List>
   }
 
   render() {
-    const me = this.props.me
+    const {me} = this.props.getMedata
+    const {classGroups} = this.props.getClassGroupsdata
+    const {myOldColleagues} = this.props.getMyoldColleaguesdata
+    const {workGroups} = this.props.getWorkGroupsdata
+    
+    if(
+      this.props.getMedata.loading 
+      || this.props.getClassGroupsdata.loading
+      || this.props.getMyoldColleaguesdata.loading
+      || this.props.getWorkGroupsdata.loading
+      ){
+        return <Spinner />
+      }
+      console.log(me)
+      console.log(classGroups)
+      console.log(myOldColleagues)
+      console.log(workGroups)
+
     return (
           <List>
-            {this._renderFamilyList(me)}
-            {this._renderClassMates(me)}
-            {this._renderOldColleages(me)}
-            {this._renderNowColleages(me)}
+            {this._renderFamilyList(this.props.getMedata.me.relativefamilyGroups,me,)}
+            {this._renderClassMates(this.props.getClassGroupsdata.classGroups,me)}
+            {this._renderOldColleages(this.props.getMyoldColleaguesdata.myOldColleagues,me)}
+            {this._renderNowColleages(this.props.getWorkGroupsdata.workGroups,me)}
           </List>
 
     );
   }
 }
 
-export default withNavigation(Contacts)
+// export default withNavigation(Contacts)
+
+export default compose(
+  withNavigation,
+  
+  graphql(GET_CLASSGROUPS, { name: 'getClassGroupsdata' }),
+  graphql(GET_MYOLDCOLLEAGUES, { name: 'getMyoldColleaguesdata' }),
+  graphql(GET_WORKGROUPS, { name: 'getWorkGroupsdata' }),
+  graphql(GET_ME, { name: 'getMedata' }),
+)(Contacts);

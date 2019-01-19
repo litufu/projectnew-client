@@ -8,9 +8,9 @@ import GET_ME from '../../graphql/get_me.query';
 
 export default class ClassGroup extends Component {
 
-  get_primarySchools = (data)=>{
+  get_primarySchools = (data,kind)=>{
     const primarySchools = data.me.studies.filter(schoolEdu=>{
-      return schoolEdu.school.kind === 'PrimarySchool'
+      return schoolEdu.school.kind === kind
     })
     if(primarySchools.length===0){
       return []
@@ -76,7 +76,7 @@ export default class ClassGroup extends Component {
             ({loading,error,data})=>{
               if(loading) return <Spinner />
               if(error)  return <Text>{errorMessage(error)}</Text>
-              const primarySchoolEdus = this.get_primarySchools(data)
+              const primarySchoolEdus = this.get_primarySchools(data,'PrimarySchool')
               const juniorMiddleSchoolEdus = this.get_middleSchool(data,'JuniorMiddleSchool')
               const highSchoolEdus = this.get_middleSchool(data,'HighSchool')
               const otherKinds = ['VocationalHighSchool','TechnicalSchool','SecondarySpecializedSchool','JuniorCollege','Undergraduate','Master','Doctor',
