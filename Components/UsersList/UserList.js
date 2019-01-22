@@ -7,6 +7,7 @@ import GET_ME from '../../graphql/get_me.query'
 import CONNECT_FAMILY from '../../graphql/connect_family.mutation'
 
 import {defaultAvatar}  from '../../utils/settings'
+import {errorMessage} from '../../utils/tools'
 
 
 class UserList extends React.Component {
@@ -59,7 +60,7 @@ class UserList extends React.Component {
                                             });
                                         }}
                                     onCompleted={(data)=>navigation.navigate('FamilyRelationship') }
-                                    onError={(error)=>Alert.alert(error.message)}
+                                    onError={(error)=>Alert.alert(errorMessage(error))}
                                     >
                                         {(connectFamily, { loading }) => {
                                             if (loading) return (<Button transparent>

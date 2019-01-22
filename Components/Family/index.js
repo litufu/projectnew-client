@@ -4,10 +4,15 @@ import {
   Content,
   Text,
   Button,
+  List,
+  ListItem,
+  Left,
+  Right,
+  Body
 } from 'native-base';
 import { Avatar } from 'react-native-elements';
 import { StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import {  Mutation } from 'react-apollo'
+import {  Query,Mutation } from 'react-apollo'
 import {withNavigation} from 'react-navigation'
 
 import {getRelationshipName} from '../../utils/relationship'
@@ -195,10 +200,10 @@ class Family extends Component {
                               {families.length > 0 && families.map((who, index) => (
                                   <ListItem key={index}>
                                       <Left style={styles.left}>
-                                          {_renderLeft(who, spouseId)}
+                                          {this._renderLeft(who, spouseId)}
                                       </Left>
                                       <Body style={styles.center}>
-                                          {_renderBody(who, spouseId)}
+                                          {this._renderBody(who, spouseId)}
                                       </Body>
 
                                       <Right style={styles.right}>
@@ -206,13 +211,13 @@ class Family extends Component {
                                               (() => {
                                                   switch (who.status) {
                                                       case "0":
-                                                          return (_renderConnectBtn(who, data.me))
+                                                          return (this._renderConnectBtn(who, data.me))
                                                           break;
                                                       case "1":
                                                           return (<Text>等待认证</Text>)
                                                           break;
                                                       case '2':
-                                                          return (_renderConfirmBtn(who))
+                                                          return (this._renderConfirmBtn(who))
                                                           break;
                                                       case '3':
                                                           return (<Text>已连接</Text>)
