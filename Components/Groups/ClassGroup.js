@@ -94,7 +94,7 @@ export default class ClassGroup extends Component {
                 {
                   primarySchoolEdus.map(schoolEdu=>{
                     const schoolEduName =  `${schoolEdu.school.name}${new Date(schoolEdu.startTime).getFullYear()-(schoolEdu.grade - 1)}界${schoolEdu.className==='0'?"": `${schoolEdu.className}班`}`
-                    return(<ListItem key={schoolEdu.id} onPress={()=>{this.props.navigation.navigate('ClassContent',{schoolEdu,schoolEduName,me})}}>
+                    return(<ListItem key={schoolEdu.id} onPress={()=>{this.props.navigation.navigate('ClassContent',{schoolEdu,schoolEduName,me,classGroups:me.classGroups})}}>
                     <Text>{schoolEduName}</Text>
                     </ListItem>)
                   })
@@ -110,7 +110,7 @@ export default class ClassGroup extends Component {
                   {
                   juniorMiddleSchoolEdus.map(schoolEdu=>{
                     const schoolEduName = `${schoolEdu.school.name}${new Date(schoolEdu.startTime).getFullYear()-(schoolEdu.grade - 1)}界${schoolEdu.className==='0'?"": `${schoolEdu.grade}年级${schoolEdu.className}班`}`
-                    return(<ListItem key={schoolEdu.id} onPress={()=>{this.props.navigation.navigate('ClassContent',{schoolEdu,schoolEduName,me})}}>
+                    return(<ListItem key={schoolEdu.id} onPress={()=>{this.props.navigation.navigate('ClassContent',{schoolEdu,schoolEduName,me,classGroups:me.classGroups})}}>
                     <Text>{schoolEduName}</Text>
                     </ListItem>)
                   })
@@ -125,7 +125,7 @@ export default class ClassGroup extends Component {
                 {
                   highSchoolEdus.map(schoolEdu=>{
                     const schoolEduName = `${schoolEdu.school.name}${new Date(schoolEdu.startTime).getFullYear()-(schoolEdu.grade - 1)}界${schoolEdu.className==='0'?"": `${schoolEdu.grade}年级${schoolEdu.className}班`}` 
-                    return(<ListItem key={schoolEdu.id} onPress={()=>{this.props.navigation.navigate('ClassContent',{schoolEdu,schoolEduName,me})}}>
+                    return(<ListItem key={schoolEdu.id} onPress={()=>{this.props.navigation.navigate('ClassContent',{schoolEdu,schoolEduName,me,classGroups:me.classGroups})}}>
                     <Text>{schoolEduName}</Text>
                     </ListItem>)
                   })
@@ -142,7 +142,7 @@ export default class ClassGroup extends Component {
                         {
                           schoolEdus.map(schoolEdu=>{
                             const schoolEduName = `${schoolEdu.school.name}${new Date(schoolEdu.startTime).getFullYear()-(schoolEdu.grade - 1)}界${schoolEdu.className==='0'?"": `${schoolEdu.className}班`}`
-                            return(<ListItem key={schoolEdu.id} onPress={()=>{this.props.navigation.navigate('ClassContent',{schoolEdu,schoolEduName,me})}}>
+                            return(<ListItem key={schoolEdu.id} onPress={()=>{this.props.navigation.navigate('ClassContent',{schoolEdu,schoolEduName,me,classGroups:me.classGroups})}}>
                               <Text>{schoolEduName}</Text>
                             </ListItem>)
                           })

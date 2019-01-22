@@ -1,5 +1,5 @@
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache ,IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { withClientState } from 'apollo-link-state';
@@ -15,9 +15,28 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { resolvers} from "./resolvers";
 import { typeDefs} from "./schema";
 import { defaults} from "./defaults";
+import {DEV_HOST,DEV_WSS} from '../utils/settings'
 
 
 const cache = new InMemoryCache();
+
+// const setCache = async () => {
+//   try {
+//     const value = await AsyncStorage.getItem('mySchema');
+//     if (value !== null) {
+//       // We have data!!
+//       const fragmentMatcher = new IntrospectionFragmentMatcher({
+//         value
+//       });
+//       cache = new InMemoryCache(fragmentMatcher);
+//     }
+//     cache = new InMemoryCache();
+//     return cache
+//    } catch (error) {
+//      console.log('error')
+//    }
+// }
+
 
 const stateLink = withClientState({
   typeDefs,
@@ -68,12 +87,12 @@ const requestLink = new ApolloLink((operation, forward) =>
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: 'http://192.168.56.1:4000/',
+  uri: DEV_HOST,
   credentials: 'include'
 });
 
 // Create a WebSocket link:
-export const wsClient = new SubscriptionClient(`ws://192.168.56.1:4000/graphql`, {
+export const wsClient = new SubscriptionClient(DEV_WSS, {
   reconnect: true,
   async connectionParams(){
     const authToken = await SecureStore.getItemAsync('token');

@@ -18,7 +18,7 @@ export default class Square extends React.Component{
         const isUser = this.props.isUser || false
         const color =  isUser ? "#3385ff" : 'gray'
         const newName = name.length===2?name.slice(0,1)+' '+name.slice(1,2) : name
-        const meBackgroudColor = relationship==='我'?'red':'white'
+        const meBackgroudColor = relationship==='我'?'white':'white'
         return(
             <TouchableHighlight
             onPress={this.handlePress}

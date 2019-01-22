@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import FAMILY_FRAGMENT from './family.fragment'
 
 import USER_FRAGMENT from './user.fragment'
 
@@ -18,9 +19,13 @@ mutation AddBasicInfo(
     birthplace:$birthplace,
     residence:$residence
   ){
+    families{
+      ...FamilyFragment
+    }
     ...UserFragment
   }
 }
+  ${FAMILY_FRAGMENT}
   ${USER_FRAGMENT}
 `;
 

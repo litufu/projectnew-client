@@ -37,6 +37,8 @@ import MyDatetime from '../MyDatetime'
 import display from '../../utils/displayplace'
 import {trim,errorMessage} from '../../utils/tools'
 import ADD_BASICKINFO from '../../graphql/add_basicinfo.mutation'
+import {randomId} from '../../utils/settings'
+import GET_ME from '../../graphql/get_me.query';
 
 export default class Info extends Component{
 
@@ -132,7 +134,11 @@ export default class Info extends Component{
     }
     this.setState({editable:false})
     addBasicInfo({ 
-      variables: { name,gender,birthday,birthplace:placeCode,residence:residenceCode }
+      variables: { name,gender,birthday,birthplace:placeCode,residence:residenceCode },
+      update: (cache, { data: { addBasicInfo } }) => {
+        const data = {me:{...addBasicInfo}}
+        cache.writeQuery({ query: GET_ME, data});
+      }
     })
   }
 

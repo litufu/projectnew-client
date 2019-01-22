@@ -76,6 +76,7 @@ export default class SearchFamily extends React.Component {
 	render() {
 		const {username,searching} = this.state
 		const who = this.props.navigation.getParam('who', {});
+		const me = this.props.navigation.getParam('me', {});
 		return (
 			<View style={styleUtil.container}>
 				<View style={{
@@ -91,6 +92,7 @@ export default class SearchFamily extends React.Component {
 					<UserListConainer
 						username={username}
 						who={who}
+						me={me}
 					/>
 				}
 			</View>

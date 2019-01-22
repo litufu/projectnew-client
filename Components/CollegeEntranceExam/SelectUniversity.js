@@ -83,17 +83,22 @@ export default  class SearchMajor extends Component {
             <Title style={{color:headerFontColor}}>选择专业</Title>
           </Body>
           <Right>
-            <Mutation 
-            mutation={SELECT_NEWUNIVERSITY}
-            >
-            {selectNewUniversity => (
-                <Button
-                onPress={()=>this.submitUniversity(selectNewUniversity)}
-              >
-                <Text>确认</Text>
-                </Button>
-            )}
-            </Mutation>
+            {
+              !!this.state.selectedId && (
+                <Mutation 
+                mutation={SELECT_NEWUNIVERSITY}
+                >
+                {selectNewUniversity => (
+                    <Button
+                    onPress={()=>this.submitUniversity(selectNewUniversity)}
+                  >
+                    <Text>确认</Text>
+                    </Button>
+                )}
+                </Mutation>
+              )
+            }
+           
           </Right>
         </Header>
         <Content style={{marginTop:5}}>

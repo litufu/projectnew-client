@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Asset, AppLoading, ImagePicker } from 'expo';
+import { ImagePicker } from 'expo';
 import { Mutation } from 'react-apollo'
 import { Ionicons } from '@expo/vector-icons';
 import { View, StyleSheet, Linking, Platform } from 'react-native';
@@ -8,9 +8,12 @@ import 'moment/locale/zh-cn'
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
-import SEND_MESSAGE from '../../graphql/send_message.mutation'
+import SEND_GROUP_MESSAGE from '../../graphql/send_groupMessage.mutation'
 import GET_ME from '../../graphql/get_me.query'
-import {randomId} from '../../utils/settings'
+import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
+import GET_WORKGROUPS from '../../graphql/get_workGroups.query'
+import GET_LOCATIONGROUPS from '../../graphql/get_locationGroups.query'
+
 
 const skip = 20
 
@@ -61,7 +64,7 @@ export default class Chat extends Component {
         );
     }
 
-    renderCustomActions = (sendMessage, userInfo,me) => {
+    renderCustomActions = (sendMessage,  type,group,me) => {
         const options = {
             '发送图片': async () => {
                 let result = await ImagePicker.launchImageLibraryAsync({
@@ -75,7 +78,7 @@ export default class Chat extends Component {
                     user: {
                         _id: 1,
                     }
-                }], sendMessage, userInfo,me)
+                }], sendMessage,  type,group,me)
             },
             '取消': () => { },
         };
@@ -105,24 +108,20 @@ export default class Chat extends Component {
         }
     }
 
-    onSend = (messages = [], sendMessage, userInfo,me ) => {
+    onSend = (messages = [], sendMessage, type,group,me ) => {
         if(!messages[0].text && !this.state.image){
             return null
         }
         sendMessage({
-            variables: { toId: userInfo.id, text: messages[0].text, image: this.state.image },
+            variables: { type,toId: group.id, text: messages[0].text, image: this.state.image },
             optimisticResponse: {
                 __typename: "Mutation",
                 sendMessage: {
-                  __typename: "Message",
-                  id:randomId ,
+                  __typename: "GroupMessage",
+                  id: Math.round(Math.random() * 1000000).toString(),
                   text:messages[0].text,
-                  to:{
-                      __typename:"User",
-                      id:userInfo.id,
-                      name:userInfo.name,
-                      avatar:userInfo.avatar,
-                  },
+                  type,
+                  to:toId,
                   from:{
                       __typename:"User",
                       id:me.id,
@@ -131,16 +130,15 @@ export default class Chat extends Component {
                   },
                   image:this.state.image ? {
                     __typename:"Photo",
-                    id:randomId,
-                    name:randomId,
+                    id:Math.round(Math.random() * 1000000).toString(),
+                    name:Math.round(Math.random() * 1000000).toString(),
                     url:this.state.image
                   } : null,
                   createdAt: new Date().toLocaleString(),
                 }
               },
-            update: (cache, { data: { sendMessage } }) => {
+            update: (cache, { data: { SendGroupMessage } }) => {
                 // Read the data from our cache for this query.
-                const data = cache.readQuery({ query: GET_ME });
                 let newMessage
                 if(sendMessage.image){
                     newMessage = {
@@ -154,37 +152,69 @@ export default class Chat extends Component {
                     newMessage = sendMessage
                 }
                 console.log('newmessage',newMessage)
-                data.me.messages.push({ ...newMessage });
-                // Write our data back to the cache.
-                cache.writeQuery({ query: GET_ME,data });
+                if(type==='family'){
+                    // familyGroup在me中查找
+                    const data = cache.readQuery({ query: GET_ME });
+                    data.me.relativefamilyGroups.map(g=>{
+                        if(g.id===group.id){
+                            g.messages.push({ ...newMessage })
+                            return g
+                        }
+                        return g
+                    })
+                    // Write our data back to the cache.
+                    cache.writeQuery({ query: GET_ME,data });
+                }else if(type==="ClassMate"){
+                    const data = cache.readQuery({ query: GET_CLASSGROUPS });
+                    data.classGroups.map(g=>{
+                        if(g.id===group.id){
+                            g.messages.push({ ...newMessage })
+                            return g
+                        }
+                        return g
+                    })
+                    // Write our data back to the cache.
+                    cache.writeQuery({ query: GET_CLASSGROUPS,data });
+                }else if(type==="Colleague"){
+                    const data = cache.readQuery({ query: GET_WORKGROUPS });
+                    data.workGroups.map(g=>{
+                        if(g.id===group.id){
+                            g.messages.push({ ...newMessage })
+                            return g
+                        }
+                        return g
+                    })
+                    // Write our data back to the cache.
+                    cache.writeQuery({ query: GET_WORKGROUPS,data });
+                }else if(type==="FellowTownsman"){
+                    const data = cache.readQuery({ query: GET_LOCATIONGROUPS });
+                    data.locationGroups.map(g=>{
+                        if(g.id===group.id){
+                            g.messages.push({ ...newMessage })
+                            return g
+                        }
+                        return g
+                    })
+                    // Write our data back to the cache.
+                    cache.writeQuery({ query: GET_LOCATIONGROUPS,data });
+                }else if(type==="RegStatus"){
+                    // regstatus在me中查找
+                    const data = cache.readQuery({ query: GET_ME });
+                    data.me.regStatus.messages.push({ ...newMessage })
+                    // Write our data back to the cache.
+                    cache.writeQuery({ query: GET_ME,data });
+                }
             }
         })
     }
 
-onReceive = (text) => {
-    this.setState((previousState) => {
-        return {
-            messages: GiftedChat.append(previousState.messages, {
-                _id: Math.round(Math.random() * 1000000).toString(),
-                text: text,
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    // avatar: 'https://facebook.github.io/react/img/logo_og.png',
-                },
-            }),
-        };
-    });
-}
 
-
-_goBack=()=>{
+_goBack=(type,group)=>{
     console.log('this.state.messages',this.state.messages)
     if(this.state.messages.length>0){
         this.props.addNewUnReadMessages({variables:{
-            type:"User",
-            id:this.props.userInfo.id,
+            type,
+            id:group.id,
             lastMessageId:this.state.messages[0]._id
         }})
     }
@@ -192,28 +222,27 @@ _goBack=()=>{
 }
 
 render() {
-    const {userInfo,me} = this.props
-
+    const {type,group,me,groupName} = this.props
     return (
         <View style={styles.container} accessible accessibilityLabel="main" testID="main">
             <Header>
                 <Left>
                     <Button
-                        onPress={() => this._goBack()}
+                        onPress={() => this._goBack(type,group)}
                         transparent
                     >
                         <Icon name='md-arrow-back' type='Ionicons' />
                     </Button>
                 </Left>
                 <Body>
-                    <Title>{userInfo.name}</Title>
+                    <Title>{groupName}</Title>
                 </Body>
                 <Right />
             </Header>
-            <Mutation mutation={SEND_MESSAGE}>
+            <Mutation mutation={SEND_GROUP_MESSAGE}>
                 {
 
-                    (sendMessage, { loading, error, data }) => {
+                    (sendMessage, {  data }) => {
                         if (data && data.sendMessage.image && data.sendMessage.image.url ) {
                             const xhr = new XMLHttpRequest()
                             xhr.open('PUT', data.sendMessage.image.url)
@@ -234,12 +263,12 @@ render() {
                             <GiftedChat
                                 messages={this.state.messages}
                                 renderSend={this.renderSend}
-                                onSend={(messages) => this.onSend(messages, sendMessage, userInfo,me)}
+                                onSend={(messages) => this.onSend(messages, sendMessage, type,group,me)}
                                 keyboardShouldPersistTaps="never"
                                 user={{
                                     _id: me.id,
                                 }}
-                                renderActions={() => this.renderCustomActions(sendMessage, userInfo,me)}
+                                renderActions={() => this.renderCustomActions(sendMessage,  type,group,me)}
                                 locale="zh-cn"
                                 placeholder="输入信息..."
                                 renderTime={null}

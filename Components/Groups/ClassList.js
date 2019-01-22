@@ -9,7 +9,7 @@ import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonCo
 import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
 import ADD_CLASSGROUP from '../../graphql/add_classGroup.mutation'
 import CONFIRM_CLASSGROUP from '../../graphql/confirm_classGroup.mutation'
-import QureyClassList from './QureyClassList'
+import QueryStudents from './QueryStudents'
 
 export default class ClassList extends Component {
 
@@ -159,6 +159,7 @@ export default class ClassList extends Component {
     const schoolEdu = this.props.navigation.getParam('schoolEdu')
     const schoolEduName = this.props.navigation.getParam('schoolEduName', '')
     const me = this.props.navigation.getParam('me', '')
+    const newClassGroups = this.props.navigation.getParam('newClassGroups', '')
     return (
       <Container>
         <Header style={{ marginTop: statusBarHeight, backgroundColor: headerBackgroundColor }}>
@@ -177,15 +178,15 @@ export default class ClassList extends Component {
           </Right>
         </Header>
         <Content>
-          <QureyClassList 
+          <QueryStudents 
           schoolEdu={schoolEdu}
           schoolEduName={schoolEduName}
           me={me}
           renderButton={this.renderButton}
+          classGroups={newClassGroups}
           />
         </Content>
       </Container>
     );
   }
 }
-

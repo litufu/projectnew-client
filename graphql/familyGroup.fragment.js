@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import GROUP_MESSAGE_FRAGMENT from './groupMessage.fragment'
 
 const FAMILYGROUP_FRAGMENT = gql`
   fragment FamilyGroupFragment on FamilyGroup {
@@ -48,6 +49,10 @@ const FAMILYGROUP_FRAGMENT = gql`
         id
         name
     }
+    messages{
+        ...GroupMessageFragment
+    }
   }
+  ${GROUP_MESSAGE_FRAGMENT}
 `
 export default FAMILYGROUP_FRAGMENT;

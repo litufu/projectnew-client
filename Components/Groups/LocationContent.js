@@ -34,7 +34,11 @@ class LocationContent extends Component {
               <Icon name="list" type="FontAwesome" />
               <Text>成员列表</Text>
             </Button>
-            <Button transparent vertical>
+            <Button 
+            transparent 
+            vertical
+            onPress={()=>this.props.navigation.navigate('GroupChat',{locationGroup,me,type:"FellowTownsman",groupName:locationGroup.name})}
+            >
               <Icon name="chat" type='Entypo'/>
               <Text>群聊</Text>
             </Button>

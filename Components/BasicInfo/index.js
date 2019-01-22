@@ -17,7 +17,7 @@ export default class BasicInfo extends React.Component{
 
   render(){
     return(
-      <Query query={GET_ME} pollInterval={500}>
+      <Query query={GET_ME} >
         {({ loading, error, data }) => {
           console.log(data)
           if (loading) return (
@@ -53,6 +53,7 @@ export default class BasicInfo extends React.Component{
               street:data.me.residence && data.me.residence.street ? {code:data.me.residence.street.code,name:data.me.residence.street.name} : '',
               village:data.me.residence && data.me.residence.village ? {code:data.me.residence.village.code,name:data.me.residence.village.name} : '',
             }}
+            me={data.me}
             />
           );
         }}

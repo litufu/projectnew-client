@@ -20,7 +20,7 @@ const USER_SEARCH = gql`
 class UserListConainer extends React.Component{
 
     render(){
-        const {navigation,username,who} = this.props
+        const {navigation,username,who,me} = this.props
         return(
             <Query query={USER_SEARCH} variables={{ username }}>
                 {({ loading, error, data }) => {
@@ -36,7 +36,7 @@ class UserListConainer extends React.Component{
                 console.log(data.searchUser)
 
                 return (
-                        <UserList users={[data.searchUser]} who={who} navigation={navigation} />
+                        <UserList users={[data.searchUser]} who={who} navigation={navigation} me={me} />
                     );
                 }}
             </Query>

@@ -114,6 +114,7 @@ export default class UniversityAndMajor extends React.Component {
                                 Alert.alert('没有选择专业')
                                 return
                             }
+                            console.log(major)
 
                             const result2 = await client.query({query:GET_SEARCHNEWUNIVERSITY})
                             const university = result2.data.searchNewUniversity
@@ -121,10 +122,12 @@ export default class UniversityAndMajor extends React.Component {
                                 Alert.alert('没有选择学校')
                                 return
                             }
+                            console.log(university.id)
                             const { data } = await client.query({
                             query: GET_REGSTATUSAPPLICANTS,
                             variables: { education,universityId:university.id,majorId:major.id }
                             });
+                            console.log(data)
                             this._onRegStatusApplicantsFetched(data.getRegStatusApplicants,major.name,university.name);
                         }catch(error){
                             Alert.alert(errorMessage(error))
@@ -145,6 +148,7 @@ export default class UniversityAndMajor extends React.Component {
         const major = result1.data.searchNewMajor
         const result2 = await client.query({query:GET_SEARCHNEWUNIVERSITY})
         const university = result2.data.searchNewUniversity
+        
         await addRegStatus({
             variables:{education,majorId:major.id,universityId:university.id},
             update: (cache, { data }) => {

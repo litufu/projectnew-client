@@ -12,6 +12,7 @@ export default class Example extends Component {
     }
 
   render() {
+    const me = this.props.navigation.getParam('me')
     return (
       <Container>
         <Header hasSegment style={{marginTop:statusBarHeight}}>
@@ -38,7 +39,7 @@ export default class Example extends Component {
 
         <Content padder>
           {this.state.selected===1 &&  <Genealogy />}
-          {this.state.selected===2 &&  <Family />}
+          {this.state.selected===2 &&  <Family me={me}/>}
         </Content>
       </Container>
       

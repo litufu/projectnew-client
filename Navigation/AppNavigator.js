@@ -1,17 +1,25 @@
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 import { graphql, compose, withApollo } from 'react-apollo';
 import React, { Component } from 'react';
+import { map } from 'lodash';
+import { Spinner } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'
 import { wsClient } from '../apollo'
 
 import GET_ME from '../graphql/get_me.query'
+import GET_CLASSGROUPS from '../graphql/get_classGroups.query'
+import GET_WORKGROUPS from '../graphql/get_workGroups.query'
+import GET_LOCATIONGROUPS from '../graphql/get_locationGroups.query'
+import GET_FAMILYGROUPS from '../graphql/get_familyGroups.query'
+import GET_FAMILIES from '../graphql/get_families.query'
+
 import MESSAGE_ADDED_SUBSCRIPTION from '../graphql/message_added.subscription'
 import FAMILYGROUP_CHANGED_SUBSCRIPTION from '../graphql/familyGroup_changed.subscription'
-
-import GET_FAMILYGROUPS from '../graphql/get_familyGroups.query'
-
-
-import { Spinner } from 'native-base';
+import GROUPMESSAGE_ADDED_SUBSCRIPTION from '../graphql/groupMessage_added.subscription'
+import CLASSGROUP_CHANGED_SUBSCRIPTION from '../graphql/classGroup_changed.subscription'
+import WORKGROUP_CHANGED_SUBSCRIPTION from '../graphql/workGroup_changed.subscription'
+import LOCATIONGROUP_CHANGED_SUBSCRIPTION from '../graphql/locationGroup_changed.subscription'
+import FAMILY_CHANGED_SUBSCRIPTION from '../graphql/family_changed.subscription'
 
 import Group from '../screens/Group'
 import Home from '../screens/MyHome'
@@ -32,8 +40,10 @@ import FindJob from '../Components/FindJob'
 // 引入group
 import FamilyGroup from '../Components/Groups/FamilyGroup'
 import ClassGroup from '../Components/Groups/ClassGroup'
+// import QueryClassGroup from '../Components/Groups/QueryClassGroup'
 import LocationGroup from '../Components/Groups/LocationGroup'
 import WorkGroup from '../Components/Groups/WorkGroup'
+// import QueryWorkGroup from '../Components/groups/QueryWorkGroup'
 import Content from '../Components/Groups/Content'
 import FamilyContent from '../Components/Groups/FamilyContent'
 import FamilyList from '../Components/Groups/FamilyList'
@@ -45,6 +55,7 @@ import OldWorkList from '../Components/Groups/OldWorkList'
 import LocationContent from '../Components/Groups/LocationContent'
 import LocationList from '../Components/Groups/LocationList'
 import Chat from '../Components/Chat'
+import GroupChat from '../Components/GroupChat'
 
 // 引入profile
 import UserProfile from '../Components/UserProfile'
@@ -94,7 +105,16 @@ const HomeNavigation = createStackNavigator(
         },
         FindJob: {
             screen: FindJob
-        }
+        },
+        Chat: {
+            screen: Chat,
+        },
+        GroupChat: {
+            screen: GroupChat,
+        },
+        UserProfile: {
+            screen: UserProfile,
+        },
 
     },
     {
@@ -117,12 +137,18 @@ const GroupNavigation = createStackNavigator(
         ClassGroup: {
             screen: ClassGroup,
         },
+        // QueryClassGroup: {
+        //     screen: QueryClassGroup,
+        // },
         LocationGroup: {
             screen: LocationGroup,
         },
         WorkGroup: {
             screen: WorkGroup,
         },
+        // QueryWorkGroup: {
+        //     screen: QueryWorkGroup,
+        // },
         Content: {
             screen: Content,
         },
@@ -155,6 +181,9 @@ const GroupNavigation = createStackNavigator(
         },
         Chat: {
             screen: Chat,
+        },
+        GroupChat: {
+            screen: GroupChat,
         },
         UserProfile: {
             screen: UserProfile,
@@ -303,10 +332,83 @@ class AppWithNavigationState extends Component {
                 });
             },
         });
+
+        this.classGroupSubscription = await subscribeToMore({
+            document: CLASSGROUP_CHANGED_SUBSCRIPTION,
+            updateQuery: (prev) => {
+                client.query({
+                    query: GET_CLASSGROUPS,
+                    fetchPolicy: "network-only"
+                }).then(({ data }) => {
+                    const newMe = {
+                        ...prev.me,
+                        classGroups: data.classGroups
+                    }
+                    const result = { ...prev, me: newMe }
+                    return result
+                });
+            },
+        });
+
+        this.workGroupSubscription = await subscribeToMore({
+            document: WORKGROUP_CHANGED_SUBSCRIPTION,
+            updateQuery: (prev) => {
+                client.query({
+                    query: GET_WORKGROUPS,
+                    fetchPolicy: "network-only"
+                }).then(({ data }) => {
+                    const newMe = {
+                        ...prev.me,
+                        workGroups: data.workGroups
+                    }
+                    const result = { ...prev, me: newMe }
+                    return result
+                });
+            },
+        });
+
+        this.locationGroupSubscription = await subscribeToMore({
+            document: LOCATIONGROUP_CHANGED_SUBSCRIPTION,
+            updateQuery: (prev) => {
+                client.query({
+                    query: GET_LOCATIONGROUPS,
+                    fetchPolicy: "network-only"
+                }).then(({ data }) => {
+                    const newMe = {
+                        ...prev.me,
+                        locationGroups: data.locationGroups
+                    }
+                    const result = { ...prev, me: newMe }
+                    return result
+                });
+            },
+        });
+
+        this.familyChangeSubscription = await subscribeToMore({
+            document: FAMILY_CHANGED_SUBSCRIPTION,
+            updateQuery: (prev) => {
+                client.query({
+                    query: GET_FAMILIES,
+                    fetchPolicy: "network-only"
+                }).then(({ data }) => {
+                    const newMe = {
+                        ...prev.me,
+                        families: data.families
+                    }
+                    const result = { ...prev, me: newMe }
+                    return result
+                });
+            },
+        });
     }
 
     componentWillUnmount() {
         this.familyGroupSubscription();
+        this.locationGroupSubscription()
+        this.workGroupSubscription()
+        this.classGroupSubscription()
+        this.familyChangeSubscription()
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -315,6 +417,10 @@ class AppWithNavigationState extends Component {
             console.log('取消订阅')
             if (this.messagesSubscription) {
               this.messagesSubscription();
+            }
+
+            if(this.groupMessagesSubscription){
+                this.groupMessagesSubscription()
             }
 
             // clear the event subscription
@@ -343,9 +449,74 @@ class AppWithNavigationState extends Component {
                     return prev
                 },
             });
+
+            const groupIds = map(nextProps.me.relativefamilyGroups, 'id'
+            ).concat(
+                map(nextProps.me.classGroups, 'id')
+            ).concat(
+                map(nextProps.me.locationGroups, 'id')
+            ).concat(
+                map(nextProps.me.workGroups, 'id')
+            )
+
+            if(nextProps.me.regStatus){
+                groupIds.push(nextProps.me.regStatus.id)
+            }
+
+            this.groupMessagesSubscription = nextProps.subscribeToMore({
+                document: GROUPMESSAGE_ADDED_SUBSCRIPTION,
+                variables: { 
+                    userId: nextProps.me.id,
+                    groupIds,
+                 },
+                updateQuery: (prev, { subscriptionData }) => {
+                    const newMessage = subscriptionData.data.groupMessageAdded;
+                    if(newMessage.type==='Family'){
+                        prev.me.relativefamilyGroups.map(group=>{
+                            if(group.id===newMessage.toId){
+                                group.messages.push(newMessage)
+                                return group
+                            }
+                            return group
+                        })
+                        return prev
+                    }else if(newMessage.type==='ClassMate'){
+                        prev.me.classGroups.map(group=>{
+                            if(group.id===newMessage.toId){
+                                group.messages.push(newMessage)
+                                return group
+                            }
+                            return group
+                        })
+                        return prev
+
+                    }else if(newMessage.type==='Colleague'){
+                        if(prev.me.workGroup.id===newMessage.toId){
+                            prev.me.workGroup.messages.push(newMessage)
+                            return prev
+                        }
+                        return prev
+                    }else if(newMessage.type==='FellowTownsman'){
+                        prev.me.locationGroups.map(group=>{
+                            if(group.id===newMessage.toId){
+                                group.messages.push(newMessage)
+                                return group
+                            }
+                            return group
+                        })
+                        return prev
+                    }else if(newMessage.type==='RegStatus') {
+                        if(prev.me.regStatus.id===newMessage.toId){
+                            prev.me.workGroup.messages.push(newMessage)
+                            return prev
+                        }
+                        return prev
+                    }
+                },
+            });
+
           }
     }
-
 
     render() {
         if (this.props.loading) return <Spinner />

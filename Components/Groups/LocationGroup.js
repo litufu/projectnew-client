@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, List, ListItem, Text,Left,Icon,Button,Right,Body,Title } from 'native-base';
-import QueryLocationGroups from './QueryLocationGroups'
 
 import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 
-export default class FamilyGroup extends Component {
+export default class LocationGroup extends Component {
   render() {
     const me = this.props.navigation.getParam('me')
     return (
@@ -25,10 +24,15 @@ export default class FamilyGroup extends Component {
           <Right />
           </Header>
         <Content>
-          <QueryLocationGroups
-          me={me}
-          navigation={this.props.navigation}
-          />
+        <List>
+                {
+                    me.locationGroups.filter(locationGroup=>locationGroup.users.length!==1 && locationGroup.users.length !==0 ).map(locationGroup => (
+                        <ListItem key={locationGroup.id} onPress={() => navigation.navigate('LocationContent', { locationGroup, me })}>
+                            <Text>{locationGroup.name}</Text>
+                        </ListItem>
+                    ))
+                }
+            </List>
         </Content>
       </Container>
     );

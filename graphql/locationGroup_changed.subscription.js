@@ -3,7 +3,12 @@ import gql from 'graphql-tag';
 const LOCATIONGROUP_CHANGED_SUBSCRIPTION = gql`
     subscription onLocationGroupChanged{
         locationGroupChanged{
-            text
+            toId,
+            groupId,
+            userid,
+            username,
+            userAvatar,
+            type,
         }
     }
 `   

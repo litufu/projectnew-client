@@ -33,10 +33,12 @@ export default class Genealogy extends React.Component {
         <Query
           query={GET_FAMILIESBYID}
           variables={{ id: this.state.id }}
+          fetchPolicy="cache-and-network"
         >
           {({ loading, error, data }) => {
             if (loading) return <Spinner />
             if (error) return <Text>{errorMessage(error)}</Text>
+            console.log(data.getFamiliesById)
 
             return (
               <Example

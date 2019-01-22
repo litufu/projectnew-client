@@ -4,7 +4,7 @@ import FAMILY_FRAGMENT from './family.fragment'
 
 const GET_FAMILIES = gql`
 {
-  family {
+  families {
     ...FamilyFragment
   }
 }

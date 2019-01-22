@@ -9,7 +9,8 @@ import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonCo
 import GET_WORKGROUPS from '../../graphql/get_workGroups.query'
 import ADD_WORKGROUP from '../../graphql/add_workGroup.mutation'
 import CONFIRM_WORKGROUP from '../../graphql/confirm_workGroup.mutation'
-import QueryWorkList from './QueryWorkList'
+import QueryColleagues from './QueryColleagues'
+
 
 export default class WorkList extends Component {
 
@@ -157,6 +158,7 @@ export default class WorkList extends Component {
   render() {
     const work = this.props.navigation.getParam('work')
     const me = this.props.navigation.getParam('me', '')
+    const newWorkGroups = this.props.navigation.getParam('newWorkGroups', '')
     return (
       <Container>
         <Header style={{ marginTop: statusBarHeight, backgroundColor: headerBackgroundColor }}>
@@ -175,14 +177,14 @@ export default class WorkList extends Component {
           </Right>
         </Header>
         <Content>
-          <QueryWorkList 
+          <QueryColleagues 
           work={work}
           me={me}
           renderButton={this.renderButton}
+          workGroups={newWorkGroups}
           />
         </Content>
       </Container>
     );
   }
 }
-

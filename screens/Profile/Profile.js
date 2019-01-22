@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 import BaseIcon from './Icon'
 import Chevron from './Chevron'
-
+import defaultAvatar from '../../utils/settings'
 
 const styles = StyleSheet.create({
   scroll: {
@@ -51,7 +51,8 @@ class SettingsScreen extends Component {
           <View style={styles.userRow}  >
             <View style={styles.userImage}>
               <Thumbnail
-                large source={require('../../assets/RQ1iLOs.jpg')}
+                square 
+                large source={{uri:(me.avatar &&me.avatar.url) ? me.avatar.url :defaultAvatar}}
               />
             </View>
             <View>
@@ -91,7 +92,7 @@ class SettingsScreen extends Component {
           <ListItem
             // chevron
             title="家庭成员"
-            onPress={() => this.props.navigation.navigate('FamilyRelationship')}
+            onPress={() => this.props.navigation.navigate('FamilyRelationship',{me})}
             containerStyle={styles.listItemContainer}
             leftIcon={
               <BaseIcon

@@ -5,9 +5,28 @@ import { Container, Header, Content, Icon,Text,Item, Button, Left,Right,Body ,Ti
 import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
 
 class ClassContent extends Component {
+
+  _getMyGroups = (workGroups, myId) => {
+    const myGroups = workGroups.filter(workGroup => {
+      for (const colleague of workGroup.colleagues) {
+        if (colleague.worker.id === myId && colleague.status === '1') {
+          return true
+        }
+      }
+      return false
+    })
+    if (myGroups.length > 0) {
+      return myGroups
+    }
+    return []
+  }
+
   render() {
     const work = this.props.navigation.getParam('work','')
     const me =  this.props.navigation.getParam('me','')
+    const newWorkGroups = this.props.navigation.getParam('newWorkGroups','')
+    const myWorkGroups = this._getMyGroups(newWorkGroups,me.id)
+    const myWorkGroup = myWorkGroups.length>0 ?myWorkGroups[0]:[]
     return (
       <Container>
         <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
@@ -29,12 +48,16 @@ class ClassContent extends Component {
             <Button 
             transparent 
             vertical
-            onPress={()=>this.props.navigation.navigate('WorkList',{work,me})}
+            onPress={()=>this.props.navigation.navigate('WorkList',{work,me,newWorkGroups})}
              >
               <Icon name="list" type="FontAwesome" />
               <Text>成员列表</Text>
             </Button>
-            <Button transparent vertical>
+            <Button 
+            transparent 
+            vertical
+            onPress={()=>this.props.navigation.navigate('GroupChat',{group:myWorkGroup,me,type:"Colleague",groupName:work.company.name})}
+            >
               <Icon name="chat" type='Entypo'/>
               <Text>群聊</Text>
             </Button>

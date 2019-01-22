@@ -9,7 +9,8 @@ import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonCo
 class WorkGroup extends Component {
 
   render() {
-    const me = this.props.navigation.getParam('me')
+    const {me} = this.props
+    const newWorkGroups = me.workGroups.map(workGroup=>workGroup.company.id===work.company.id)
     const nowWorks = me.works.filter(work => new Date(work.endTime).getFullYear() === 9999)
     return (
       <Container>
@@ -40,7 +41,7 @@ class WorkGroup extends Component {
             }
             {
               (nowWorks.length > 0) &&
-              <ListItem onPress={() => this.props.navigation.navigate('WorkContent', { work:nowWorks[0], me })}>
+              <ListItem onPress={() => this.props.navigation.navigate('WorkContent', { work:nowWorks[0], me ,newWorkGroups})}>
                 <Text>{nowWorks[0].company.name}</Text>
               </ListItem>
             }

@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import GROUP_MESSAGE_FRAGMENT from './groupMessage.fragment'
 
 const REGSTATUS_FRAGMENT = gql`
   fragment RegStatusFragment on RegStatus {
@@ -12,6 +13,10 @@ const REGSTATUS_FRAGMENT = gql`
         id
         name
     }
+    messages{
+      ...GroupMessageFragment
+    }
   }
+  ${GROUP_MESSAGE_FRAGMENT}
 `
 export default REGSTATUS_FRAGMENT;

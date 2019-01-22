@@ -6,7 +6,8 @@ import {
   RefreshControl,
   ActivityIndicator
 } from 'react-native';
-import Timeline from 'react-native-timeline-feed'
+// import Timeline from 'react-native-timeline-feed'
+import Timeline from '../Timeline'
 
 const kindName = {
     "PrimarySchool":"小学",
@@ -80,13 +81,18 @@ export default class TimeLocationLine extends Component {
           circleSize={20}
           circleColor='rgb(45,156,219)'
           lineColor='rgb(45,156,219)'
-          timeContainerStyle={{minWidth:72, marginTop: -5}}
+          timeContainerStyle={{
+            minWidth:72, 
+            marginTop: -5,
+            borderRadius: 13,
+            backgroundColor: '#ff9797',
+          }}
           timeStyle={{textAlign: 'center', backgroundColor:'#ff9797', color:'white', padding:5, borderRadius:13}}
           descriptionStyle={{color:'gray'}}
           flatListProps={{
             style:{paddingTop:5},
           }}
-          innerCircleType={'dot'}
+          innerCircleType="dot"
         />
       </View>
     );

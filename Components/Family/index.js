@@ -11,10 +11,9 @@ import {  Mutation } from 'react-apollo'
 import {withNavigation} from 'react-navigation'
 
 import {getRelationshipName} from '../../utils/relationship'
-import GET_FAMILIES from '../../graphql/get_families.query'
 import DELETE_FAMILY from '../../graphql/delete_family.mutation'
 import CONFIRM_FAMILY from '../../graphql/confirm_family.mutation'
-import QueryFamilies from './QueryFamilies'
+import GET_ME  from '../../graphql/get_me.query'
 
 class Family extends Component {
 
@@ -33,16 +32,8 @@ class Family extends Component {
           toId: who.to.id,
           relationship: who.relationship,
           spouseId:spouseId,
+          me:this.props.me
         })
-        break;
-      case "1":
-        this.props.navigation.navigate("UserProfile")
-        break;
-      case '2':
-        this.props.navigation.navigate("UserProfile")
-        break;
-      case '3':
-        this.props.navigation.navigate("UserProfile")
         break;
       default:
         return null
@@ -57,7 +48,8 @@ class Family extends Component {
       name: '',
       toId: '',
       relationship: 'father',
-      spouseId:spouseId
+      spouseId:spouseId,
+      me:this.props.me
     })
   }
 
@@ -69,18 +61,22 @@ class Family extends Component {
           '确定要删除吗?',
           [
             { text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-            { text: '确定', onPress: () => deleteFamily({ variables: { familyId:who.id, toId:who.to.id } }) },
+            { text: '确定', onPress: () => deleteFamily({ 
+              variables: { familyId:who.id, toId:who.to.id },
+              update: (cache, { data: { deleteFamily } }) => {
+                // Read the data from our cache for this query.
+                const {me} = cache.readQuery({ query: GET_ME });
+                // Add our comment from the mutation to the end.
+                const families = me.families.filter(family=>family.id!==deleteFamily.id)
+                const data = {me:{...me,families}}
+                // Write our data back to the cache.
+                console.log(data)
+                cache.writeQuery({ query: GET_ME, data} );
+              }
+            })
+          },
           ]
         )
-        break;
-      case "1":
-        this.props.navigation.navigate("UserProfile")
-        break;
-      case '2':
-        this.props.navigation.navigate("UserProfile")
-        break;
-      case '3':
-        this.props.navigation.navigate("UserProfile")
         break;
       default:
         return null
@@ -89,23 +85,14 @@ class Family extends Component {
    
   }
 
-  connect = (who) => {
-    this.props.navigation.navigate('SearchFamily', { who })
+  connect = (who,me) => {
+    this.props.navigation.navigate('SearchFamily', { who ,me})
   }
 
-  confirm = (who) => {
-    // (1)修改双方family的status,全部修改为3
-    // (2)修改双方的family的to:检查Person中是否已经存在user,如果存在则删除重复的person,并将to指向已经包含user的Person
-    // 如果都不存在user,则在Person中添加User.
-    // (3)合并双方共同的亲人，用由User的代替没有User的。删除Person中重复的亲人。
-
-  }
-
-
-  _renderConnectBtn=(who)=>(
+  _renderConnectBtn=(who,me)=>(
     <Button
       style={styles.button}
-      onPress={() => this.connect(who)}
+      onPress={() => this.connect(who,me)}
     >
       <Text>连接</Text>
     </Button>
@@ -115,16 +102,17 @@ class Family extends Component {
     <Mutation 
       mutation={CONFIRM_FAMILY}
       update={(cache, { data: { confirmFamily } }) => {
-        const { family } = cache.readQuery({ query: GET_FAMILIES });
+        const { me } = cache.readQuery({ query: GET_ME});
+        const families = me.families.map((who) => { 
+          if(who.id===confirmFamily.id){
+            return Object.assign({},who,{status:confirmFamily.status})
+          }else{
+            return who
+          }
+          })
         cache.writeQuery({
-          query: GET_FAMILIES,
-          data: { family: family.map((who) => { 
-            if(who.id===confirmFamily.id){
-              return Object.assign({},who,{status:confirmFamily.status})
-            }else{
-              return who
-            }
-            }) }
+          query: GET_ME,
+          data: { me:{...me,families}  }
         });
       }}
       >
@@ -134,30 +122,6 @@ class Family extends Component {
         warning
         onPress={()=>confirmFamily({ 
           variables: { familyId: who.id },
-          optimisticResponse: {
-            __typename: "Mutation",
-            confirmFamily: {
-              __typename: "Family",
-              id: who.id,
-              relationship: who.relationship,
-              status: '3',
-              to: {
-                __typename: "Person",
-                id: who.to.id,
-                name: who.to.name,
-                user:null
-              },
-              from:{
-                __typename:'User',
-                id:Math.floor(Math.random() * 200).toString(),
-                name:who.from.name
-              },
-              spouse:{
-                __typename:'Family',
-                id:''
-              }
-            }
-          }
         })}
         >
           <Text>确认</Text>
@@ -182,10 +146,11 @@ class Family extends Component {
     <Mutation
       mutation={DELETE_FAMILY}
       update={(cache, { data: { deleteFamily } }) => {
-        const { family } = cache.readQuery({ query: GET_FAMILIES });
+        const { me } = cache.readQuery({ query: GET_ME });
+        const families = me.families.filter((who) => { return who.id !== deleteFamily.id })
         cache.writeQuery({
-          query: GET_FAMILIES,
-          data: { family: family.filter((who) => { return who.id !== deleteFamily.id }) }
+          query: GET_ME,
+          data: { me:{...me,families}  }
         });
       }}
     >
@@ -200,37 +165,75 @@ class Family extends Component {
     </Mutation>
   )
 
-  _renderAddBtn=()=>(
+  _renderAddBtn = (spouseId) => (
     <Button block
-      style={styles.addButton}
-      onPress={() => this.props.navigation.navigate("AddFamily", {
-        isAdd: true,
-        familyId: '',
-        name: '',
-        toId: '',
-        relationship: 'father',
-        spouseId:''
-      })}
+        style={styles.addButton}
+        onPress={() => this.onPressAdd(spouseId)}
     >
-      <Text>添加成员</Text>
+        <Text>添加成员</Text>
     </Button>
-  )
+)
 
   render() {
+
     return (
-      <Container>
-              <Content>
-                <QueryFamilies
-                  _renderLeft={this._renderLeft}
-                  _renderBody={this._renderBody}
-                  _renderConnectBtn={this._renderConnectBtn}
-                  _renderConfirmBtn={this._renderConfirmBtn}
-                  onPressAdd={this.onPressAdd}
-                />
-                
-              </Content>
-      </Container>
-    );
+      <Query query={GET_ME}>
+          {
+              ({ data }) => {
+                  const families = data.me.families
+                  let spouseId = ''
+                  if (families && families.length > 0) {
+                      const wifeOrHusband = families.filter(f => { return f.relationship === "wife" || f.relationship === "husband" })
+                      if (wifeOrHusband.length > 0) {
+                          spouseId = wifeOrHusband[0].id
+                      }
+                  }
+                  return (
+                    <Container>
+                      <Content>
+                          <List>
+                              {families.length > 0 && families.map((who, index) => (
+                                  <ListItem key={index}>
+                                      <Left style={styles.left}>
+                                          {_renderLeft(who, spouseId)}
+                                      </Left>
+                                      <Body style={styles.center}>
+                                          {_renderBody(who, spouseId)}
+                                      </Body>
+
+                                      <Right style={styles.right}>
+                                          {
+                                              (() => {
+                                                  switch (who.status) {
+                                                      case "0":
+                                                          return (_renderConnectBtn(who, data.me))
+                                                          break;
+                                                      case "1":
+                                                          return (<Text>等待认证</Text>)
+                                                          break;
+                                                      case '2':
+                                                          return (_renderConfirmBtn(who))
+                                                          break;
+                                                      case '3':
+                                                          return (<Text>已连接</Text>)
+                                                          break;
+                                                      default:
+                                                          return null
+                                                  }
+                                              })()
+                                          }
+                                      </Right>
+                                  </ListItem>
+                              ))}
+                          </List>
+                          {this._renderAddBtn(spouseId)}
+                      </Content>
+                      </Container>
+                  )
+              }
+          }
+      </Query>
+  )
   }
 }
 

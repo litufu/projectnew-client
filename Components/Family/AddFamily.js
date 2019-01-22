@@ -16,7 +16,6 @@ import { Query, Mutation } from 'react-apollo'
 
 import CREATE_FAMILY from '../../graphql/create_family.mutation'
 import MODIFY_FAMILY from '../../graphql/modify_family.mutation'
-import GET_FAMILIES from '../../graphql/get_families.query'
 import GET_ME from '../../graphql/get_me.query'
 import Nav from '../Nav'
 
@@ -28,7 +27,7 @@ export default class AddFamily extends Component {
     disabled:false,
   }
 
-  validate = (relationship, name, client) => {
+  validate = (relationship, name, client,me) => {
     if (name === "") {
       Alert.alert('姓名未填写')
       return false
@@ -48,16 +47,14 @@ export default class AddFamily extends Component {
 
     const isAdd = this.props.navigation.getParam('isAdd')
     if (isAdd) {
-      const { family } = client.readQuery({ query: GET_FAMILIES });
-
-      if (relationship === 'father' && family.filter((who, index) => {
+      if (relationship === 'father' && me.families.filter((who, index) => {
         return who.relationship === relationship
       }).length !== 0) {
         Alert.alert('只能选择一个父亲')
         return false
       }
 
-      if (relationship === 'mother' && family.filter((who, index) => {
+      if (relationship === 'mother' && me.families.filter((who, index) => {
         return who.relationship === relationship
       }).length !== 0) {
         Alert.alert('只能选择一个母亲')
@@ -68,7 +65,7 @@ export default class AddFamily extends Component {
     return true
   }
 
-  submitRelationship = (createFamily, client) => {
+  submitRelationship = (createFamily, client,me) => {
     
     
     const { relationship, name,spouseId } = this.state
@@ -82,7 +79,7 @@ export default class AddFamily extends Component {
 
     }
     this.setState({disabled:true})
-    const pass = this.validate(relationship, name, client)
+    const pass = this.validate(relationship, name, client,me)
 
     if (!pass) {
       return null
@@ -117,7 +114,7 @@ export default class AddFamily extends Component {
     this.props.navigation.navigate("FamilyRelationship")
   }
 
-  updateRelationship = (updateFamily, client) => {
+  updateRelationship = (updateFamily, client,me) => {
     this.setState({disabled:true})
     const { relationship, name,spouseId } = this.state
     if((relationship==='son' || relationship==='daughter') && !spouseId){
@@ -125,7 +122,7 @@ export default class AddFamily extends Component {
       return null
     }
     console.log(relationship)
-    const pass = this.validate(relationship, name, client)
+    const pass = this.validate(relationship, name, client,me)
     const familyId = this.props.navigation.getParam('familyId')
     const toId = this.props.navigation.getParam('toId')
 
@@ -162,14 +159,15 @@ export default class AddFamily extends Component {
     this.props.navigation.navigate("FamilyRelationship")
   }
 
-  renderAddFamily = () => (
+  renderAddFamily = (me) => (
     <Mutation
       mutation={CREATE_FAMILY}
       update={(cache, { data: { createFamily } }) => {
-        const { family } = cache.readQuery({ query: GET_FAMILIES });
+        const { me } = cache.readQuery({ query: GET_ME });
+        const families = me.families.concat([createFamily])
         cache.writeQuery({
-          query: GET_FAMILIES,
-          data: { family: family.concat([createFamily]) }
+          query: GET_ME,
+          data: { me: {...me,families} }
         });
       }}
     >
@@ -178,7 +176,7 @@ export default class AddFamily extends Component {
           <Button block
             disabled={this.state.disabled}
             style={styles.saveButton}
-            onPress={() => this.submitRelationship(createFamily, client)}
+            onPress={() => this.submitRelationship(createFamily, client,me)}
           >
             <Text>{loading ? "保存中..." : "保存"}</Text>
           </Button>
@@ -188,7 +186,7 @@ export default class AddFamily extends Component {
     </Mutation>
   )
 
-  renderModifyFamily = () => (
+  renderModifyFamily = (me) => (
     <Mutation
       mutation={MODIFY_FAMILY}
     >
@@ -197,7 +195,7 @@ export default class AddFamily extends Component {
           <Button block
             disabled={this.state.disabled}
             style={styles.saveButton}
-            onPress={() => this.updateRelationship(updateFamily, client)}
+            onPress={() => this.updateRelationship(updateFamily, client,me)}
           >
             <Text>{loading ? "保存中..." : "保存"}</Text>
           </Button>
@@ -246,15 +244,15 @@ export default class AddFamily extends Component {
     return (
       <Query query={GET_ME}>
         {({ loading, error, data,client }) => {
+          const me = data.me
           if (loading) return <Spinner />;
           if (error) return <Text>{error.message}</Text>
           if (data.me.name === '' || data.me.gender === "") {
             Alert.alert('需要先完善个人信息')
             return null
           }
-          const { family } = client.readQuery({ query: GET_FAMILIES });
-          const spouses = family.filter(f=>f.relationship==="wife"||f.relationship==="husband")
-
+          
+          const spouses = data.me.families.filter(f=>f.relationship==="wife"||f.relationship==="husband")
 
           return (
             <Container>
@@ -295,7 +293,7 @@ export default class AddFamily extends Component {
                       value={this.state.name}
                     />
                   </Item>
-                  {isAdd ? this.renderAddFamily() : this.renderModifyFamily()}
+                  {isAdd ? this.renderAddFamily(me) : this.renderModifyFamily(me)}
                 </Form>
               </Content>
             </Container>

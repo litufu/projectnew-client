@@ -3,15 +3,17 @@ import { ScrollView, TouchableWithoutFeedback, View, Alert } from 'react-native'
 import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text, Button } from 'native-base';
 import { Mutation } from 'react-apollo'
 
-import GET_FAMILIES from '../../graphql/get_families.query'
+import GET_ME from '../../graphql/get_me.query'
 import CONNECT_FAMILY from '../../graphql/connect_family.mutation'
+
+import {defaultAvatar}  from '../../utils/settings'
 
 
 class UserList extends React.Component {
 
     render() {
 
-        const { users, navigation, who } = this.props
+        const { users, navigation, who,me} = this.props
 
         return (
             <Container>
@@ -23,7 +25,7 @@ class UserList extends React.Component {
                                     <TouchableWithoutFeedback
                                         onPress={() => navigation.navigate('UserProfile', { id: user.id })}
                                     >
-                                        <Thumbnail source={{ uri: '../../assets/icon.png' }} />
+                                        <Thumbnail source={{ uri: user.avatar?user.avatar.url:defaultAvatar }} />
                                     </TouchableWithoutFeedback>
                                 </Left>
                                 <Body>
@@ -40,16 +42,19 @@ class UserList extends React.Component {
                                     <Mutation
                                         mutation={CONNECT_FAMILY}
                                         update={(cache, { data: { connectFamily } }) => {
-                                            const { family } = cache.readQuery({ query: GET_FAMILIES });
+                                            const { me } = cache.readQuery({ 
+                                                query: GET_ME,
+                                             });
+                                            const families = me.families.map(f => {
+                                                if (f.id === connectFamily.id) {
+                                                    return connectFamily
+                                                }
+                                                return f
+                                            })
                                             cache.writeQuery({
-                                                query: GET_FAMILIES,
+                                                query: GET_ME,
                                                 data: {
-                                                    family: family.map(f => {
-                                                        if (f.id === connectFamily.id) {
-                                                            return connectFamily
-                                                        }
-                                                        return f
-                                                    })
+                                                    me: {...me,families}
                                                 }
                                             });
                                         }}
@@ -64,41 +69,15 @@ class UserList extends React.Component {
                                                 <Button
                                                     transparent
                                                     onPress={
-                                                        () => {
-                                                            try {
-                                                                connectFamily({
-                                                                    variables: {
-                                                                        relativeId: user.id,
-                                                                        familyId: who.id,
-                                                                        name: who.to.name,
-                                                                        relationship: who.relationship
-                                                                    },
-                                                                    optimisticResponse: {
-                                                                        __typename: "Mutation",
-                                                                        connectFamily: {
-                                                                            id: who.id,
-                                                                            __typename: "Family",
-                                                                            to: {
-                                                                                id: who.to.id,
-                                                                                __typename: "Person",
-                                                                                name: who.to.name,
-                                                                                user:null
-                                                                            },
-                                                                            from:{
-                                                                                __typename:'User',
-                                                                                id:Math.floor(Math.random() * 200).toString(),
-                                                                                name:''
-                                                                            },
-                                                                            status: "1",
-                                                                            relationship: who.relationship,
-                                                                            spouse: null
-                                                                        }
-                                                                    }
-                                                                })
-                                                            } catch (error) {
-                                                                console.log(error.message)
+                                                        () => connectFamily({
+                                                            variables:{
+                                                                relativeId: user.id,
+                                                                familyId: who.id,
+                                                                name: who.to.name,
+                                                                relationship: who.relationship
                                                             }
-                                                        }}
+                                                        })
+                                                        }
                                                 >
                                                     <Text style={{ color: "blue" }}>
                                                         添加{loading && <Text style={{ color: "blue" }}>...</Text>}

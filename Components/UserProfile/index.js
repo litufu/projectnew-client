@@ -99,7 +99,7 @@ class UserProfile extends React.Component {
                 userName={data.userInfo.name}
                 userTitle={data.userInfo.username}
                 leftIcon={{ name: 'keyboard-backspace', color: 'blue', size: 30, type: 'material-community' }}
-                leftIconOnPress={() => this.props.navigation.navigate(come)}
+                leftIconOnPress={() => this.props.navigation.goBack()}
                 data={data}
                 me={me}
               >

@@ -34,7 +34,11 @@ class FamilyContent extends Component {
               <Icon name="list" type="FontAwesome" />
               <Text>成员列表</Text>
             </Button>
-            <Button transparent vertical>
+            <Button 
+            transparent 
+            vertical
+            onPress={()=>this.props.navigation.navigate('GroupChat',{group,me,type:"Family",groupName:group.name})}
+            >
               <Icon name="chat" type='Entypo'/>
               <Text>群聊</Text>
             </Button>

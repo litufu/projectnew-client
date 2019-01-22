@@ -7,7 +7,6 @@ import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor}
 import GET_ME from '../../graphql/get_me.query'
 import REFRESH_FAMILYGROUPS from '../../graphql/refresh_familyGroups.mutation'
 import {errorMessage} from '../../utils/tools'
-import QueryFamilyGroups from './QueryFamilyGroups'
 
 class FamilyGroup extends Component {
 
@@ -36,9 +35,11 @@ class FamilyGroup extends Component {
           mutation={REFRESH_FAMILYGROUPS}
           update={(cache, { data: { refreshMyFamilyGroups } }) => {
             const {me} = cache.readQuery({GET_ME})
+            const data = { me: {...me,relativefamilyGroups:refreshMyFamilyGroups} }
+            console.log('familydata',data)
             cache.writeQuery({
               query: GET_ME,
-              data: { me: {...me,relativefamilyGroups:refreshMyFamilyGroups} }
+              data,
             });
           }}
           onCompleted={()=>Alert.alert('刷新成功')}
@@ -52,10 +53,15 @@ class FamilyGroup extends Component {
             )}
 
           </Mutation>
-          <QueryFamilyGroups 
-          me={me}
-          navigation={this.props.navigation}
-          />
+          <List>
+            {
+            me.relativefamilyGroups.map(group=>(
+                <ListItem key={group.id} onPress={()=>{this.props.navigation.navigate('FamilyContent',{group,me})}}>
+                    <Text>{group.name}</Text>
+                </ListItem>
+                ))
+            }
+        </List>
         </Content>
       </Container>
     );

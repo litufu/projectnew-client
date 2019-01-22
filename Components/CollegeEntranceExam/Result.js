@@ -47,7 +47,9 @@ _renderApplicationResult = (me)=>(
           lowwestScore={lowwestScore}
           proLowwestScore={proLowwestScore}
           twoBtn={true}
-          handleToChat={()=>Alert.alert('开始聊天')}
+          handleToChat={()=>this.props.navigation.navigate('GroupChat',{group:me.regStatus,me,type:"RegStatus",
+          groupName:`${me.regStatus.university.name}${me.regStatus.major.name}-${me.exam.province.name}${subjects[me.exam.subject]}`
+          })}
           handleToApplicants={()=>this.props.navigation.navigate('Applicants',{applicants})}
           handleCancel = {()=>Alert.alert('取消报名')}
           id={me.regStatus.id}
@@ -58,12 +60,6 @@ _renderApplicationResult = (me)=>(
 
   </Query>
 )
-
-_hanleEnter = ()=>{
-
-}
-
-
 
   render() {
     const me = this.props.me || ''
@@ -87,7 +83,7 @@ _hanleEnter = ()=>{
         <Content>
             {me && me.regStatus && me.regStatus.id
               ? this._renderApplicationResult(me)
-              :<Text>请先报名然后查看结果</Text>
+              :<View style={{flex:1,alignItems:'center',justifyContent:"center"}}><Text>请先报名然后查看结果</Text></View>
             }
         </Content>
       </Container>

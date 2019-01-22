@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+import GROUP_MESSAGE_FRAGMENT from './groupMessage.fragment'
+
 const CLASSGROUP_FRAGMENT = gql`
   fragment ClassGroupFragment on ClassGroup {
     id
@@ -20,7 +22,11 @@ const CLASSGROUP_FRAGMENT = gql`
         }
         status
     }
+    messages{
+        ...GroupMessageFragment
+    }
   }
+  ${GROUP_MESSAGE_FRAGMENT}
 `
 export default CLASSGROUP_FRAGMENT;
 
