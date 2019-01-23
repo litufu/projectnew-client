@@ -2,6 +2,8 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import { graphql, compose, withApollo } from 'react-apollo';
 import React, { Component } from 'react';
 import { map } from 'lodash';
+import update from 'immutability-helper';
+
 import { Spinner } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'
 import { wsClient } from '../apollo'
@@ -416,10 +418,10 @@ class AppWithNavigationState extends Component {
             //   如果新的props当中没有me，则取消订阅
             console.log('取消订阅')
             if (this.messagesSubscription) {
-              this.messagesSubscription();
+                this.messagesSubscription();
             }
 
-            if(this.groupMessagesSubscription){
+            if (this.groupMessagesSubscription) {
                 this.groupMessagesSubscription()
             }
 
@@ -437,9 +439,9 @@ class AppWithNavigationState extends Component {
             }, this);
         }
 
-          if (!this.messagesSubscription && nextProps.me ) {
-              console.log('开始订阅')
-              console.log(nextProps.me.id)
+        if (!this.messagesSubscription && nextProps.me) {
+            console.log('开始订阅')
+            console.log(nextProps.me.id)
             this.messagesSubscription = nextProps.subscribeToMore({
                 document: MESSAGE_ADDED_SUBSCRIPTION,
                 variables: { userId: nextProps.me.id },
@@ -459,63 +461,102 @@ class AppWithNavigationState extends Component {
                 map(nextProps.me.workGroups, 'id')
             )
 
-            if(nextProps.me.regStatus){
+            if (nextProps.me.regStatus) {
                 groupIds.push(nextProps.me.regStatus.id)
             }
 
-            this.groupMessagesSubscription = nextProps.subscribeToMore({
-                document: GROUPMESSAGE_ADDED_SUBSCRIPTION,
-                variables: { 
-                    userId: nextProps.me.id,
-                    groupIds,
-                 },
-                updateQuery: (prev, { subscriptionData }) => {
-                    const newMessage = subscriptionData.data.groupMessageAdded;
-                    if(newMessage.type==='Family'){
-                        prev.me.relativefamilyGroups.map(group=>{
-                            if(group.id===newMessage.toId){
-                                group.messages.push(newMessage)
-                                return group
-                            }
-                            return group
-                        })
-                        return prev
-                    }else if(newMessage.type==='ClassMate'){
-                        prev.me.classGroups.map(group=>{
-                            if(group.id===newMessage.toId){
-                                group.messages.push(newMessage)
-                                return group
-                            }
-                            return group
-                        })
-                        return prev
+            console.log('groupIds', groupIds)
+            console.log('nextProps.me.id', nextProps.me.id)
+            if (!this.groupMessagesSubscription && nextProps.me) {
+                this.groupMessagesSubscription = nextProps.subscribeToMore({
+                    document: GROUPMESSAGE_ADDED_SUBSCRIPTION,
+                    variables: {
+                        userId: nextProps.me.id,
+                        groupIds,
+                    },
+                    updateQuery: (prev, { subscriptionData }) => {
+                        const newMessage = subscriptionData.data.gMessageAdded;
+                        if (newMessage.type === 'Family') {
+                            const index = prev.me.relativefamilyGroups.map(group=>group.id).indexOf(newMessage.to)
+                            const result = update(prev, {
+                                me: {
+                                    relativefamilyGroups: relativefamilyGroups =>
+                                        update(relativefamilyGroups || [], {
+                                            [index]: group =>
+                                                update(group || {}, {
+                                                    messages: messages => update(messages || [], { $push: [newMessage] })
+                                                })
+                                        })
+                                }
 
-                    }else if(newMessage.type==='Colleague'){
-                        if(prev.me.workGroup.id===newMessage.toId){
-                            prev.me.workGroup.messages.push(newMessage)
+                            });
+                            return result
+                        } else if (newMessage.type === 'ClassMate') {
+                            const index = prev.me.classGroups.map(group=>group.id).indexOf(newMessage.to)
+                            const result = update(prev, {
+                                me: {
+                                    classGroups: classGroups =>
+                                        update(classGroups || [], {
+                                            [index]: group =>
+                                                update(group || {}, {
+                                                    messages: messages => update(messages || [], { $push: [newMessage] })
+                                                })
+                                        })
+                                }
+
+                            });
+                       
+                            return result
+
+                        } else if (newMessage.type === 'Colleague') {
+                            const index = prev.me.workGroups.map(group=>group.id).indexOf(newMessage.to)
+                            const result = update(prev, {
+                                me: {
+                                    workGroups: workGroups =>
+                                        update(workGroups || [], {
+                                            [index]: group =>
+                                                update(group || {}, {
+                                                    messages: messages => update(messages || [], { $push: [newMessage] })
+                                                })
+                                        })
+                                }
+
+                            });
+                     
+                            return result
+                        } else if (newMessage.type === 'FellowTownsman') {
+                            const index = prev.me.locationGroups.map(group=>group.id).indexOf(newMessage.to)
+                            const result = update(prev, {
+                                me: {
+                                    locationGroups: locationGroups =>
+                                        update(locationGroups || [], {
+                                            [index]: group =>
+                                                update(group || {}, {
+                                                    messages: messages => update(messages || [], { $push: [newMessage] })
+                                                })
+                                        })
+                                }
+
+                            });
+                            
+                            return result
+                        } else if (newMessage.type === 'RegStatus') {
+                            if (prev.me.regStatus.id === newMessage.toId) {
+                                const result = update(prev,{
+                                    me:{
+                                        regStatus:{
+                                            messages:{$push:[newMessage]} 
+                                        }
+                                    }
+                                })
+                                return result
+                            }
                             return prev
                         }
-                        return prev
-                    }else if(newMessage.type==='FellowTownsman'){
-                        prev.me.locationGroups.map(group=>{
-                            if(group.id===newMessage.toId){
-                                group.messages.push(newMessage)
-                                return group
-                            }
-                            return group
-                        })
-                        return prev
-                    }else if(newMessage.type==='RegStatus') {
-                        if(prev.me.regStatus.id===newMessage.toId){
-                            prev.me.workGroup.messages.push(newMessage)
-                            return prev
-                        }
-                        return prev
-                    }
-                },
-            });
-
-          }
+                    },
+                });
+            }
+        }
     }
 
     render() {
