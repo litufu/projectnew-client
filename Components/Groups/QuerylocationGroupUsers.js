@@ -9,21 +9,6 @@ import GET_LOCATIONGROUPUSERS from '../../graphql/get_locationGroupUsers.query'
 import LOCATIONGROUPUSERS_CHANGED_SUBSCRIPTION from '../../graphql/locationGroupUsers_changed.subscription'
 
 class QueryLocationGroupUsers extends Component {
-    componentDidMount() {
-        const { data: { refetch, subscribeToMore } } = this.props;
-
-        this.unsubscribe = subscribeToMore({
-            document: LOCATIONGROUPUSERS_CHANGED_SUBSCRIPTION,
-            updateQuery: (prev) => {
-                refetch();
-                return prev;
-            },
-        });
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
 
     render() {
         const { data: { locationGroupUsers, loading, error } } = this.props;
@@ -67,7 +52,7 @@ export default graphql(
             variables: {
                 locationGroupId: props.locationGroup.id,
             },
-            fetchPolicy:cache-and-network,
+            fetchPolicy:"cache-and-network",
         }),
     }
 )(QueryLocationGroupUsers)

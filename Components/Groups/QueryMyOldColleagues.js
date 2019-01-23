@@ -52,7 +52,7 @@ export default graphql(
             variables: {
                 companyId: props.work.company.id,
             },
-            fetchPolicy:cache-and-network,
+            fetchPolicy:"cache-and-network",
         }),
     }
 )(QueryMyOldColleagues)

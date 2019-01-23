@@ -44,7 +44,6 @@ import FamilyGroup from '../Components/Groups/FamilyGroup'
 import ClassGroup from '../Components/Groups/ClassGroup'
 import LocationGroup from '../Components/Groups/LocationGroup'
 import WorkGroup from '../Components/Groups/WorkGroup'
-import Content from '../Components/Groups/Content'
 import FamilyContent from '../Components/Groups/FamilyContent'
 import FamilyList from '../Components/Groups/FamilyList'
 import ClassContent from '../Components/Groups/ClassContent'
@@ -142,9 +141,6 @@ const GroupNavigation = createStackNavigator(
         },
         WorkGroup: {
             screen: WorkGroup,
-        },
-        Content: {
-            screen: Content,
         },
         FamilyList: {
             screen: FamilyList,

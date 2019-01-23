@@ -72,6 +72,6 @@ export default graphql(GET_OLDCOLLEAGUES, {
             endTime:props.work.endTime,
             companyId: props.work.company.id,
         },
-        fetchPolicy:cache-and-network,
+        fetchPolicy:"cache-and-network",
     }),
 })(QureyOldColleagues)

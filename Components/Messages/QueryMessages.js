@@ -111,11 +111,18 @@ export default class QueryMessages extends Component {
         {
             ({loading,error,data})=>{
                 const me = data.me
+                const persons = this.messageToPersons(me)
                 if(loading) return <Spinner />
                 if(error) return <Text>{errorMessage(error)}</Text>
                 return(
                     <List>
-                        {this.messageToPersons(me).map(
+                        {
+                            persons.length>0 &&
+                            (<ListItem itemDivider>
+                               <Text>个人</Text>
+                           </ListItem>)
+                        }
+                        {persons.map(
                             person=>(
                                 <ListItem 
                                 thumbnail 

@@ -72,6 +72,6 @@ export default graphql(GET_STUDENTS, {
         variables: {
             schoolEduId: props.schoolEdu.id,
         },
-        fetchPolicy:cache-and-network,
+        fetchPolicy:"cache-and-network",
     }),
 })(QureyStudents)

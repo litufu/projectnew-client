@@ -23,8 +23,6 @@ import { Container,
 
 export default class SelectClass extends Component {
 
- 
-
     submitClasses=(gradeAndClasses)=>{
         const { navigation } = this.props;
         const startYear = navigation.getParam('startYear', 0);
