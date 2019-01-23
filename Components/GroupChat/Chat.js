@@ -10,11 +10,6 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
 import SEND_GROUP_MESSAGE from '../../graphql/send_groupMessage.mutation'
 import GET_ME from '../../graphql/get_me.query'
-import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
-import GET_WORKGROUPS from '../../graphql/get_workGroups.query'
-import GET_LOCATIONGROUPS from '../../graphql/get_locationGroups.query'
-
-import {randomId} from '../../utils/settings'
 
 
 const skip = 20
@@ -76,7 +71,7 @@ export default class Chat extends Component {
                 this.onSend([{
                     text:"",
                     image: result.uri,
-                    _id: randomId,
+                    _id: Math.round(Math.random() * 1000000).toString(),
                     user: {
                         _id: 1,
                     }
@@ -120,7 +115,7 @@ export default class Chat extends Component {
                 __typename: "Mutation",
                 sendGroupMessage: {
                   __typename: "GroupMessage",
-                  id: randomId,
+                  id: Math.round(Math.random() * 1000000).toString(),
                   text:messages[0].text,
                   type,
                   to:group.id,
@@ -132,8 +127,8 @@ export default class Chat extends Component {
                   },
                   image:this.state.image ? {
                     __typename:"Photo",
-                    id:randomId,
-                    name:randomId,
+                    id:Math.round(Math.random() * 1000000).toString(),
+                    name:Math.round(Math.random() * 1000000).toString(),
                     url:this.state.image
                   } : null,
                   createdAt: new Date().toLocaleString(),
@@ -198,7 +193,7 @@ export default class Chat extends Component {
                         return g
                     })
                     // Write our data back to the cache.
-                    cache.writeQuery({ query: GET_LOCATIONGROUPS,data });
+                    cache.writeQuery({ query: GET_ME,data });
                 }else if(type==="RegStatus"){
                     // regstatus在me中查找
                     const data = cache.readQuery({ query: GET_ME });

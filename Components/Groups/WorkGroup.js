@@ -5,13 +5,11 @@ import { Container, Header, Content, List, ListItem, Text, Left, Icon, Button, R
 
 import { errorMessage, timeTodate } from '../../utils/tools'
 import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
+import GET_ME from '../../graphql/get_me.query'
 
 class WorkGroup extends Component {
 
   render() {
-    const {me} = this.props
-    const newWorkGroups = me.workGroups.map(workGroup=>workGroup.company.id===work.company.id)
-    const nowWorks = me.works.filter(work => new Date(work.endTime).getFullYear() === 9999)
     return (
       <Container>
         <Header style={{ marginTop: statusBarHeight, backgroundColor: headerBackgroundColor }}>
@@ -27,25 +25,42 @@ class WorkGroup extends Component {
             <Title style={{ color: headerFontColor }}>同事群</Title>
           </Body>
           <Right >
-            <Button transparent><Text>功能说明</Text></Button>
           </Right>
         </Header>
         <Content>
-        <List>
-            {
-              me.works.filter(work => (new Date(work.endTime) - new Date(work.startTime)) > 24 * 60 * 60 * 180 * 1000).sort((a, b) => (new Date(a.startTime) - new Date(b.startTime))).map(work => (
-                <ListItem key={work.id} onPress={() => this.props.navigation.navigate('OldWorkList', { work, me })}>
-                  <Text>{timeTodate(work.startTime, work.endTime)} {work.company.name}</Text>
-                </ListItem>
-              ))
+          <Query query={GET_ME}>
+          {
+            ({loading,error,data})=>{
+              
+              if(loading) return <Spinner />
+              if(error) return <Text>{errorMessage(error)}</Text>
+
+              const newWorkGroups = data.me.workGroups.map(workGroup=>workGroup.company.id===work.company.id)
+              const nowWorks = data.me.works.filter(work => new Date(work.endTime).getFullYear() === 9999)
+
+
+              return(
+                <List>
+                {
+                  data.me.works.filter(work => (new Date(work.endTime) - new Date(work.startTime)) > 24 * 60 * 60 * 180 * 1000).sort((a, b) => (new Date(a.startTime) - new Date(b.startTime))).map(work => (
+                    <ListItem key={work.id} onPress={() => this.props.navigation.navigate('OldWorkList', { work, me })}>
+                      <Text>{timeTodate(work.startTime, work.endTime)} {work.company.name}</Text>
+                    </ListItem>
+                  ))
+                }
+                {
+                  (nowWorks.length > 0) &&
+                  <ListItem onPress={() => this.props.navigation.navigate('WorkContent', { work:nowWorks[0], me ,newWorkGroups})}>
+                    <Text>{nowWorks[0].company.name}</Text>
+                  </ListItem>
+                }
+              </List>
+              )
             }
-            {
-              (nowWorks.length > 0) &&
-              <ListItem onPress={() => this.props.navigation.navigate('WorkContent', { work:nowWorks[0], me ,newWorkGroups})}>
-                <Text>{nowWorks[0].company.name}</Text>
-              </ListItem>
-            }
-          </List>
+          }
+
+          </Query>
+       
         </Content>
       </Container>
     );

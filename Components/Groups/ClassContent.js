@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { withNavigation } from 'react-navigation'
+import {Alert} from 'react-native'
 import { Container, Header, Content, Icon, Text, Item, Button, Left, Right, Body, Title } from 'native-base';
 
 import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
 
 class ClassContent extends Component {
+
   _getMyGroups = (classGroups, myId) => {
     const myGroups = classGroups.filter(classGroup => {
       for (const member of classGroup.members) {
@@ -20,6 +22,14 @@ class ClassContent extends Component {
     return []
   }
 
+  _goToChat=(groups,me,type,groupName)=>{
+    if(groups.length===0){
+      Alert.alert('添加同学后才可群聊')
+      return
+    }
+    this.props.navigation.navigate('GroupChat', { group: groups[0], me, type, groupName })
+  }
+
   render() {
     const schoolEdu = this.props.navigation.getParam('schoolEdu', '')
     const schoolEduName = this.props.navigation.getParam('schoolEduName', '')
@@ -28,8 +38,10 @@ class ClassContent extends Component {
     // 我在该班级的所有组（包括已经加入的和正准备加入的组)
     const newClassGroups = classGroups.filter(classGroup => classGroup.study.id === schoolEdu.id)
     // 我已经确定加入的组
-    const myClassGroups = _getMyGroups(newClassGroups,me.id)
+    const myClassGroups = this._getMyGroups(newClassGroups,me.id)
+    console.log('myClassGroups',myClassGroups)
     const myClassGroup = myClassGroups.length>0 ?myClassGroups[0] :[]
+    console.log('myClassGroup',myClassGroup)
     return (
       <Container>
         <Header style={{ marginTop: statusBarHeight, backgroundColor: headerBackgroundColor }}>
@@ -59,7 +71,7 @@ class ClassContent extends Component {
             <Button
               transparent
               vertical
-              onPress={() => this.props.navigation.navigate('GroupChat', { group: myClassGroup, me, type: "ClassMate", groupName: schoolEduName })}
+              onPress={() => this._goToChat(myClassGroups,me,'ClassMate',schoolEduName) }
             >
               <Icon name="chat" type='Entypo' />
               <Text>群聊</Text>

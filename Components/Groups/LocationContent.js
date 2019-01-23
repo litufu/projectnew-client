@@ -8,6 +8,7 @@ class LocationContent extends Component {
   render() {
     const locationGroup = this.props.navigation.getParam('locationGroup','')
     const me = this.props.navigation.getParam('me','')
+    console.log('locationgroup---',locationGroup)
     return (
       <Container>
         <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
@@ -37,7 +38,7 @@ class LocationContent extends Component {
             <Button 
             transparent 
             vertical
-            onPress={()=>this.props.navigation.navigate('GroupChat',{locationGroup,me,type:"FellowTownsman",groupName:locationGroup.name})}
+            onPress={()=>this.props.navigation.navigate('GroupChat',{group:locationGroup,me,type:"FellowTownsman",groupName:locationGroup.name})}
             >
               <Icon name="chat" type='Entypo'/>
               <Text>群聊</Text>

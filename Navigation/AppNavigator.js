@@ -42,10 +42,8 @@ import FindJob from '../Components/FindJob'
 // 引入group
 import FamilyGroup from '../Components/Groups/FamilyGroup'
 import ClassGroup from '../Components/Groups/ClassGroup'
-// import QueryClassGroup from '../Components/Groups/QueryClassGroup'
 import LocationGroup from '../Components/Groups/LocationGroup'
 import WorkGroup from '../Components/Groups/WorkGroup'
-// import QueryWorkGroup from '../Components/groups/QueryWorkGroup'
 import Content from '../Components/Groups/Content'
 import FamilyContent from '../Components/Groups/FamilyContent'
 import FamilyList from '../Components/Groups/FamilyList'
@@ -139,18 +137,12 @@ const GroupNavigation = createStackNavigator(
         ClassGroup: {
             screen: ClassGroup,
         },
-        // QueryClassGroup: {
-        //     screen: QueryClassGroup,
-        // },
         LocationGroup: {
             screen: LocationGroup,
         },
         WorkGroup: {
             screen: WorkGroup,
         },
-        // QueryWorkGroup: {
-        //     screen: QueryWorkGroup,
-        // },
         Content: {
             screen: Content,
         },

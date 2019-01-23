@@ -10,7 +10,6 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
 import SEND_MESSAGE from '../../graphql/send_message.mutation'
 import GET_ME from '../../graphql/get_me.query'
-import {randomId} from '../../utils/settings'
 
 const skip = 20
 
@@ -115,7 +114,7 @@ export default class Chat extends Component {
                 __typename: "Mutation",
                 sendMessage: {
                   __typename: "Message",
-                  id:randomId ,
+                  id:Math.round(Math.random() * 1000000).toString() ,
                   text:messages[0].text,
                   to:{
                       __typename:"User",
@@ -131,8 +130,8 @@ export default class Chat extends Component {
                   },
                   image:this.state.image ? {
                     __typename:"Photo",
-                    id:randomId,
-                    name:randomId,
+                    id:Math.round(Math.random() * 1000000).toString(),
+                    name:Math.round(Math.random() * 1000000).toString(),
                     url:this.state.image
                   } : null,
                   createdAt: new Date().toLocaleString(),
