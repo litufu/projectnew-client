@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Alert} from 'react-native'
+import {Alert,View} from 'react-native'
 import { Container, Header,Content, Title, Button, Left, Right, Body, Icon,Spinner,Text } from 'native-base';
 import {Query}  from 'react-apollo'
 import {withNavigation} from 'react-navigation'

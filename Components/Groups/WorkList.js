@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native'
 import { Mutation} from 'react-apollo'
 import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button, Icon, Title, Spinner } from 'native-base';
+import update from 'immutability-helper'
 
 import { errorMessage } from '../../utils/tools'
 import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
 
 import GET_WORKGROUPS from '../../graphql/get_workGroups.query'
+import GET_ME from '../../graphql/get_me.query'
 import ADD_WORKGROUP from '../../graphql/add_workGroup.mutation'
 import CONFIRM_WORKGROUP from '../../graphql/confirm_workGroup.mutation'
 import QueryColleagues from './QueryColleagues'
+
 
 
 export default class WorkList extends Component {
@@ -18,11 +21,15 @@ export default class WorkList extends Component {
     <Mutation 
     mutation={ADD_WORKGROUP}
     update={(cache, { data: { addWorkGroup } }) => {
-      const { workGroups } = cache.readQuery({ query: GET_WORKGROUPS,variables:{companyId} });
+      const prev = cache.readQuery({ query: GET_ME});
+      const newData = update(prev,{
+        me:{
+          workGroups:{$push:[addWorkGroup]}
+        }
+      })
       cache.writeQuery({
-        query: GET_WORKGROUPS,
-        variables:{companyId},
-        data: { workGroups: workGroups.concat([addWorkGroup]) }
+        query: GET_ME,
+        data: newData
       });
     }}
 
@@ -60,6 +67,19 @@ export default class WorkList extends Component {
               onPress={() =>{
                 confirmWorkGroup({ 
                   variables: { companyId, workerId },
+                  update:(cache, { data: { confirmWorkGroup } }) => {
+                    const {me} = cache.readQuery({ query: GET_ME });
+                    me.workGroups.map(group=>{
+                      if(group.id===confirmWorkGroup.id){
+                        return confirmWorkGroup
+                      }
+                      return group
+                    })
+                    cache.writeQuery({
+                      query: GET_ME,
+                      data: { me },
+                    });
+                  }
                  })
               } }
             >

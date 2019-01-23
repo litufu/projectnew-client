@@ -43,14 +43,14 @@ class WorkGroup extends Component {
                 <List>
                 {
                   data.me.works.filter(work => (new Date(work.endTime) - new Date(work.startTime)) > 24 * 60 * 60 * 180 * 1000).sort((a, b) => (new Date(a.startTime) - new Date(b.startTime))).map(work => (
-                    <ListItem key={work.id} onPress={() => this.props.navigation.navigate('OldWorkList', { work, me })}>
+                    <ListItem key={work.id} onPress={() => this.props.navigation.navigate('OldWorkList', { work, me:data.me })}>
                       <Text>{timeTodate(work.startTime, work.endTime)} {work.company.name}</Text>
                     </ListItem>
                   ))
                 }
                 {
                   (nowWorks.length > 0) &&
-                  <ListItem onPress={() => this.props.navigation.navigate('WorkContent', { work:nowWorks[0], me ,newWorkGroups})}>
+                  <ListItem onPress={() => this.props.navigation.navigate('WorkContent', { work:nowWorks[0], me:data.me ,newWorkGroups})}>
                     <Text>{nowWorks[0].company.name}</Text>
                   </ListItem>
                 }

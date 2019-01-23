@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Alert} from 'react-native'
 import {withNavigation}  from 'react-navigation'
 import { Container, Header, Content, Icon,Text,Item, Button, Left,Right,Body ,Title } from 'native-base';
 
@@ -19,6 +20,14 @@ class ClassContent extends Component {
       return myGroups
     }
     return []
+  }
+
+  _goToChat=(groups,me,type,groupName)=>{
+    if(groups.length===0){
+      Alert.alert('添加同事后才可群聊')
+      return
+    }
+    this.props.navigation.navigate('GroupChat', { group: groups[0], me, type, groupName })
   }
 
   render() {
@@ -56,7 +65,7 @@ class ClassContent extends Component {
             <Button 
             transparent 
             vertical
-            onPress={()=>this.props.navigation.navigate('GroupChat',{group:myWorkGroup,me,type:"Colleague",groupName:work.company.name})}
+            onPress={()=>this._goToChat(myWorkGroups,me,"Colleague",work.company.name)}
             >
               <Icon name="chat" type='Entypo'/>
               <Text>群聊</Text>
