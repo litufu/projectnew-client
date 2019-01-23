@@ -14,6 +14,8 @@ import GET_CLASSGROUPS from '../../graphql/get_classGroups.query'
 import GET_WORKGROUPS from '../../graphql/get_workGroups.query'
 import GET_LOCATIONGROUPS from '../../graphql/get_locationGroups.query'
 
+import {randomId} from '../../utils/settings'
+
 
 const skip = 20
 
@@ -64,7 +66,7 @@ export default class Chat extends Component {
         );
     }
 
-    renderCustomActions = (sendMessage,  type,group,me) => {
+    renderCustomActions = (sendGroupMessage,  type,group,me) => {
         const options = {
             '发送图片': async () => {
                 let result = await ImagePicker.launchImageLibraryAsync({
@@ -74,11 +76,11 @@ export default class Chat extends Component {
                 this.onSend([{
                     text:"",
                     image: result.uri,
-                    _id: Math.round(Math.random() * 1000000).toString(),
+                    _id: randomId,
                     user: {
                         _id: 1,
                     }
-                }], sendMessage,  type,group,me)
+                }], sendGroupMessage,  type,group,me)
             },
             '取消': () => { },
         };
@@ -108,20 +110,20 @@ export default class Chat extends Component {
         }
     }
 
-    onSend = (messages = [], sendMessage, type,group,me ) => {
+    onSend = (messages = [], sendGroupMessage, type,group,me ) => {
         if(!messages[0].text && !this.state.image){
             return null
         }
-        sendMessage({
+        sendGroupMessage({
             variables: { type,toId: group.id, text: messages[0].text, image: this.state.image },
             optimisticResponse: {
                 __typename: "Mutation",
-                sendMessage: {
+                sendGroupMessage: {
                   __typename: "GroupMessage",
-                  id: Math.round(Math.random() * 1000000).toString(),
+                  id: randomId,
                   text:messages[0].text,
                   type,
-                  to:toId,
+                  to:group.id,
                   from:{
                       __typename:"User",
                       id:me.id,
@@ -130,29 +132,29 @@ export default class Chat extends Component {
                   },
                   image:this.state.image ? {
                     __typename:"Photo",
-                    id:Math.round(Math.random() * 1000000).toString(),
-                    name:Math.round(Math.random() * 1000000).toString(),
+                    id:randomId,
+                    name:randomId,
                     url:this.state.image
                   } : null,
                   createdAt: new Date().toLocaleString(),
                 }
               },
-            update: (cache, { data: { SendGroupMessage } }) => {
+            update: (cache, { data: { sendGroupMessage } }) => {
                 // Read the data from our cache for this query.
                 let newMessage
-                if(sendMessage.image){
+                if(sendGroupMessage.image){
                     newMessage = {
-                        ...sendMessage,
+                        ...sendGroupMessage,
                         image:{
-                            ...sendMessage.image,
-                            url:`https://gewu-avatar.oss-cn-hangzhou.aliyuncs.com/images/${sendMessage.image.name}`
+                            ...sendGroupMessage.image,
+                            url:`https://gewu-avatar.oss-cn-hangzhou.aliyuncs.com/images/${sendGroupMessage.image.name}`
                         }
                     }
                 }else{
-                    newMessage = sendMessage
+                    newMessage = sendGroupMessage
                 }
                 console.log('newmessage',newMessage)
-                if(type==='family'){
+                if(type==='Family'){
                     // familyGroup在me中查找
                     const data = cache.readQuery({ query: GET_ME });
                     data.me.relativefamilyGroups.map(g=>{
@@ -165,8 +167,8 @@ export default class Chat extends Component {
                     // Write our data back to the cache.
                     cache.writeQuery({ query: GET_ME,data });
                 }else if(type==="ClassMate"){
-                    const data = cache.readQuery({ query: GET_CLASSGROUPS });
-                    data.classGroups.map(g=>{
+                    const data = cache.readQuery({ query: GET_ME });
+                    data.me.classGroups.map(g=>{
                         if(g.id===group.id){
                             g.messages.push({ ...newMessage })
                             return g
@@ -174,10 +176,10 @@ export default class Chat extends Component {
                         return g
                     })
                     // Write our data back to the cache.
-                    cache.writeQuery({ query: GET_CLASSGROUPS,data });
+                    cache.writeQuery({ query: GET_ME,data });
                 }else if(type==="Colleague"){
-                    const data = cache.readQuery({ query: GET_WORKGROUPS });
-                    data.workGroups.map(g=>{
+                    const data = cache.readQuery({ query: GET_ME });
+                    data.me.workGroups.map(g=>{
                         if(g.id===group.id){
                             g.messages.push({ ...newMessage })
                             return g
@@ -185,10 +187,10 @@ export default class Chat extends Component {
                         return g
                     })
                     // Write our data back to the cache.
-                    cache.writeQuery({ query: GET_WORKGROUPS,data });
+                    cache.writeQuery({ query: GET_ME,data });
                 }else if(type==="FellowTownsman"){
-                    const data = cache.readQuery({ query: GET_LOCATIONGROUPS });
-                    data.locationGroups.map(g=>{
+                    const data = cache.readQuery({ query: GET_ME });
+                    data.me.locationGroups.map(g=>{
                         if(g.id===group.id){
                             g.messages.push({ ...newMessage })
                             return g
@@ -242,10 +244,10 @@ render() {
             <Mutation mutation={SEND_GROUP_MESSAGE}>
                 {
 
-                    (sendMessage, {  data }) => {
-                        if (data && data.sendMessage.image && data.sendMessage.image.url ) {
+                    (sendGroupMessage, {  data }) => {
+                        if (data && data.sendGroupMessage.image && data.sendGroupMessage.image.url ) {
                             const xhr = new XMLHttpRequest()
-                            xhr.open('PUT', data.sendMessage.image.url)
+                            xhr.open('PUT', data.sendGroupMessage.image.url)
                             xhr.onreadystatechange = function () {
                                 if (xhr.readyState === 4) {
                                     if (xhr.status === 200) {
@@ -256,19 +258,19 @@ render() {
                                 }
                             }
                             xhr.setRequestHeader('Content-Type', 'image/jpeg')
-                            xhr.send({ uri: this.state.image, type: 'image/jpeg', name: data.sendMessage.image.name })
+                            xhr.send({ uri: this.state.image, type: 'image/jpeg', name: data.sendGroupMessage.image.name })
                         }
 
                         return (
                             <GiftedChat
                                 messages={this.state.messages}
                                 renderSend={this.renderSend}
-                                onSend={(messages) => this.onSend(messages, sendMessage, type,group,me)}
+                                onSend={(messages) => this.onSend(messages, sendGroupMessage, type,group,me)}
                                 keyboardShouldPersistTaps="never"
                                 user={{
                                     _id: me.id,
                                 }}
-                                renderActions={() => this.renderCustomActions(sendMessage,  type,group,me)}
+                                renderActions={() => this.renderCustomActions(sendGroupMessage,  type,group,me)}
                                 locale="zh-cn"
                                 placeholder="输入信息..."
                                 renderTime={null}
