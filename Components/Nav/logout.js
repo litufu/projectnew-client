@@ -7,7 +7,6 @@ const logout = (navigation,client) =>{
   SecureStore.deleteItemAsync('token')
   client.resetStore()
   wsClient.close()
-  
 }
 
 export default logout;

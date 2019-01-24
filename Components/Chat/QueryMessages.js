@@ -17,8 +17,10 @@ export default class QueryMessages extends Component {
     }
 
     async componentDidMount(){
-        const storageMessages = await retrieveMessages(`User${this.props.userInfo.id}`)
-        this.setState({storageMessages:JSON.parse(storageMessages)})
+        const storageMessages = await retrieveMessages(`${this.props.me.id}User${this.props.userInfo.id}`)
+        if(storageMessages){
+            this.setState({storageMessages:JSON.parse(storageMessages)})
+        }
     }
 
     _getNewMessages = (messages,userInfo) => {
@@ -67,30 +69,20 @@ export default class QueryMessages extends Component {
     }
 
     render() {
-        const {userInfo} = this.props
+        const {userInfo,me,navigation} = this.props
+        
+     
         return (
-            <Query query={GET_ME}>
-                {
-                    ({ loading, error, data }) => {
-                        if (loading) return <Spinner />
-                        if (error) return <Text>{errorMessage(error)}</Text>
-                        console.log('this._getNewMessages(data.me.messages,userInfo)',this._getNewMessages(data.me.messages,userInfo))
-                        return (
-                            < Chat
-                            me={data.me}
-                            messages = {this._getNewMessages(data.me.messages,userInfo) }
-                            userInfo = { userInfo }
-                            navigation = { this.props.navigation }
-                            addNewUnReadMessages = { this.props.addNewUnReadMessages }
-                            />
-                        )
-
-
-                    }
-                }
-            </Query>
-
+            < Chat
+            me={me}
+            messages = {this._getNewMessages(me.messages,userInfo) }
+            userInfo = { userInfo }
+            navigation = { navigation }
+            addNewUnReadMessages = { this.props.addNewUnReadMessages }
+            />
         )
+
+
     }
 
 }

@@ -75,6 +75,7 @@ import Events from '../Components/StudyHistroy/Events'
 import Study from '../Components/StudyHistroy/Study'
 import MyIcon from '../Components/MyIcon'
 import AddPhoto from '../Components/AddPhoto'
+import Settings from '../Components/Settings'
 
 import {storeMessage,retrieveMessages} from '../utils/tools'
 
@@ -252,6 +253,9 @@ const ProfileNavigation = createStackNavigator(
         },
         Chat: {
             screen: Chat,
+        },
+        Settings:{
+            screen: Settings,
         }
     },
     {

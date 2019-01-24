@@ -144,7 +144,7 @@ class SettingsScreen extends Component {
         <View style={styles.lineContainer} />
         <View>
           <ListItem
-            title="手机验证"
+            title="充值"
             onPress={() => this.props.navigation.navigate('AddPhoto')}
             containerStyle={styles.listItemContainer}
             leftIcon={
@@ -158,24 +158,10 @@ class SettingsScreen extends Component {
             }
             rightIcon={<Chevron />}
           />
-          <ListItem
-            title="修改密码"
-            onPress={() => this.props.navigation.navigate('ChangePassword')}
-            containerStyle={styles.listItemContainer}
-            leftIcon={
-              <BaseIcon
-                containerStyle={{ backgroundColor: '#C6C7C6' }}
-                icon={{
-                  type: 'Entypo',
-                  name: 'fingerprint',
-                }}
-              />
-            }
-            rightIcon={<Chevron />}
-          />
+      
           <ListItem
             title="设置"
-            onPress={() => this.onPressOptions()}
+            onPress={() => this.props.navigation.navigate('Settings')}
             containerStyle={styles.listItemContainer}
             leftIcon={
               <BaseIcon
@@ -190,24 +176,7 @@ class SettingsScreen extends Component {
             }
             rightIcon={<Chevron />}
           />
-          <ListItem
-            title="帮助"
-            onPress={() => this.onPressOptions()}
-            containerStyle={styles.listItemContainer}
-
-            leftIcon={
-              <BaseIcon
-                containerStyle={{
-                  backgroundColor: '#FECE44',
-                }}
-                icon={{
-                  type: 'Feather',
-                  name: 'help',
-                }}
-              />
-            }
-            rightIcon={<Chevron />}
-          />
+    
         </View>
       </ScrollView>
     )

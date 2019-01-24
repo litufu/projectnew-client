@@ -159,7 +159,7 @@ export default class Chat extends Component {
                 // Write our data back to the cache.
                 cache.writeQuery({ query: GET_ME, data });
                 const key = newMessage.to.id
-                storeMessage(`User${key}`, newMessage)
+                storeMessage(`${data.me.id}User${key}`, newMessage)
             }
         })
     }

@@ -13,8 +13,10 @@ export default class QueryMessages extends Component {
     }
 
     async componentDidMount(){
-        const storageMessages = await retrieveMessages(`${this.props.group.type}${this.props.group.id}`)
-        this.setState({storageMessages})
+        const storageMessages = await retrieveMessages(`${this.props.me.id}${this.props.group.type}${this.props.group.id}`)
+        if(storageMessages){
+            this.setState({storageMessages})
+        }
     }
 
     _getNewMessages = (group) => {

@@ -167,7 +167,7 @@ export default class Chat extends Component {
                     })
                     // Write our data back to the cache.
                     cache.writeQuery({ query: GET_ME, data });
-                    storeMessage(`Family${newMessage.to}`, newMessage)
+                    storeMessage(`${data.me.id}Family${newMessage.to}`, newMessage)
                 } else if (type === "ClassMate") {
                     data.me.classGroups.map(g => {
                         if (g.id === group.id) {
@@ -178,7 +178,7 @@ export default class Chat extends Component {
                     })
                     // Write our data back to the cache.
                     cache.writeQuery({ query: GET_ME, data });
-                    storeMessage(`ClassMate${newMessage.to}`, newMessage)
+                    storeMessage(`${data.me.id}ClassMate${newMessage.to}`, newMessage)
                 } else if (type === "Colleague") {
                     data.me.workGroups.map(g => {
                         if (g.id === group.id) {
@@ -189,7 +189,7 @@ export default class Chat extends Component {
                     })
                     // Write our data back to the cache.
                     cache.writeQuery({ query: GET_ME, data });
-                    storeMessage(`Colleague${newMessage.to}`, newMessage)
+                    storeMessage(`${data.me.id}Colleague${newMessage.to}`, newMessage)
                 } else if (type === "FellowTownsman") {
                     data.me.locationGroups.map(g => {
                         if (g.id === group.id) {
@@ -200,7 +200,7 @@ export default class Chat extends Component {
                     })
                     // Write our data back to the cache.
                     cache.writeQuery({ query: GET_ME, data });
-                    storeMessage(`FellowTownsman${newMessage.to}`, newMessage)
+                    storeMessage(`${data.me.id}FellowTownsman${newMessage.to}`, newMessage)
                 } else if (type === "RegStatus") {
                     // regstatus在me中查找
                     data.me.regStatus.messages.push({ ...newMessage })
