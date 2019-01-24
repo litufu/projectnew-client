@@ -76,6 +76,9 @@ import Study from '../Components/StudyHistroy/Study'
 import MyIcon from '../Components/MyIcon'
 import AddPhoto from '../Components/AddPhoto'
 
+import {storeMessage,retrieveMessages} from '../utils/tools'
+
+
 const HomeNavigation = createStackNavigator(
     {
         Home: {
@@ -283,7 +286,6 @@ const AppNavigator = createBottomTabNavigator(
                 } else if (routeName === 'Profile') {
                     iconName = 'md-person';
                 }
-
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
                 return <Ionicons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
@@ -398,7 +400,6 @@ class AppWithNavigationState extends Component {
         this.workGroupSubscription()
         this.classGroupSubscription()
         this.familyChangeSubscription()
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -435,7 +436,9 @@ class AppWithNavigationState extends Component {
                 variables: { userId: nextProps.me.id },
                 updateQuery: (prev, { subscriptionData }) => {
                     const newMessage = subscriptionData.data.messageAdded;
+
                     prev.me.messages.push(newMessage)
+                    storeMessage(`User${newMessage.from.id}`,newMessage)
                     return prev
                 },
             });
@@ -478,6 +481,7 @@ class AppWithNavigationState extends Component {
                                 }
 
                             });
+                            storeMessage(`Family${newMessage.to}`,newMessage)
                             return result
                         } else if (newMessage.type === 'ClassMate') {
                             const index = prev.me.classGroups.map(group=>group.id).indexOf(newMessage.to)
@@ -493,7 +497,7 @@ class AppWithNavigationState extends Component {
                                 }
 
                             });
-                       
+                            storeMessage(`ClassMate${newMessage.to}`,newMessage)
                             return result
 
                         } else if (newMessage.type === 'Colleague') {
@@ -510,7 +514,7 @@ class AppWithNavigationState extends Component {
                                 }
 
                             });
-                     
+                            storeMessage(`Colleague${newMessage.to}`,newMessage)
                             return result
                         } else if (newMessage.type === 'FellowTownsman') {
                             const index = prev.me.locationGroups.map(group=>group.id).indexOf(newMessage.to)
@@ -526,7 +530,7 @@ class AppWithNavigationState extends Component {
                                 }
 
                             });
-                            
+                            storeMessage(`FellowTownsman${newMessage.to}`,newMessage)
                             return result
                         } else if (newMessage.type === 'RegStatus') {
                             if (prev.me.regStatus.id === newMessage.toId) {
@@ -539,6 +543,7 @@ class AppWithNavigationState extends Component {
                                 })
                                 return result
                             }
+                            
                             return prev
                         }
                     },

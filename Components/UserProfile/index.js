@@ -10,6 +10,7 @@ import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonCo
 import { errorMessage } from '../../utils/tools'
 import Chat from '../Chat'
 import GET_USERINFO from '../../graphql/get_userInfo.query'
+import GET_ME from '../../graphql/get_me.query'
 
 export const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -43,11 +44,6 @@ class UserProfile extends React.Component {
     }
   }
 
-
-  
-
- 
-
   renderStduy = (studies) => {
     const obj = {}
     for (let study of studies) {
@@ -72,20 +68,10 @@ class UserProfile extends React.Component {
     ))
   }
 
-  
-
-
-  render() {
-    const id = this.props.navigation.getParam('id', '');
-    const me = this.props.navigation.getParam('me', '');
-    const come = this.props.navigation.getParam('come', '');
-
-    if(!id){return <View></View>}
-    
-    return (
-      <Query query={GET_USERINFO} variables={{ id }}>
+  renderProfile=(me,id)=>(
+    <Query query={GET_USERINFO} variables={{ id }}>
         {
-          ({ loading, error, data }) => {
+          ({ loading, error, data}) => {
             if (loading) return <Spinner />
             if (error) return <Text>{errorMessage(error)}</Text>
             return (
@@ -141,7 +127,7 @@ class UserProfile extends React.Component {
                     )
                   }
                   {
-                    data.userInfo.studies && data.userInfo.studies.length > 0 && this.renderWork(data.userInfo.works)
+                    data.userInfo.works && data.userInfo.works.length > 0 && this.renderWork(data.userInfo.works)
                   }
 
                 </List>
@@ -161,6 +147,28 @@ class UserProfile extends React.Component {
       }
     }
       </Query>
+  )
+
+  render() {
+    const id = this.props.navigation.getParam('id', '');
+    // const me = this.props.navigation.getParam('me', '');
+
+    if(!id){return <View></View>}
+    
+    return (
+      <Query query={GET_ME}>
+      {
+        ({loading,error,data})=>{
+          if (loading) return <Spinner />
+          if (error) return <Text>{errorMessage(error)}</Text>
+          return (
+            this.renderProfile(data.me,id)
+          )
+        }
+      }
+
+      </Query>
+      
     )
   }
 }

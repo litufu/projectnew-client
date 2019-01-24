@@ -55,8 +55,7 @@ class Applicants extends Component {
               sortedApplicants.map((applicant,index)=>(
                 <ListItem 
                 key={applicant.id}
-                // 此处应该查看个人profile
-                onPress={()=>console.log(applicant.id)}
+                onPress={()=>this.props.navigation.navigate('UserProfile',{id:applicant.id})}
                 >
                   <Left  style={styles.left}>
                     <Text>{`${index+1}、${applicant.name}`}</Text>

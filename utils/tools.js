@@ -1,3 +1,5 @@
+import { AsyncStorage } from "react-native"
+
 // 删除空格
 export const trim=(str)=>str.replace(/(^\s*)|(\s*$)/g, ""); 
 export const checkName = (name)=>{
@@ -40,3 +42,38 @@ export const timeTodate = (startTime,endTime) =>{
   }
   return `${startYear}.${startMonth}-${endYear}.${endMonth}`
 }
+
+export const storeMessage = async (key,message) => {
+  if(message.id.length<10) return 
+  try {
+    let prev
+    prev = await AsyncStorage.getItem(key);
+    console.log('prev',prev)
+    if(!prev){
+      prevMessages = []
+    }else{
+      prevMessages = JSON.parse(prev)
+    }
+    // 检查是否重复
+    const isExist = prevMessages.filter(m=>m.id===message.id && m.createdAt===message.createdAt).length>0
+    if(!isExist){
+      prevMessages.push(message);
+      await AsyncStorage.setItem(key,JSON.stringify(prevMessages) );
+    }
+  } catch (error) {
+   console.log(error)
+  }
+}
+
+export const retrieveMessages = async (key) => {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      return value
+    }
+    return []
+   } catch (error) {
+     console.log(error.message)
+   }
+}
+

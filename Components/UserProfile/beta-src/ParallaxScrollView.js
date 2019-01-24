@@ -21,6 +21,7 @@ import POST_PHOTO from '../../../graphql/post_photo.mutation'
 import GET_ME from '../../../graphql/get_me.query'
 import GET_USERINFO from '../../../graphql/get_userInfo.query'
 import GET_PHOTO from '../../../graphql/get_photo.query'
+import {defaultAvatar}  from '../../../utils/settings'
 
 const ScrollViewPropTypes = ScrollView.propTypes;
 
@@ -104,7 +105,7 @@ export default class ParallaxScrollView extends Component {
               style={styles.avatarView}
               onPress={() => this.onPressAvatar(postPhoto,this.props.data.userInfo.avatar)}
             >
-              <Image source={{ uri: this.props.data.userInfo.avatar.url || USER.image }} style={{ height: 120, width: 120, borderRadius: 60 }} />
+              <Image source={{ uri: this.props.data.userInfo.avatar ? this.props.data.userInfo.avatar.url : defaultAvatar }} style={{ height: 120, width: 120, borderRadius: 60 }} />
             </TouchableNativeFeedback>
           )
         }

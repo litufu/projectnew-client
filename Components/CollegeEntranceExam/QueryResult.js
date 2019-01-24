@@ -18,18 +18,11 @@ export default class QueryResult extends React.Component{
                     console.log("data",data)
                     if (loading) return <Spinner/>;
                     if(error) return <View><Text>{errorMessage(error)}</Text></View>
-                    if(data.me && data.me.regStatus){
-                        return (
-                           <Result 
-                            me={data.me}
-                           />
-                        );
-                    }
                     return (
                         <Result 
+                        me={data.me}
                         />
-                    ) 
-                    
+                    );
                 }}
                 </Query>
         )

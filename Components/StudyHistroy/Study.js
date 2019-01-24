@@ -596,7 +596,6 @@ class Study extends Component {
                             <Body>
                                 <Mutation
                                     mutation={ADD_STUDY}
-                                    onCompleted={()=>Alert.alert('保存完成')}
                                 >
                                     {
                                         (addStudy, { loading, error, client }) => {

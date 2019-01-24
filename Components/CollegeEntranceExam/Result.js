@@ -51,18 +51,16 @@ _renderApplicationResult = (me)=>(
           groupName:`${me.regStatus.university.name}${me.regStatus.major.name}-${me.exam.province.name}${subjects[me.exam.subject]}`
           })}
           handleToApplicants={()=>this.props.navigation.navigate('Applicants',{applicants})}
-          handleCancel = {()=>Alert.alert('取消报名')}
           id={me.regStatus.id}
       />
       )
     }
   }
-
   </Query>
 )
 
   render() {
-    const me = this.props.me || ''
+    const me = this.props.me
     return (
 
       <Container>

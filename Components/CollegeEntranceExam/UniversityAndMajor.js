@@ -125,7 +125,8 @@ export default class UniversityAndMajor extends React.Component {
                             console.log(university.id)
                             const { data } = await client.query({
                             query: GET_REGSTATUSAPPLICANTS,
-                            variables: { education,universityId:university.id,majorId:major.id }
+                            variables: { education,universityId:university.id,majorId:major.id },
+                            fetchPolicy:'network-only',
                             });
                             console.log(data)
                             this._onRegStatusApplicantsFetched(data.getRegStatusApplicants,major.name,university.name);
@@ -144,6 +145,11 @@ export default class UniversityAndMajor extends React.Component {
     }
 
     _hanleReg = async (addRegStatus,education,client)=>{
+        const {data:{me}} = await client.query({query:GET_ME})
+        if(me.regStatus && me.regStatus.id){
+            Alert.alert('只能进行一次报名，如需重新报名，请先退出当前报名')
+            return 
+        }
         const result1 = await client.query({query:GET_SEARCHNEWMAJOR})
         const major = result1.data.searchNewMajor
         const result2 = await client.query({query:GET_SEARCHNEWUNIVERSITY})
