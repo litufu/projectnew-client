@@ -34,10 +34,8 @@ import { Mutation } from "react-apollo";
 
 import Region from '../Region'
 import MyDatetime from '../MyDatetime'
-import display from '../../utils/displayplace'
-import {trim,errorMessage} from '../../utils/tools'
+import {trim,errorMessage,display} from '../../utils/tools'
 import ADD_BASICKINFO from '../../graphql/add_basicinfo.mutation'
-import {randomId} from '../../utils/settings'
 import GET_ME from '../../graphql/get_me.query';
 
 export default class Info extends Component{
@@ -157,7 +155,6 @@ export default class Info extends Component{
     const displayResidence = display(residence)
 
     return(
-      <Container>
         <Content>
         <List>
           <ListItem >
@@ -316,7 +313,6 @@ export default class Info extends Component{
            </Right>
           </View>
         </Content>
-      </Container>
     )
   }
 }

@@ -64,17 +64,17 @@ _renderApplicationResult = (me)=>(
     return (
 
       <Container>
-        <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
+        <Header style={{marginTop:statusBarHeight}}>
           <Left>
             <Button 
             transparent
             onPress={()=>this.props.navigation.navigate('CollegeEntranceExam')}
             >
-              <Icon name='arrow-back' style={{color:headerButtonColor}}/>
+              <Icon name='arrow-back' />
             </Button>
           </Left>
           <Body>
-            <Title style={{color:headerFontColor}}>报名结果</Title>
+            <Title >报名结果</Title>
           </Body>
           <Right />
         </Header>

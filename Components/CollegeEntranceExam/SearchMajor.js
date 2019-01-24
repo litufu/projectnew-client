@@ -99,33 +99,32 @@ export default  class SearchMajor extends Component {
     const {selectedId,majorName,majors,loading} = this.state
     return (
       <Container>
-         <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
-          <Left style={{justifyContent:'flex-end'}}>
+         <Header style={{marginTop:statusBarHeight}}>
+          <Left >
             <Button transparent onPress={()=>this.props.navigation.goBack()}>
-              <Icon name="arrow-back"style={{color:headerButtonColor}} />
+              <Icon name="arrow-back" />
             </Button>
           </Left>
-          <Body style={{alignItems:'center'}}>
-            <Title style={{color:headerFontColor}}>选择专业</Title>
+          <Body>
+            <Title >选择专业</Title>
           </Body>
           <Right>
-            {
-              !!this.state.selectedId && (
-                <Mutation 
-                mutation={SELECT_NEWMAJOR}
+          {
+            !!this.state.selectedId && (
+              <Mutation 
+              mutation={SELECT_NEWMAJOR}
+              >
+              {selectNewMajor => (
+                  <Button
+                  onPress={()=>this.submitMajor(selectNewMajor)}
                 >
-                {selectNewMajor => (
-                    <Button
-                    onPress={()=>this.submitMajor(selectNewMajor)}
-                  >
-                    <Text>确认</Text>
-                    </Button>
-                )}
-                </Mutation>
-              )
-            }
-           
-          </Right>
+                  <Text>确认</Text>
+                  </Button>
+              )}
+              </Mutation>
+            )
+          }
+        </Right>
         </Header>
         <Content style={{marginTop:5}}>
         <List>

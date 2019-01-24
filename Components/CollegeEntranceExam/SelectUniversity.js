@@ -73,14 +73,14 @@ export default  class SearchMajor extends Component {
     const {selectedId,universityName,universities,loading} = this.state
     return (
       <Container>
-         <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
-          <Left style={{justifyContent:'flex-end'}}>
+         <Header style={{marginTop:statusBarHeight}}>
+          <Left >
             <Button transparent onPress={()=>this.props.navigation.goBack()}>
-              <Icon name="arrow-back" style={{color:headerButtonColor}} />
+              <Icon name="arrow-back"  />
             </Button>
           </Left>
-          <Body style={{alignItems:'center'}}>
-            <Title style={{color:headerFontColor}}>选择专业</Title>
+          <Body >
+            <Title >选择专业</Title>
           </Body>
           <Right>
             {

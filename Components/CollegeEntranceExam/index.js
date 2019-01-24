@@ -33,17 +33,17 @@ export default class CollegeEntranceExam extends React.Component {
     render() {
         return (
             <Container style={{flex:1}}>
-                <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
+                <Header style={{marginTop:statusBarHeight}}>
                     <Left>
                         <Button 
                         transparent
                         onPress={()=>this.props.navigation.goBack()}
                         >
-                            <Icon name='arrow-back' style={{color:headerButtonColor}}/>
+                            <Icon name='arrow-back' />
                         </Button>
                     </Left>
                     <Body>
-                        <Title style={{color:headerFontColor}}>高考报名</Title>
+                        <Title >高考报名</Title>
                     </Body>
                     <Right />
                 </Header>

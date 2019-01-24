@@ -25,14 +25,13 @@ import {
 import { Mutation } from 'react-apollo'
 import { withNavigation } from 'react-navigation'
 
-import { provinces } from '../../utils/provinces'
 import ADD_EXAMBASICINFO from '../../graphql/add_examBasicInfo.mutation'
 import UPDATE_EXAMBASICINFO from '../../graphql/update_examBasicInfo.mutation'
 import { errorMessage } from '../../utils/tools'
 import {sections,noSectionProvinces} from './settings'
 import GET_EXAMBASICINFO from '../../graphql/get_exam_basicInfo.query'
 import GET_ME from '../../graphql/get_me.query'
-import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor} from '../../utils/settings'
+import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor,provinces} from '../../utils/settings'
 
 class ExamBasicInfo extends React.Component {
 
@@ -188,14 +187,14 @@ class ExamBasicInfo extends React.Component {
         const { province, section, score, specialScore, examineeCardNumber, hasSpecial, updateInfo, editable,times } = this.state
         return (
             <Container >
-                <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
+                <Header style={{marginTop:statusBarHeight}}>
                     <Left>
                         <Button transparent onPress={() => this.props.navigation.goBack()}>
-                            <Icon name='arrow-back' style={{color:headerButtonColor}}/>
+                            <Icon name='arrow-back' />
                         </Button>
                     </Left>
                     <Body>
-                        <Title style={{color:headerFontColor}}>高考基本信息</Title>
+                        <Title>高考基本信息</Title>
                     </Body>
                     <Right />
                 </Header>

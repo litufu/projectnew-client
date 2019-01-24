@@ -17,7 +17,7 @@ import { Query, Mutation } from 'react-apollo'
 import CREATE_FAMILY from '../../graphql/create_family.mutation'
 import MODIFY_FAMILY from '../../graphql/modify_family.mutation'
 import GET_ME from '../../graphql/get_me.query'
-import Nav from '../Nav'
+import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
 
 export default class AddFamily extends Component {
   state = {
@@ -256,6 +256,20 @@ export default class AddFamily extends Component {
 
           return (
             <Container>
+              <Header style={{ marginTop: statusBarHeight }}>
+                <Left >
+                  <Button
+                    onPress={() => this.props.navigation.goBack()}
+                    transparent
+                  >
+                    <Icon name='md-arrow-back' type='Ionicons' />
+                  </Button>
+                </Left>
+                <Body style={{ alignItems: 'flex-end', justifyContent: "center", }}>
+                  <Title>{this.props.navigation.getParam("isAdd", true) ? "添加成员" : "修改成员"}</Title>
+                </Body>
+                <Right />
+              </Header>
               <Content>
                 <Form>
                   <Item style={styles.left}>
@@ -304,22 +318,6 @@ export default class AddFamily extends Component {
     );
   }
 }
-
-AddFamily.navigationOptions = ({ navigation }) => ({
-  header: (
-    <Nav
-      title={navigation.getParam("isAdd", true) ? "添加成员" : "修改成员"}
-      navigation={navigation}
-      leftIcon={{
-        type: 'ionicon',
-        name: 'md-arrow-back',
-        size: 26,
-      }}
-      hasLeftIcon={true}
-      hasLogoutText={false}
-    />
-  ),
-})
 
 const styles = StyleSheet.create({
   relationship: {

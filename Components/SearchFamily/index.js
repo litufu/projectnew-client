@@ -1,16 +1,29 @@
 import React from 'react'
 import {
 	View,
-	Text,
 	FlatList,
 	StyleSheet,
 	TouchableOpacity
 } from 'react-native'
-
-import styleUtil from "../../common/styleUtil";
+import {
+    Container,
+    Header,
+    Content,
+    List,
+    ListItem,
+    Text,
+    Icon,
+    Left,
+    Body,
+    Right,
+    Switch,
+    Thumbnail,
+    Button,
+    Title
+} from 'native-base';
 import { SearchBar } from 'react-native-elements'
-import Nav from '../Nav'
 import UserListConainer from '../UsersList'
+import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
 
 export default class SearchFamily extends React.Component {
 
@@ -78,7 +91,22 @@ export default class SearchFamily extends React.Component {
 		const who = this.props.navigation.getParam('who', {});
 		const me = this.props.navigation.getParam('me', {});
 		return (
-			<View style={styleUtil.container}>
+			<Container>
+				<Header style={{ marginTop: statusBarHeight }}>
+                <Left >
+                  <Button
+                    onPress={() => this.props.navigation.goBack()}
+                    transparent
+                  >
+                    <Icon name='md-arrow-back' type='Ionicons' />
+                  </Button>
+                </Left>
+                <Body style={{ alignItems: 'flex-end', justifyContent: "center", }}>
+                  <Title>添加亲人</Title>
+                </Body>
+                <Right />
+              </Header>
+				<Content>
 				<View style={{
 					flexDirection: 'row',
 					alignItems: 'center',
@@ -95,7 +123,8 @@ export default class SearchFamily extends React.Component {
 						me={me}
 					/>
 				}
-			</View>
+				</Content>
+			</Container>
 		)
 	}
 }
@@ -113,18 +142,3 @@ const styles = StyleSheet.create({
 })
 
 
-SearchFamily.navigationOptions = ({ navigation }) => ({
-	header: (
-		<Nav
-			title="添加亲人"
-			navigation={navigation}
-			leftIcon={{
-				type: 'ionicon',
-				name: 'md-arrow-back',
-				size: 26,
-			}}
-			hasLeftIcon={true}
-			hasLogoutText={false}
-		/>
-	),
-})

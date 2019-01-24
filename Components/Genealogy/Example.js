@@ -8,7 +8,7 @@ import FirstMiddleLevel from './FirstMiddleLevel'
 import SecondLevelTop from './SecondLevelTop'
 import ThirdLevelTop from './ThirdLevelTop'
 import SecondMiddleLevel from './SecondMiddleLevel'
-import { getRelationshipNameTwo } from '../../utils/relationship'
+import { getRelationshipNameTwo } from '../../utils/tools'
 
 import { SQURE_HEIGHT, SQURE_WIDTH, BORDER_WIDTH, SQURE_H_DISTANCE, SQURE_V_DISTANCE } from './settings'
 

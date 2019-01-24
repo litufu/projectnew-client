@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import Location from './Location'
-import display from '../../utils/displayplace'
+import {display} from '../../utils/tools'
 
 export default class Region extends Component{
   state={

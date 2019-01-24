@@ -15,7 +15,7 @@ import { StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import {  Query,Mutation } from 'react-apollo'
 import {withNavigation} from 'react-navigation'
 
-import {getRelationshipName} from '../../utils/relationship'
+import {getRelationshipName} from '../../utils/tools'
 import DELETE_FAMILY from '../../graphql/delete_family.mutation'
 import CONFIRM_FAMILY from '../../graphql/confirm_family.mutation'
 import GET_ME  from '../../graphql/get_me.query'

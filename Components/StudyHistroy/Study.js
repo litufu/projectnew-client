@@ -21,7 +21,7 @@ import { Query, Mutation } from 'react-apollo'
 import { withNavigation } from 'react-navigation'
 
 import Region from '../Region'
-import display from '../../utils/displayplace'
+import {display} from '../../utils/tools'
 import { grades, errorMessage, educations } from '../../utils/tools'
 import ADD_LOCATION from '../../graphql/add_location.mutation'
 import GET_NEWSCHOOL from '../../graphql/get_newSchool.query'

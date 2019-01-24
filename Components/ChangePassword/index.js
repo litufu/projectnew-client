@@ -3,6 +3,7 @@ import {
   Container,
   Header,
   Left,
+  Right,
   Body,
   Button,
   Icon,
@@ -16,11 +17,11 @@ import {
   Spinner,
 } from 'native-base'
 import {  Alert,View} from "react-native"
-import { withNavigation } from 'react-navigation'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
+import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
 
-import Nav from '../Nav'
+
 
 const CHANGE_PASSWORD = gql`
 mutation changePassword($currentPassword: String!, $newPassword: String!) {
@@ -30,7 +31,6 @@ mutation changePassword($currentPassword: String!, $newPassword: String!) {
     }
 }
 `
-
 export default class ChangePassword extends Component {
 
     constructor(props) {
@@ -129,6 +129,21 @@ export default class ChangePassword extends Component {
       const { currentPassword,newPassword,confirmPassword } = this.state
         return (
             <Container>
+              <Header style={{ marginTop: statusBarHeight }}>
+                <Left >
+                  <Button
+                    onPress={() => this.props.navigation.goBack()}
+                    transparent
+                  >
+                    <Icon name='md-arrow-back' type='Ionicons' />
+                  </Button>
+                </Left>
+                <Body style={{ alignItems: 'flex-end', justifyContent: "center", }}>
+                  <Title>修改密码</Title>
+                </Body>
+                <Right />
+              </Header>
+              <Content>
              <Item inlineLabel>
                <Input
                sentr
@@ -157,23 +172,9 @@ export default class ChangePassword extends Component {
              <View style={{padding:10}}>
             {this.renderChangePwdBtn(currentPassword,newPassword,confirmPassword)}
             </View>
+            </Content>
             </Container>
         );
     }
 }
 
-ChangePassword.navigationOptions = ({ navigation }) => ({
-  header: (
-    <Nav
-      title="修改密码"
-      navigation={navigation}
-      leftIcon={{
-        type: 'ionicon',
-        name: 'md-arrow-back',
-        size: 26,
-      }}
-      hasLeftIcon={true}
-      hasLogoutText={false}
-    />
-  ),
-})

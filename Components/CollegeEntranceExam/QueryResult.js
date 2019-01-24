@@ -15,7 +15,6 @@ export default class QueryResult extends React.Component{
                 query={GET_ME}
                 >
                 {({ loading, error, data }) => {
-                    console.log("data",data)
                     if (loading) return <Spinner/>;
                     if(error) return <View><Text>{errorMessage(error)}</Text></View>
                     return (
