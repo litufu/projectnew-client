@@ -44,9 +44,11 @@ class Settings extends Component {
                                 <Icon name="arrow-forward" />
                             </Right>
                         </ListItem>
-                        <ListItem>
+                        <ListItem
+                         onPress={() => this.props.navigation.navigate('FindPassword')}
+                        >
                             <Left>
-                                <Text>找回账号</Text>
+                                <Text>找回密码</Text>
                             </Left>
                             <Right>
                                 <Icon name="arrow-forward" />

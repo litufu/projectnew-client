@@ -11,6 +11,7 @@ class Loading extends Component {
 
     bootstrapAsync = async () => {
         const userToken = await SecureStore.getItemAsync('token')
+        
         this.props.navigation.navigate(userToken ? 'App' : 'Login')
     }
 

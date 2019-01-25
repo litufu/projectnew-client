@@ -1,71 +1,54 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo'
 import client from './apollo'
-import { Font } from 'expo'
-import { Text, View, AsyncStorage } from 'react-native';
+import { AppLoading, Asset, Font, Icon } from 'expo'
 import Navigation from './Navigation/SwitchNavigator'
-
-import { DEV_HOST } from './utils/settings'
 
 class App extends Component {
     state = {
-        fontLoaded: false
-    }
-
-    async componentDidMount() {
-
-        await Font.loadAsync({
-            "montserratRegular": require('./assets/fonts/montserratRegular.ttf'),
-            "montserratMedium": require('./assets/fonts/montserratMedium.ttf'),
-            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-        })
-        this.setState({ fontLoaded: true })
-
-        // try {
-        //     const mySchema = await AsyncStorage.getItem('mySchema');
-        //     if (!mySchema) {
-        //         let response = await fetch(
-        //             DEV_HOST, {
-        //                 method: 'POST',
-        //                 headers: { 'Content-Type': 'application/json' },
-        //                 body: JSON.stringify({
-        //                     variables: {},
-        //                     query: `
-        //                         {
-        //                             __schema {
-        //                             types {
-        //                                 kind
-        //                                 name
-        //                                 possibleTypes {
-        //                                 name
-        //                                 }
-        //                             }
-        //                             }
-        //                         }
-        //                 `,
-        //                 })
-        //             }
-        //         );
-        //         let result = await response.json();
-        //         const filteredData = result.data.__schema.types.filter(
-        //             type => type.possibleTypes !== null,
-        //         );
-        //         result.data.__schema.types = filteredData;
-        //         await AsyncStorage.setItem('mySchema', JSON.stringify(result.data));
-        //     }
-        // } catch (error) {
-        //     console.error(error);
-        // }
+        isLoadingComplete: false,
     }
 
     render() {
-        if (!this.state.fontLoaded) return null
-        return (
+        if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+          return (
+            <AppLoading
+              startAsync={this._loadResourcesAsync}
+              onError={this._handleLoadingError}
+              onFinish={this._handleFinishLoading}
+            />
+          );
+        } else {
+          return (
             <ApolloProvider client={client}>
                 <Navigation />
             </ApolloProvider>
-        )
-    }
+          );
+        }
+      }
+    
+      _loadResourcesAsync = async () => {
+        return Promise.all([
+          Asset.loadAsync([
+            require('./assets/icon.png'),
+          ]),
+          Font.loadAsync({
+            "montserratRegular": require('./assets/fonts/montserratRegular.ttf'),
+            "montserratMedium": require('./assets/fonts/montserratMedium.ttf'),
+            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+          }),
+        ]);
+      };
+    
+      _handleLoadingError = error => {
+        // In this case, you might want to report the error to your error
+        // reporting service, for example Sentry
+        console.warn(error);
+      };
+    
+      _handleFinishLoading = () => {
+        this.setState({ isLoadingComplete: true });
+      };
 }
 
 export default App

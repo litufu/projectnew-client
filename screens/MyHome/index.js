@@ -30,16 +30,19 @@ export default class Home extends React.Component {
 
     render() {
         return (
-            <Query query={GET_ME}>
+            <Query
+             query={GET_ME}>
                 {
                     ({ loading, error, data }) => {
+
                         if(loading) return <Spinner />
                         if(error) return <View style={{alignItems:"center"}}><Text>{errorMessage(error)}</Text></View>
+                        if(!data.me) this.props.navigation.navigate('Login')
                         return(<Container>
                              <Header style={{marginTop:statusBarHeight}}>
                                 <Left />
                                     <Body style={{alignItems:'flex-end',justifyContent:"center",}}>
-                                        <Title>主页</Title>
+                                        <Title>水滴</Title>
                                     </Body>
                                     <Right/>
                                 </Header>

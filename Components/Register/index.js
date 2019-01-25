@@ -137,7 +137,7 @@ export default class Register extends React.Component{
                 <TouchableNativeFeedback
                     onPress={() => this.props.navigation.navigate('Login')}
                 >
-                  <Text style={styles.blueText}>登 陆</Text>
+                  <Text style={styles.blueText}>返 回 登 陆</Text>
                 </TouchableNativeFeedback>
             </View>
         </KeyboardAvoidingView>

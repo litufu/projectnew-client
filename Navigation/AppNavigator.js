@@ -76,6 +76,7 @@ import Study from '../Components/StudyHistroy/Study'
 import MyIcon from '../Components/MyIcon'
 import AddPhoto from '../Components/AddPhoto'
 import Settings from '../Components/Settings'
+import FindPassword from '../Components/FindPassword'
 
 import {storeMessage,retrieveMessages} from '../utils/tools'
 
@@ -256,6 +257,9 @@ const ProfileNavigation = createStackNavigator(
         },
         Settings:{
             screen: Settings,
+        },
+        FindPassword:{
+            screen: FindPassword,
         }
     },
     {
@@ -311,99 +315,119 @@ class AppWithNavigationState extends Component {
 
     async componentDidMount() {
         const { subscribeToMore, client } = this.props;
+        if(!this.familyGroupSubscription){
+            this.familyGroupSubscription = await subscribeToMore({
+                document: FAMILYGROUP_CHANGED_SUBSCRIPTION,
+                updateQuery: (prev) => {
+                    client.query({
+                        query: GET_FAMILYGROUPS,
+                        fetchPolicy: "network-only"
+                    }).then(({ data }) => {
+                        const newMe = {
+                            ...prev.me,
+                            relativefamilyGroups: data.getFamilyGroups
+                        }
+                        const result = { ...prev, me: newMe }
+                        return result
+                    });
+                },
+            });
+        }
+        
+        if(!this.classGroupSubscription){
+            this.classGroupSubscription = await subscribeToMore({
+                document: CLASSGROUP_CHANGED_SUBSCRIPTION,
+                updateQuery: (prev) => {
+                    client.query({
+                        query: GET_CLASSGROUPS,
+                        fetchPolicy: "network-only"
+                    }).then(({ data }) => {
+                        const newMe = {
+                            ...prev.me,
+                            classGroups: data.classGroups
+                        }
+                        const result = { ...prev, me: newMe }
+                        return result
+                    });
+                },
+            });
+        }
+        
+        if(!this.workGroupSubscription){
+            this.workGroupSubscription = await subscribeToMore({
+                document: WORKGROUP_CHANGED_SUBSCRIPTION,
+                updateQuery: (prev) => {
+                    client.query({
+                        query: GET_WORKGROUPS,
+                        fetchPolicy: "network-only"
+                    }).then(({ data }) => {
+                        const newMe = {
+                            ...prev.me,
+                            workGroups: data.workGroups
+                        }
+                        const result = { ...prev, me: newMe }
+                        return result
+                    });
+                },
+            });
+        }
 
-        this.familyGroupSubscription = await subscribeToMore({
-            document: FAMILYGROUP_CHANGED_SUBSCRIPTION,
-            updateQuery: (prev) => {
-                client.query({
-                    query: GET_FAMILYGROUPS,
-                    fetchPolicy: "network-only"
-                }).then(({ data }) => {
-                    const newMe = {
-                        ...prev.me,
-                        relativefamilyGroups: data.getFamilyGroups
-                    }
-                    const result = { ...prev, me: newMe }
-                    return result
-                });
-            },
-        });
+        if(!this.locationGroupSubscription){
+            this.locationGroupSubscription = await subscribeToMore({
+                document: LOCATIONGROUP_CHANGED_SUBSCRIPTION,
+                updateQuery: (prev) => {
+                    client.query({
+                        query: GET_LOCATIONGROUPS,
+                        fetchPolicy: "network-only"
+                    }).then(({ data }) => {
+                        const newMe = {
+                            ...prev.me,
+                            locationGroups: data.locationGroups
+                        }
+                        const result = { ...prev, me: newMe }
+                        return result
+                    });
+                },
+            });
+        }
 
-        this.classGroupSubscription = await subscribeToMore({
-            document: CLASSGROUP_CHANGED_SUBSCRIPTION,
-            updateQuery: (prev) => {
-                client.query({
-                    query: GET_CLASSGROUPS,
-                    fetchPolicy: "network-only"
-                }).then(({ data }) => {
-                    const newMe = {
-                        ...prev.me,
-                        classGroups: data.classGroups
-                    }
-                    const result = { ...prev, me: newMe }
-                    return result
-                });
-            },
-        });
-
-        this.workGroupSubscription = await subscribeToMore({
-            document: WORKGROUP_CHANGED_SUBSCRIPTION,
-            updateQuery: (prev) => {
-                client.query({
-                    query: GET_WORKGROUPS,
-                    fetchPolicy: "network-only"
-                }).then(({ data }) => {
-                    const newMe = {
-                        ...prev.me,
-                        workGroups: data.workGroups
-                    }
-                    const result = { ...prev, me: newMe }
-                    return result
-                });
-            },
-        });
-
-        this.locationGroupSubscription = await subscribeToMore({
-            document: LOCATIONGROUP_CHANGED_SUBSCRIPTION,
-            updateQuery: (prev) => {
-                client.query({
-                    query: GET_LOCATIONGROUPS,
-                    fetchPolicy: "network-only"
-                }).then(({ data }) => {
-                    const newMe = {
-                        ...prev.me,
-                        locationGroups: data.locationGroups
-                    }
-                    const result = { ...prev, me: newMe }
-                    return result
-                });
-            },
-        });
-
-        this.familyChangeSubscription = await subscribeToMore({
-            document: FAMILY_CHANGED_SUBSCRIPTION,
-            updateQuery: (prev) => {
-                client.query({
-                    query: GET_FAMILIES,
-                    fetchPolicy: "network-only"
-                }).then(({ data }) => {
-                    const newMe = {
-                        ...prev.me,
-                        families: data.families
-                    }
-                    const result = { ...prev, me: newMe }
-                    return result
-                });
-            },
-        });
+        if(!this.familyChangeSubscription){
+            this.familyChangeSubscription = await subscribeToMore({
+                document: FAMILY_CHANGED_SUBSCRIPTION,
+                updateQuery: (prev) => {
+                    client.query({
+                        query: GET_FAMILIES,
+                        fetchPolicy: "network-only"
+                    }).then(({ data }) => {
+                        const newMe = {
+                            ...prev.me,
+                            families: data.families
+                        }
+                        const result = { ...prev, me: newMe }
+                        return result
+                    });
+                },
+            });
+        }
     }
 
     componentWillUnmount() {
-        this.familyGroupSubscription();
-        this.locationGroupSubscription()
-        this.workGroupSubscription()
-        this.classGroupSubscription()
-        this.familyChangeSubscription()
+        if(this.familyGroupSubscription){
+            this.familyGroupSubscription();
+        }
+        if(this.locationGroupSubscription){
+            this.locationGroupSubscription()
+        }
+        if(this.workGroupSubscription){
+            this.workGroupSubscription()
+        }
+        if(this.classGroupSubscription){
+            this.classGroupSubscription()
+        }
+        if(this.familyChangeSubscription){
+            this.familyChangeSubscription()
+        }
+        
     }
 
     componentWillReceiveProps(nextProps) {

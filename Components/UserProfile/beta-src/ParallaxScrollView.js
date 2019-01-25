@@ -15,7 +15,7 @@ import { ImagePicker } from 'expo';
 import { Icon, List, ListItem } from 'react-native-elements';
 // import {Image} from "react-native-expo-image-cache";
 
-import { USER, FACEBOOK_LIST, SLACK_LIST, GENERIC_LIST, SCREEN_WIDTH, SCREEN_HEIGHT, DEFAULT_WINDOW_MULTIPLIER, DEFAULT_NAVBAR_HEIGHT } from './constants';
+import { USER,  SCREEN_WIDTH, SCREEN_HEIGHT, DEFAULT_WINDOW_MULTIPLIER, DEFAULT_NAVBAR_HEIGHT } from './constants';
 import styles from './styles';
 import POST_PHOTO from '../../../graphql/post_photo.mutation'
 import GET_ME from '../../../graphql/get_me.query'
@@ -36,47 +36,9 @@ export default class ParallaxScrollView extends Component {
     };
   }
 
-  // queryPhoto = (userImage, USER) => (
-  //   <Query
-  //     query={GET_PHOTO}
-  //     variables={{ 'id': this.props.data.userInfo.avatar.id }}
-  //     // onCompleted={(data) => this.setState({ url: data.photo.url })}
-  //   >
-  //     {
-  //       ({ loading, error, data, client }) => {
-  //         if (loading) return <Text>loading</Text>
-  //         if (error) return <Text>error</Text>
-  //         if (this.props.me.id !== this.props.data.userInfo.id) {
-  //           return (
-  //             <TouchableNativeFeedback
-  //               style={styles.avatarView}
-  //             >
-  //               <Image source={{ uri: data.photo.url || USER.image }} style={{ height: 120, width: 120, borderRadius: 60 }} />
-  //             </TouchableNativeFeedback>
-  //           )
-  //         }
-  //         return (
-  //           <View>
-  //             {this.uploadAvatar(data.photo, userImage, USER)}
-  //           </View>
-  //         )
-  //       }
-  //     }
-  //   </Query>
-  // )
-
   uploadAvatar = () => (
     <Mutation
       mutation={POST_PHOTO}
-      
-      // onCompleted={async (uploadData) => {
-      //   const { data } = await client.query({
-      //     query: GET_PHOTO,
-      //     variables: { name: uploadData.postPhoto.name },
-      //     fetchPolicy: "network-only",
-      //   })
-      //   this.setState({ url: data.photo.url })
-      // }}
     >
       {
         (postPhoto, { loading, error, data }) => {
@@ -243,8 +205,8 @@ export default class ParallaxScrollView extends Component {
                 }
                
                 <View style={{ paddingVertical: 10 }}>
-                  <Text style={{ textAlign: 'center', fontSize: 22, color: 'black', paddingBottom: 5 }}>{userName || USER.name}</Text>
-                  <Text style={{ textAlign: 'center', fontSize: 17, color: 'black', paddingBottom: 5 }}>{userTitle || USER.title}</Text>
+                  <Text style={{ textAlign: 'center', fontSize: 22, color: 'white', paddingBottom: 5 }}>{userName || USER.name}</Text>
+                  <Text style={{ textAlign: 'center', fontSize: 17, color: 'white', paddingBottom: 5 }}>{userTitle || USER.title}</Text>
                 </View>
               </View>
             )
@@ -383,55 +345,7 @@ export default class ParallaxScrollView extends Component {
     }
   }
 
-  renderTodoListContent() {
-    return (
-      <View style={styles.listView}>
-        <List>
-          {
-            FACEBOOK_LIST.map((item, index) => (
-              <ListItem
-                key={index}
-                onPress={() => console.log('List item pressed')}
-                title={item.title}
-                leftIcon={{ name: item.icon }} />
-            ))
-          }
-        </List>
-        <List>
-          {
-            SLACK_LIST.map((item, index) => (
-              <ListItem
-                key={index}
-                onPress={() => console.log('List item pressed')}
-                title={item.title}
-                leftIcon={{ name: item.icon }} />
-            ))
-          }
-        </List>
-        <List>
-          {
-            GENERIC_LIST.map((item, index) => (
-              <ListItem
-                key={index}
-                onPress={() => console.log('List item pressed')}
-                title={item.title}
-                leftIcon={{ name: item.icon }} />
-            ))
-          }
-        </List>
-        <List containerStyle={{ marginBottom: 15 }}>
-          <ListItem
-            key={1}
-            hideChevron={true}
-            onPress={() => console.log('Logout Pressed')}
-            title='LOGOUT'
-            titleStyle={styles.logoutText}
-            icon={{ name: '' }} />
-        </List>
-      </View>
-    );
-  }
-
+  
   render() {
     const { style, ...props } = this.props;
 
@@ -452,7 +366,7 @@ export default class ParallaxScrollView extends Component {
         >
           {this.renderHeaderView()}
           <View style={[styles.content, props.scrollableViewStyle]}>
-            {this.props.children || this.renderTodoListContent()}
+            {this.props.children }
           </View>
         </ScrollView>
       </View>
@@ -461,7 +375,7 @@ export default class ParallaxScrollView extends Component {
 }
 
 ParallaxScrollView.defaultProps = {
-  backgroundSource: { uri: 'http://i.imgur.com/6Iej2c3.png' },
+  backgroundSource: { uri: 'http://gewushuidi.oss-cn-hangzhou.aliyuncs.com/books-1655783__340.jpg' },
   windowHeight: SCREEN_HEIGHT * DEFAULT_WINDOW_MULTIPLIER,
   leftIconOnPress: () => console.log('Left icon pressed'),
   rightIconOnPress: () => console.log('Right icon pressed')

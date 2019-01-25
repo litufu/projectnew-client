@@ -6,7 +6,7 @@ import { List, ListItem, Spinner, Left, Right,Button,Text,  } from 'native-base'
 import { withNavigation } from 'react-navigation';
 
 import ParallaxScrollView from './beta-src/ParallaxScrollView';
-import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor } from '../../utils/settings'
+import { headerBackgroundColor, headerFontColor, statusBarHeight, headerButtonColor,defaultBackgroundImage } from '../../utils/settings'
 import { errorMessage } from '../../utils/tools'
 import Chat from '../Chat'
 import GET_USERINFO from '../../graphql/get_userInfo.query'
@@ -78,7 +78,7 @@ class UserProfile extends React.Component {
               <ParallaxScrollView
                 style={{ marginTop: statusBarHeight }}
                 windowHeight={SCREEN_HEIGHT * 0.4}
-                backgroundSource={{uri:'http://i.imgur.com/ao1nxlD.png'}}
+                backgroundSource={{uri:defaultBackgroundImage}}
                 navBarTitle={data.userInfo.name}
                 navBarTitleColor='black'
                 navBarColor='white'

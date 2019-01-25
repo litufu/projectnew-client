@@ -26,12 +26,15 @@ export default class ProfileScreen extends Component {
 
     render() {
         return (
-            <Query query={GET_ME}>
+            <Query
+             query={GET_ME}>
                 {
                     ({ loading, error, data }) => {
-                        const me = data.me
+                        
                         if (loading) return <Spinner />
                         if (error) return <Text>{errorMessage(error)}</Text>
+                        const me = data.me
+                        if(!me) this.props.navigation.navigate('Login')
                         return (
                             <Container>
                                 <Header style={{marginTop:statusBarHeight}}>

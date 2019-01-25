@@ -57,11 +57,13 @@ export default class Group extends React.Component{
             </Button>
           </Right>
         </Header>
-        <Query query={GET_ME}>
+        <Query 
+        query={GET_ME}>
               {
                   ({loading,error,data:{me}})=>{
                     if(loading) return <Spinner />
                     if(error) return <Text>{errorMessage(error)}</Text>
+                    
                       return(
                         <Content padder>
                         {this.state.selected===1 &&  <Groups me={me}/>}

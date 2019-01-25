@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Image,
   TouchableNativeFeedback,
   View ,
   StyleSheet,
@@ -7,7 +8,8 @@ import {
   Alert,
 } from 'react-native'
 import { SecureStore } from 'expo'
-import { Button,Text,Input,Item ,Label,Container,Spinner} from 'native-base';
+import { Button,Text,Input,Item ,Label,Container,Spinner,Thumbnail} from 'native-base';
+import {Avatar} from 'react-native-elements'
 import { Mutation } from 'react-apollo'
 
 import LOGIN from '../../graphql/login.mutation'
@@ -114,7 +116,10 @@ export default class Login extends React.Component{
         >
           <View >
               <View style={styles.topStyle} >
-                  <Text style={{fontSize:32}}>水滴logo</Text>
+                <Thumbnail 
+                style={{height:100,width:100,marginBottom:30}}
+                square
+                source={require('../../assets/icon.png')} /> 
               </View>
 
               <View style={styles.centerSyle}>
@@ -145,7 +150,7 @@ export default class Login extends React.Component{
                 </View>
                 <View style={styles.forgetPassword}>
                   <TouchableNativeFeedback
-                      onPress={() => this.props.navigation.navigate('Register')}
+                      onPress={() => Alert.alert('密码找回规则',"需要自己的两名家人在其设置页面-设置选项-找回密码选项中帮你找回密码。")}
                   >
                       <Text style={styles.blueText}>忘记密码</Text>
                   </TouchableNativeFeedback>
@@ -175,7 +180,7 @@ const styles = StyleSheet.create({
   topStyle:{
     justifyContent:"flex-end",
     padding:10,
-    height:130,
+    height:200,
     alignItems:"center",
   },
   centerSyle:{
