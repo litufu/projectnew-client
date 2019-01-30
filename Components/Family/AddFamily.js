@@ -9,7 +9,12 @@ import {
   Label,
   Picker,
   Button,
-  Spinner
+  Spinner,
+  Left,
+  Right,
+  Body,
+  Icon,
+  Title,
 } from 'native-base';
 import { StyleSheet, TouchableOpacity, Text, View, Alert } from 'react-native'
 import { Query, Mutation } from 'react-apollo'

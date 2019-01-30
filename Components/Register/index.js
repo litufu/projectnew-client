@@ -2,8 +2,12 @@ import React from 'react'
 import { TouchableNativeFeedback,StyleSheet,View,KeyboardAvoidingView,Alert} from 'react-native'
 import { Button,Text,Input,Item ,Label,Container,Spinner,Content} from 'native-base';
 import { Mutation } from 'react-apollo'
+import {Constants} from 'expo'
 
 import SIGNUP from '../../graphql/signup.mutation'
+
+const deviceId = Constants.isDevice ? Constants.deviceId : "123"
+console.log(deviceId)
 
 export default class Register extends React.Component{
   state = {
@@ -55,7 +59,7 @@ export default class Register extends React.Component{
                 const valid = this.validateRegister(username,password,password2)
                 if(valid.ok) {
                   try{
-                    const result = await signup({ variables: { username,password } });
+                    const result = await signup({ variables: { username,password,deviceId } });
                     Alert.alert("注册成功请登录")
                     this.props.navigation.navigate('Login')
                   }catch(error){

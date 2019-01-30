@@ -9,6 +9,15 @@ export const defaultBackgroundImage = "http://gewushuidi.oss-cn-hangzhou.aliyunc
 export const messagesLenth = 8   //  缓存中信息的长度
 export const DEV_HOST = "http://192.168.56.1:4000/";
 export const DEV_WSS = "ws://192.168.56.1:4000/graphql";
+export const defaultAdvertisements=[
+    {
+        image1:"http://gewushuidi.oss-cn-hangzhou.aliyuncs.com/drops-of-water-578897__340.jpg",
+        image2:"http://gewushuidi.oss-cn-hangzhou.aliyuncs.com/drops-of-water-578897__340.jpg",
+        image3:"http://gewushuidi.oss-cn-hangzhou.aliyuncs.com/drops-of-water-578897__340.jpg",
+        image4:"http://gewushuidi.oss-cn-hangzhou.aliyuncs.com/drops-of-water-578897__340.jpg",
+        image5:"http://gewushuidi.oss-cn-hangzhou.aliyuncs.com/drops-of-water-578897__340.jpg",
+    }
+]
 export const provinces = [
     {id:11,name:"北京市"},
     {id:12,name:"天津市"},
