@@ -80,7 +80,7 @@ export default class SearchFamily extends React.Component {
 			>
 				<Text style={[
 					styles.sendText,
-					{ color: username.length > 0 ? '#0084ff' : styleUtil.disabledColor }
+					{ color: username.length > 0 ? '#0084ff' : 'gray' }
 				]}>搜索</Text>
 			</TouchableOpacity>
 		)
