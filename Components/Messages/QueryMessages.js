@@ -6,6 +6,7 @@ import GET_ME from '../../graphql/get_me.query'
 import GET_NEWUNREADMESSAGES from '../../graphql/get_newUnReadMessages.query'
 import {defaultAvatar} from '../../utils/settings'
 import {errorMessage} from '../../utils/tools'
+import { storeMessage, retrieveMessages } from '../../utils/tools'
 
 const messageLength = 17
 export default class QueryMessages extends Component {
@@ -31,23 +32,24 @@ export default class QueryMessages extends Component {
         return count
     }
 
-    renderBadge=(messages,person)=>{
+    renderBadge=(messages,person,me)=>{
         const sortedMessages = messages.sort(
             (a,b)=>(new Date(b.createdAt)-new Date(a.createdAt))
         )
         const personMessages = sortedMessages.filter(message=>(message.from.id===person.id || message.to.id===person.id))
-
+        
        return  <Query query={GET_NEWUNREADMESSAGES}>
         {
             ({data})=>{
                 
                 const lastUnreadMessageId = this.getPersonLastUnReadMessageId(data.newUnreadMessages,person)
-                console.log('lastUnreadMessageId',lastUnreadMessageId)
+               
                 let unReadMessageNum
                 if(lastUnreadMessageId){
                    unReadMessageNum = this.getUnreadMessageNum(personMessages,lastUnreadMessageId,person)
                 }else{
-                    unReadMessageNum=personMessages.length
+                    // unReadMessageNum=personMessages.length
+                    unReadMessageNum=0
                 }
                 
                 console.log('unReadMessageNum',unReadMessageNum)
@@ -137,7 +139,7 @@ export default class QueryMessages extends Component {
                                         <Text note numberOfLines={1}>{`${this.personLastMessage(me)[person.id]}`}</Text>
                                     </Body>
                                     <Right>
-                                        {this.renderBadge(me.messages,person)}
+                                        {this.renderBadge(me.messages,person,me)}
                                     </Right>
                                 </ListItem>
                             )

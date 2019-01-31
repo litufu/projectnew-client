@@ -44,7 +44,8 @@ export default class QueryMessages extends Component {
                     if (lastUnreadMessageId) {
                         unReadMessageNum = this.getUnreadMessageNum(lastUnreadMessageId, group)
                     } else {
-                        unReadMessageNum = group.messages.length
+                        // unReadMessageNum = group.messages.length
+                        unReadMessageNum=0
                     }
 
                     console.log('unReadMessageNum', unReadMessageNum)

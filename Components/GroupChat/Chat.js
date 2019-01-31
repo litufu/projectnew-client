@@ -4,7 +4,7 @@ import { Mutation, ApolloConsumer } from 'react-apollo'
 import update from 'immutability-helper'
 import { Ionicons } from '@expo/vector-icons';
 import { View, StyleSheet, Linking, Platform } from 'react-native';
-import { GiftedChat, Actions, Bubble, Send } from 'react-native-gifted-chat';
+import { GiftedChat, Actions, Bubble, Send ,LoadEarlier } from 'react-native-gifted-chat';
 import 'moment/locale/zh-cn'
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -289,6 +289,12 @@ export default class Chat extends Component {
         this.props.navigation.goBack()
     }
 
+    renderLoadEarlier=()=>(
+        <Button transparent small ><Text>加载更多</Text></Button>
+    )
+        
+   
+
     render() {
         const { type, group, me, groupName } = this.props
         return (
@@ -350,6 +356,11 @@ export default class Chat extends Component {
                                     showAvatarForEveryMessage={true}
                                     loadEarlier={this.state.loadEarlier}
                                     onLoadEarlier={this.onLoadEarlier}
+                                    renderLoadEarlier={(props) => {
+                                        return (
+                                          <LoadEarlier {...props} label='加载更多' />
+                                        );
+                                      }}
                                     isLoadingEarlier={this.state.isLoadingEarlier}
                                 />
                             )
