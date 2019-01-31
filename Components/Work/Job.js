@@ -208,20 +208,17 @@ export default class Job extends React.Component {
                 const {me} = cache.readQuery({ query: GET_ME });
                 const updates = me.works.filter(work=>work.id===data.addOrUpdateWork.id)
                 if(updates.length>0){
-                    console.log('修改')
                     const newData = {...me,works:me.works.map(work=>{
                         if(work.id===this.props.updateId){
                             return data.addOrUpdateWork
                         }
                         return work
                     })}
-                    console.log('newData',newData)
                     cache.writeQuery({
                         query: GET_ME,
                         data: {me:newData}
                     });
                 }else{
-                    console.log('增加')
                     me.works.push(data.addOrUpdateWork);
                     cache.writeQuery({
                         query: GET_ME,
@@ -303,7 +300,7 @@ export default class Job extends React.Component {
                     !selectPost && (
                         <Content>
                             <List >
-                                <ListItem>
+                                <Item>
                                     <Input
                                         style={styles.input}
                                         placeholder="单位全称"
@@ -311,15 +308,15 @@ export default class Job extends React.Component {
                                         onChangeText={(companyName) => this.setState({ companyName })}
                                         disabled={this.props.updateId?true:false}
                                     />
-                                </ListItem>
-                                <ListItem>
+                                </Item>
+                                <Item>
                                     <Input
                                         style={styles.input}
                                         placeholder="部门名称"
                                         value={department}
                                         onChangeText={(department) => this.setState({ department })}
                                     />
-                                </ListItem>
+                                </Item>
                                 <ListItem>
 
                                     <Left style={{flex:0.3}}>
@@ -417,11 +414,7 @@ const styles = StyleSheet.create({
         flex: 0.2,
     },
     input: {
-        // flex: 1,
-        // borderBottomColor: 'black',
-        // borderBottomWidth: 1,
-        backgroundColor: '#9E9E9E',
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
     }
 
 })

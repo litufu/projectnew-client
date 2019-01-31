@@ -392,6 +392,7 @@ class AppWithNavigationState extends Component {
         }
 
         if(!this.familyChangeSubscription){
+            console.log('familychanged')
             this.familyChangeSubscription = await subscribeToMore({
                 document: FAMILY_CHANGED_SUBSCRIPTION,
                 updateQuery: (prev) => {
@@ -403,6 +404,7 @@ class AppWithNavigationState extends Component {
                             ...prev.me,
                             families: data.families
                         }
+                        console.log('newMe',newMe)
                         const result = { ...prev, me: newMe }
                         return result
                     });
