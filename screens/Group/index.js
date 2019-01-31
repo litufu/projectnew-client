@@ -52,9 +52,9 @@ export default class Group extends React.Component{
             </Segment>
           </Body>
           <Right>
-            <Button transparent>
+            {/* <Button transparent>
               <Icon name="search" />
-            </Button>
+            </Button> */}
           </Right>
         </Header>
         <Query 

@@ -305,7 +305,7 @@ class ProvinceCityArea extends Component{
 
                         <Query query={GET_STREETS}  variables={ {code:this.state.address.area.code} }>
                             {({ loading, error, data }) => {
-                                if(loading) return <Spinner />
+                                // if(loading) return <Spinner />
                                 if (error){ return <Text>{error.message}</Text>};
 
                                 return(

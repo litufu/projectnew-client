@@ -125,7 +125,7 @@ export default class ProfileScreen extends Component {
                                         </Right>
                                     </ListItem>
                                     <Divider style={{ height: 15 }} />
-                                    <ListItem
+                                    {/* <ListItem
                                         onPress={() => this.props.navigation.navigate('Work')}
                                         icon>
                                         <Left>
@@ -139,7 +139,7 @@ export default class ProfileScreen extends Component {
                                         <Right>
                                             <Icon active name="arrow-forward" />
                                         </Right>
-                                    </ListItem>
+                                    </ListItem> */}
                                     <ListItem
                                         onPress={() => this.props.navigation.navigate('Settings')}
                                         icon>
