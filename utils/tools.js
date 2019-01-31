@@ -71,7 +71,7 @@ export const retrieveMessages = async (key) => {
     if (value !== null) {
       return value
     }
-    return []
+    return '[]'
    } catch (error) {
      console.log(error.message)
    }

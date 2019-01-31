@@ -19,6 +19,7 @@ export default class QueryMessages extends Component {
     async componentDidMount(){
         const storageMessages = await retrieveMessages(`${this.props.me.id}User${this.props.userInfo.id}`)
         if(storageMessages){
+            console.log('storageMessages',storageMessages)
             this.setState({storageMessages:JSON.parse(storageMessages)})
         }
     }

@@ -78,7 +78,7 @@ import AddPhoto from '../Components/AddPhoto'
 import Settings from '../Components/Settings'
 import FindPassword from '../Components/FindPassword'
 
-import {storeMessage,retrieveMessages} from '../utils/tools'
+import { storeMessage, retrieveMessages } from '../utils/tools'
 
 
 const HomeNavigation = createStackNavigator(
@@ -255,10 +255,10 @@ const ProfileNavigation = createStackNavigator(
         Chat: {
             screen: Chat,
         },
-        Settings:{
+        Settings: {
             screen: Settings,
         },
-        FindPassword:{
+        FindPassword: {
             screen: FindPassword,
         }
     },
@@ -313,124 +313,110 @@ class AppWithNavigationState extends Component {
         header: null,
     };
 
-    async componentDidMount() {
-        const { subscribeToMore, client } = this.props;
-        if(!this.familyGroupSubscription){
-            this.familyGroupSubscription = await subscribeToMore({
-                document: FAMILYGROUP_CHANGED_SUBSCRIPTION,
-                updateQuery: (prev) => {
-                    client.query({
-                        query: GET_FAMILYGROUPS,
-                        fetchPolicy: "network-only"
-                    }).then(({ data }) => {
-                        const newMe = {
-                            ...prev.me,
-                            relativefamilyGroups: data.getFamilyGroups
-                        }
-                        const result = { ...prev, me: newMe }
-                        return result
-                    });
-                },
-            });
-        }
-        
-        if(!this.classGroupSubscription){
-            this.classGroupSubscription = await subscribeToMore({
-                document: CLASSGROUP_CHANGED_SUBSCRIPTION,
-                updateQuery: (prev) => {
-                    client.query({
-                        query: GET_CLASSGROUPS,
-                        fetchPolicy: "network-only"
-                    }).then(({ data }) => {
-                        const newMe = {
-                            ...prev.me,
-                            classGroups: data.classGroups
-                        }
-                        const result = { ...prev, me: newMe }
-                        return result
-                    });
-                },
-            });
-        }
-        
-        if(!this.workGroupSubscription){
-            this.workGroupSubscription = await subscribeToMore({
-                document: WORKGROUP_CHANGED_SUBSCRIPTION,
-                updateQuery: (prev) => {
-                    client.query({
-                        query: GET_WORKGROUPS,
-                        fetchPolicy: "network-only"
-                    }).then(({ data }) => {
-                        const newMe = {
-                            ...prev.me,
-                            workGroups: data.workGroups
-                        }
-                        const result = { ...prev, me: newMe }
-                        return result
-                    });
-                },
-            });
-        }
+    // async componentDidMount() {
+    //     const { subscribeToMore, client } = this.props;
+    //     if (!this.familyGroupSubscription) {
+    //         this.familyGroupSubscription = await subscribeToMore({
+    //             document: FAMILYGROUP_CHANGED_SUBSCRIPTION,
+    //             updateQuery: (prev) => {
+    //                 client.query({
+    //                     query: GET_FAMILYGROUPS,
+    //                     fetchPolicy: "network-only"
+    //                 }).then(({ data }) => {
+    //                     const newMe = {
+    //                         ...prev.me,
+    //                         relativefamilyGroups: data.getFamilyGroups
+    //                     }
+    //                     const result = { ...prev, me: newMe }
+    //                     return result
+    //                 });
+    //             },
+    //         });
+    //     }
 
-        if(!this.locationGroupSubscription){
-            this.locationGroupSubscription = await subscribeToMore({
-                document: LOCATIONGROUP_CHANGED_SUBSCRIPTION,
-                updateQuery: (prev) => {
-                    client.query({
-                        query: GET_LOCATIONGROUPS,
-                        fetchPolicy: "network-only"
-                    }).then(({ data }) => {
-                        const newMe = {
-                            ...prev.me,
-                            locationGroups: data.locationGroups
-                        }
-                        const result = { ...prev, me: newMe }
-                        return result
-                    });
-                },
-            });
-        }
+    //     if (!this.classGroupSubscription) {
+    //         this.classGroupSubscription = await subscribeToMore({
+    //             document: CLASSGROUP_CHANGED_SUBSCRIPTION,
+    //             updateQuery: (prev) => {
+    //                 client.query({
+    //                     query: GET_CLASSGROUPS,
+    //                     fetchPolicy: "network-only"
+    //                 }).then(({ data }) => {
+    //                     const newMe = {
+    //                         ...prev.me,
+    //                         classGroups: data.classGroups
+    //                     }
+    //                     const result = { ...prev, me: newMe }
+    //                     return result
+    //                 });
+    //             },
+    //         });
+    //     }
 
-        if(!this.familyChangeSubscription){
-            console.log('familychanged')
-            this.familyChangeSubscription = await subscribeToMore({
-                document: FAMILY_CHANGED_SUBSCRIPTION,
-                updateQuery: (prev) => {
-                    client.query({
-                        query: GET_FAMILIES,
-                        fetchPolicy: "network-only"
-                    }).then(({ data }) => {
-                        const newMe = {
-                            ...prev.me,
-                            families: data.families
-                        }
-                        console.log('newMe',newMe)
-                        const result = { ...prev, me: newMe }
-                        return result
-                    });
-                },
-            });
-        }
-    }
+    //     if (!this.workGroupSubscription) {
+    //         this.workGroupSubscription = await subscribeToMore({
+    //             document: WORKGROUP_CHANGED_SUBSCRIPTION,
+    //             updateQuery: (prev) => {
+    //                 client.query({
+    //                     query: GET_WORKGROUPS,
+    //                     fetchPolicy: "network-only"
+    //                 }).then(({ data }) => {
+    //                     const newMe = {
+    //                         ...prev.me,
+    //                         workGroups: data.workGroups
+    //                     }
+    //                     const result = { ...prev, me: newMe }
+    //                     return result
+    //                 });
+    //             },
+    //         });
+    //     }
 
-    componentWillUnmount() {
-        if(this.familyGroupSubscription){
-            this.familyGroupSubscription();
-        }
-        if(this.locationGroupSubscription){
-            this.locationGroupSubscription()
-        }
-        if(this.workGroupSubscription){
-            this.workGroupSubscription()
-        }
-        if(this.classGroupSubscription){
-            this.classGroupSubscription()
-        }
-        if(this.familyChangeSubscription){
-            this.familyChangeSubscription()
-        }
-        
-    }
+    //     if (!this.locationGroupSubscription) {
+    //         this.locationGroupSubscription = await subscribeToMore({
+    //             document: LOCATIONGROUP_CHANGED_SUBSCRIPTION,
+    //             updateQuery: (prev) => {
+    //                 client.query({
+    //                     query: GET_LOCATIONGROUPS,
+    //                     fetchPolicy: "network-only"
+    //                 }).then(({ data }) => {
+    //                     const newMe = {
+    //                         ...prev.me,
+    //                         locationGroups: data.locationGroups
+    //                     }
+    //                     const result = { ...prev, me: newMe }
+    //                     return result
+    //                 });
+    //             },
+    //         });
+    //     }
+
+    //     if (!this.familyChangeSubscription) {
+    //         console.log('familychanged')
+    //         this.familyChangeSubscription = await subscribeToMore({
+    //             document: FAMILY_CHANGED_SUBSCRIPTION,
+    //             updateQuery: (prev) => {
+    //                 client.query({
+    //                     query: GET_FAMILIES,
+    //                     fetchPolicy: "network-only"
+    //                 }).then(({ data }) => {
+    //                     const newMe = {
+    //                         ...prev.me,
+    //                         families: data.families
+    //                     }
+    //                     console.log('newMe', newMe)
+    //                     const result = { ...prev, me: newMe }
+    //                     return result
+    //                 });
+    //             },
+    //         });
+    //     }
+    // }
+
+    // componentWillUnmount() {
+
+
+    // }
 
     componentWillReceiveProps(nextProps) {
         if (!nextProps.me) {
@@ -442,6 +428,22 @@ class AppWithNavigationState extends Component {
 
             if (this.groupMessagesSubscription) {
                 this.groupMessagesSubscription()
+            }
+
+            if (this.familyGroupSubscription) {
+                this.familyGroupSubscription();
+            }
+            if (this.locationGroupSubscription) {
+                this.locationGroupSubscription()
+            }
+            if (this.workGroupSubscription) {
+                this.workGroupSubscription()
+            }
+            if (this.classGroupSubscription) {
+                this.classGroupSubscription()
+            }
+            if (this.familyChangeSubscription) {
+                this.familyChangeSubscription()
             }
 
             // clear the event subscription
@@ -459,6 +461,106 @@ class AppWithNavigationState extends Component {
         }
 
         if (!this.messagesSubscription && nextProps.me) {
+
+            const { subscribeToMore, client } = nextProps;
+            if (!this.familyGroupSubscription) {
+                this.familyGroupSubscription = subscribeToMore({
+                    document: FAMILYGROUP_CHANGED_SUBSCRIPTION,
+                    updateQuery: (prev) => {
+                        client.query({
+                            query: GET_FAMILYGROUPS,
+                            fetchPolicy: "network-only"
+                        }).then(({ data }) => {
+                            const newMe = {
+                                ...prev.me,
+                                relativefamilyGroups: data.getFamilyGroups
+                            }
+                            const result = { ...prev, me: newMe }
+                            return result
+                        });
+                    },
+                });
+            }
+
+            if (!this.classGroupSubscription) {
+                this.classGroupSubscription = subscribeToMore({
+                    document: CLASSGROUP_CHANGED_SUBSCRIPTION,
+                    updateQuery: (prev) => {
+                        client.query({
+                            query: GET_CLASSGROUPS,
+                            fetchPolicy: "network-only"
+                        }).then(({ data }) => {
+                            const newMe = {
+                                ...prev.me,
+                                classGroups: data.classGroups
+                            }
+                            const result = { ...prev, me: newMe }
+                            return result
+                        });
+                    },
+                });
+            }
+
+            if (!this.workGroupSubscription) {
+                this.workGroupSubscription = subscribeToMore({
+                    document: WORKGROUP_CHANGED_SUBSCRIPTION,
+                    updateQuery: (prev) => {
+                        client.query({
+                            query: GET_WORKGROUPS,
+                            fetchPolicy: "network-only"
+                        }).then(({ data }) => {
+                            const newMe = {
+                                ...prev.me,
+                                workGroups: data.workGroups
+                            }
+                            const result = { ...prev, me: newMe }
+                            return result
+                        });
+                    },
+                });
+            }
+
+            if (!this.locationGroupSubscription) {
+                this.locationGroupSubscription = subscribeToMore({
+                    document: LOCATIONGROUP_CHANGED_SUBSCRIPTION,
+                    updateQuery: (prev) => {
+                        client.query({
+                            query: GET_LOCATIONGROUPS,
+                            fetchPolicy: "network-only"
+                        }).then(({ data }) => {
+                            const newMe = {
+                                ...prev.me,
+                                locationGroups: data.locationGroups
+                            }
+                            const result = { ...prev, me: newMe }
+                            return result
+                        });
+                    },
+                });
+            }
+
+            if (!this.familyChangeSubscription) {
+                console.log('familychanged')
+                this.familyChangeSubscription = subscribeToMore({
+                    document: FAMILY_CHANGED_SUBSCRIPTION,
+                    updateQuery: (prev) => {
+                        client.query({
+                            query: GET_FAMILIES,
+                            fetchPolicy: "network-only"
+                        }).then(({ data }) => {
+                            const newMe = {
+                                ...prev.me,
+                                families: data.families
+                            }
+                            console.log('newMe', newMe)
+                            const result = { ...prev, me: newMe }
+                            return result
+                        });
+                    },
+                });
+            }
+
+
             console.log('开始订阅')
             console.log(nextProps.me.id)
             this.messagesSubscription = nextProps.subscribeToMore({
@@ -468,7 +570,7 @@ class AppWithNavigationState extends Component {
                     const newMessage = subscriptionData.data.messageAdded;
 
                     prev.me.messages.push(newMessage)
-                    storeMessage(`User${newMessage.from.id}`,newMessage)
+                    storeMessage(`User${newMessage.from.id}`, newMessage)
                     return prev
                 },
             });
@@ -498,7 +600,7 @@ class AppWithNavigationState extends Component {
                     updateQuery: (prev, { subscriptionData }) => {
                         const newMessage = subscriptionData.data.gMessageAdded;
                         if (newMessage.type === 'Family') {
-                            const index = prev.me.relativefamilyGroups.map(group=>group.id).indexOf(newMessage.to)
+                            const index = prev.me.relativefamilyGroups.map(group => group.id).indexOf(newMessage.to)
                             const result = update(prev, {
                                 me: {
                                     relativefamilyGroups: relativefamilyGroups =>
@@ -511,10 +613,10 @@ class AppWithNavigationState extends Component {
                                 }
 
                             });
-                            storeMessage(`Family${newMessage.to}`,newMessage)
+                            storeMessage(`Family${newMessage.to}`, newMessage)
                             return result
                         } else if (newMessage.type === 'ClassMate') {
-                            const index = prev.me.classGroups.map(group=>group.id).indexOf(newMessage.to)
+                            const index = prev.me.classGroups.map(group => group.id).indexOf(newMessage.to)
                             const result = update(prev, {
                                 me: {
                                     classGroups: classGroups =>
@@ -527,11 +629,11 @@ class AppWithNavigationState extends Component {
                                 }
 
                             });
-                            storeMessage(`ClassMate${newMessage.to}`,newMessage)
+                            storeMessage(`ClassMate${newMessage.to}`, newMessage)
                             return result
 
                         } else if (newMessage.type === 'Colleague') {
-                            const index = prev.me.workGroups.map(group=>group.id).indexOf(newMessage.to)
+                            const index = prev.me.workGroups.map(group => group.id).indexOf(newMessage.to)
                             const result = update(prev, {
                                 me: {
                                     workGroups: workGroups =>
@@ -544,10 +646,10 @@ class AppWithNavigationState extends Component {
                                 }
 
                             });
-                            storeMessage(`Colleague${newMessage.to}`,newMessage)
+                            storeMessage(`Colleague${newMessage.to}`, newMessage)
                             return result
                         } else if (newMessage.type === 'FellowTownsman') {
-                            const index = prev.me.locationGroups.map(group=>group.id).indexOf(newMessage.to)
+                            const index = prev.me.locationGroups.map(group => group.id).indexOf(newMessage.to)
                             const result = update(prev, {
                                 me: {
                                     locationGroups: locationGroups =>
@@ -560,20 +662,20 @@ class AppWithNavigationState extends Component {
                                 }
 
                             });
-                            storeMessage(`FellowTownsman${newMessage.to}`,newMessage)
+                            storeMessage(`FellowTownsman${newMessage.to}`, newMessage)
                             return result
                         } else if (newMessage.type === 'RegStatus') {
                             if (prev.me.regStatus.id === newMessage.toId) {
-                                const result = update(prev,{
-                                    me:{
-                                        regStatus:{
-                                            messages:{$push:[newMessage]} 
+                                const result = update(prev, {
+                                    me: {
+                                        regStatus: {
+                                            messages: { $push: [newMessage] }
                                         }
                                     }
                                 })
                                 return result
                             }
-                            
+
                             return prev
                         }
                     },
