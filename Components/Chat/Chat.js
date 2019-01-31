@@ -26,7 +26,7 @@ export default class Chat extends Component {
         this.state = {
             messages: [],
             image: null,
-            loadEarlier: true,
+            loadEarlier: props.messages.length>skip,
             isLoadingEarlier: false,
         };
         this.renderSend = this.renderSend.bind(this);
