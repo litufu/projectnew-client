@@ -81,7 +81,7 @@ export default class ApplicationCard extends Component {
                                     <Button
                                         onPress={this.props.handleToApplicants}
                                     >
-                                        <Text  >报名者详情</Text>
+                                        <Text  >报名详情</Text>
                                     </Button>
                                 </Left>
                                 <Body>

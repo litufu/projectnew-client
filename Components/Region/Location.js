@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, FlatList, Modal, TouchableOpacity,StyleSheet} from 'react-native';
 import {Spinner} from 'native-base'
-import { Query } from "react-apollo";
+import { Query,graphql,compose } from "react-apollo";
 
 import CHINA_REGION from './china_region';
 import GET_STREETS from '../../graphql/get_streets.query'
@@ -305,7 +305,7 @@ class ProvinceCityArea extends Component{
 
                         <Query query={GET_STREETS}  variables={ {code:this.state.address.area.code} }>
                             {({ loading, error, data }) => {
-                                // if(loading) return <Spinner />
+                                if(loading) return <Spinner />
                                 if (error){ return <Text>{error.message}</Text>};
 
                                 return(
@@ -333,7 +333,9 @@ class ProvinceCityArea extends Component{
                               }}
                             </Query>
 
-                            <Query query={GET_VILLAGES}  variables={ {code:this.state.address.street.code} }>
+                            {
+                                !!this.state.address.street.code  && (
+                                    <Query query={GET_VILLAGES}  variables={ {code:this.state.address.street.code} }>
                                 {({ loading, error, data }) => {
                                     if(loading) return <Spinner />
                                     if (error){ return <Text>{error.message}</Text>};
@@ -362,6 +364,8 @@ class ProvinceCityArea extends Component{
                                     )
                                   }}
                                 </Query>
+                                )   
+                            }
                         </View>
                     </View>
                 </View>

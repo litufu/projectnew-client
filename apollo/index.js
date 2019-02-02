@@ -15,28 +15,20 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { resolvers} from "./resolvers";
 import { typeDefs} from "./schema";
 import { defaults} from "./defaults";
-import {DEV_HOST,DEV_WSS} from '../utils/settings'
+import {DEV_HOST,DEV_WSS,PRO_HOST,PRO_WSS} from '../utils/settings'
+
+const Production = true
+
+if(Production){
+  host = PRO_HOST
+  ws = PRO_WSS
+}else{
+  host = DEV_HOST
+  ws = DEV_WSS
+}
 
 
 const cache = new InMemoryCache();
-
-// const setCache = async () => {
-//   try {
-//     const value = await AsyncStorage.getItem('mySchema');
-//     if (value !== null) {
-//       // We have data!!
-//       const fragmentMatcher = new IntrospectionFragmentMatcher({
-//         value
-//       });
-//       cache = new InMemoryCache(fragmentMatcher);
-//     }
-//     cache = new InMemoryCache();
-//     return cache
-//    } catch (error) {
-//      console.log('error')
-//    }
-// }
-
 
 const stateLink = withClientState({
   typeDefs,
@@ -87,12 +79,12 @@ const requestLink = new ApolloLink((operation, forward) =>
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: DEV_HOST,
+  uri: host,
   credentials: 'include'
 });
 
 // Create a WebSocket link:
-export const wsClient = new SubscriptionClient(DEV_WSS, {
+export const wsClient = new SubscriptionClient(ws, {
   reconnect: true,
   async connectionParams(){
     const authToken = await SecureStore.getItemAsync('token');

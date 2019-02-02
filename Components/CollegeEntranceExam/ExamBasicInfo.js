@@ -364,6 +364,7 @@ class ExamBasicInfo extends React.Component {
 
                                         {editable && <Mutation 
                                         mutation={UPDATE_EXAMBASICINFO}
+                                        onError={()=>Alert.alert(errorMessage(error))}
                                         onCompleted={()=>Alert.alert('修改完成')}
                                         >
                                             {(updateExamBasicInfo, { data, loading, error }) => (
@@ -374,7 +375,6 @@ class ExamBasicInfo extends React.Component {
                                                 >
                                                     <Text style={styles.bigText}>确定</Text>
                                                     {loading && <Spinner />}
-                                                    {error && Alert.alert(errorMessage(error))}
                                                 </Button>
                                             )}
                                         </Mutation>}
@@ -384,6 +384,7 @@ class ExamBasicInfo extends React.Component {
                                     <Mutation 
                                     mutation={ADD_EXAMBASICINFO}
                                     onCompleted={()=>Alert.alert('保存完成')}
+                                    onError={()=>Alert.alert(errorMessage(error))}
                                     >
                                         {(addExamBasicInfo, { data, loading, error }) => (
                                             <View style={{flex:1,marginHorizontal:30,padding:10}}>
@@ -393,7 +394,6 @@ class ExamBasicInfo extends React.Component {
                                             >
                                                 <Text style={styles.bigText}>确定</Text>
                                                 {loading && <Spinner />}
-                                                {error && Alert.alert(errorMessage(error))}
                                             </Button>
                                             </View>
                                         )}

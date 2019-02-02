@@ -13,20 +13,6 @@ export default class ImagePickerExample extends React.Component {
     image: null,
   };
 
-  // _getPhoto = () => {
-  //   <Query
-  //     query={GET_PHOTO}
-  //     variables={{ id:}}
-  //   >
-
-  //   </Query>
-  // }
-
-//   const {uri} = this.props; 
-//  CacheManager.cache(uri, localURI => this.setState({ uri: localURI })); 
-
-
-
   render() {
     let { image } = this.state;
 

@@ -92,16 +92,7 @@ export default class CollegeEntranceExam extends React.Component {
                     </List>
                     
                 </Content>
-                <Footer style={{flex:0.3,backgroundColor:'white'}}>
-                    <View>
-                    <View><Text>报名流程说明:</Text></View>
-                    <View><Text>第一步:填写个人高考基本信息</Text></View>
-                    <View><Text>第二步:选择学校和专业进行报名</Text></View>
-                    <View><Text>第三步:在报名结果页面查看最新的报名情况</Text></View>
-                    <View><Text>注意:每人每天仅有3次免费报名机会</Text></View>
-                    </View>
-                </Footer>
-            </Container>
+             </Container>
         )
     }
 }
