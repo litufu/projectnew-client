@@ -89,7 +89,6 @@ export default class SelectSchool extends Component {
       Alert.alert('尚未选择专业')
       return
     }
-    console.log(selectedId, majorName)
     addNewMajor({ variables: { majorId: selectedId, majorName: majorName } })
     this.props.navigation.goBack()
   }

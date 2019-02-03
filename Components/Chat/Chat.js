@@ -154,7 +154,6 @@ export default class Chat extends Component {
                 } else {
                     newMessage = sendMessage
                 }
-                console.log('newmessage', newMessage)
                 data.me.messages.push({ ...newMessage });
                 // Write our data back to the cache.
                 cache.writeQuery({ query: GET_ME, data });
@@ -165,7 +164,6 @@ export default class Chat extends Component {
     }
 
     _goBack = (client) => {
-        console.log('this.state.messages', this.state.messages)
         if (this.state.messages.length > 0) {
             this.props.addNewUnReadMessages({
                 variables: {

@@ -33,8 +33,6 @@ class UserListConainer extends React.Component{
                     return <View style={{margin:10}}><Text>没有找到对应的用户名</Text></View>
                 }
 
-                console.log(data.searchUser)
-
                 return (
                         <UserList users={[data.searchUser]} who={who} navigation={navigation} me={me} />
                     );

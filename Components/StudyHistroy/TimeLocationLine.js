@@ -89,10 +89,6 @@ export default class TimeLocationLine extends Component {
           }}
           timeStyle={{textAlign: 'center', backgroundColor:'#ff9797', color:'white', padding:5, borderRadius:13}}
           descriptionStyle={{color:'gray'}}
-          // flatListProps={{
-          //   style:{paddingTop:5},
-          // }}
-          // innerCircleType="dot"
         />
       </View>
     );

@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { withNavigation } from 'react-navigation'
+import { Query } from 'react-apollo';
 import { Container, Header, Content, List, ListItem, Text, Icon, Left, Body, Right, Switch, Button, Spinner } from 'native-base';
 
 import GET_ME from '../../graphql/get_me.query'
 import { errorMessage } from '../../utils/tools'
-import { Query } from 'react-apollo';
+
 
 class Groups extends Component {
   render() {
 
     return (
-      <Query>
+      <Query query={GET_ME}>
         {
           ({ loading, error, data }) => {
             if (loading) return <Spinner />

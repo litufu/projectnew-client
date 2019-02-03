@@ -52,7 +52,6 @@ export default class QueryMessages extends Component {
                     unReadMessageNum=0
                 }
                 
-                console.log('unReadMessageNum',unReadMessageNum)
                 if(unReadMessageNum===0){
                     return <Text></Text>
                 }

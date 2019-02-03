@@ -75,7 +75,6 @@ class Family extends Component {
                 const families = me.families.filter(family=>family.id!==deleteFamily.id)
                 const data = {me:{...me,families}}
                 // Write our data back to the cache.
-                console.log(data)
                 cache.writeQuery({ query: GET_ME, data} );
               }
             })

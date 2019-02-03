@@ -65,8 +65,7 @@ class ExamBasicInfo extends React.Component {
         const year = new Date().getFullYear().toString()
         const firstTwo = year.slice(2,4)
         const actualFirstTwo = examineeCardNumber.slice(0,2)
-        console.log(firstTwo)
-        console.log(actualFirstTwo)
+       
         if(firstTwo!==actualFirstTwo){
             return false
         }
@@ -74,20 +73,15 @@ class ExamBasicInfo extends React.Component {
 
         const secondTwo = this.state.province.toString()
         const actualSecondTwo = examineeCardNumber.slice(2,4)
-        console.log(secondTwo)
-        console.log(actualSecondTwo)
+  
         if(secondTwo!==actualSecondTwo){
            return false     
         }
         // 检查5-8位
         const data=this.props.data
         if(data) {
-            console.log(data.me.studies.filter(study=>study.school.kind==="HighSchool").sort((a,b)=>new Date(b.startTime) - new Date(a.startTime))[0].school.location)
             const highschoolAreaCode = data.me.studies.filter(study=>study.school.kind==="HighSchool").sort((a,b)=>new Date(b.startTime) - new Date(a.startTime))[0].school.location.area.code
-            console.log(highschoolAreaCode)
             if(actualSecondTwo===highschoolAreaCode.slice(0,2)){
-                console.log(examineeCardNumber.slice(4,8))
-                console.log( highschoolAreaCode.slice(2,6))
                 if(examineeCardNumber.slice(4,8) !== highschoolAreaCode.slice(2,6)){
                     return false
                 }

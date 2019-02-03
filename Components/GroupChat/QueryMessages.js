@@ -15,18 +15,16 @@ export default class QueryMessages extends Component {
     async componentDidMount(){
         const storageMessages = await retrieveMessages(`${this.props.me.id}${this.props.group.type}${this.props.group.id}`)
         if(storageMessages){
-            this.setState({storageMessages})
+            this.setState({storageMessages:JSON.parse(storageMessages)})
         }
     }
 
     _getNewMessages = (group) => {
-        console.log('group',group)
         let newMessages
         newMessages = group.messages.sort(
             (a, b) => (new Date(b.createdAt) - new Date(a.createdAt))
         )
         const storageMessages = this.state.storageMessages
-
         if(newMessages.length===0) {
             newMessages=storageMessages
         }else{
@@ -38,12 +36,7 @@ export default class QueryMessages extends Component {
                 }
             }
             newMessages = storageMessages.concat(newMessages).sort((a, b) => (new Date(b.createdAt) - new Date(a.createdAt)))
-            console.log('newMessages2',newMessages)
         }
-        
-        newMessages = storageMessages.concat(newMessages).sort((a, b) => (new Date(b.createdAt) - new Date(a.createdAt)))
-        console.log('newMessages2',newMessages)
-
         const displaymessages = newMessages.map(message => ({
             _id: message.id,
             text: message.text,
@@ -57,7 +50,6 @@ export default class QueryMessages extends Component {
             received: true,
             image: message.image ? message.image.url : null
         }))
-        console.log('displaymessages',displaymessages)
         return displaymessages
     }
 

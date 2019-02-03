@@ -30,8 +30,6 @@ const sexMap = {
 
 const reverseRelationship=(rs,sex)=>{
     const text = `${relationshipMap[rs]}`
-    console.log(text)
-    console.log(sex)
     const options = {
         text:text,	
         sex: sexMap[sex],			//自己的性别：0女性,1男性

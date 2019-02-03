@@ -7,7 +7,6 @@ import {Constants} from 'expo'
 import SIGNUP from '../../graphql/signup.mutation'
 
 const deviceId = Constants.isDevice ? Constants.deviceId : "123"
-console.log(deviceId)
 
 export default class Register extends React.Component{
   state = {

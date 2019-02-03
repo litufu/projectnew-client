@@ -8,7 +8,6 @@ class LocationContent extends Component {
   render() {
     const locationGroup = this.props.navigation.getParam('locationGroup','')
     const me = this.props.navigation.getParam('me','')
-    console.log('locationgroup---',locationGroup)
     return (
       <Container>
         <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>

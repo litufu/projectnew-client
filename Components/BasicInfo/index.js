@@ -31,7 +31,6 @@ export default class BasicInfo extends React.Component {
     return (
       <Query query={GET_ME} >
         {({ loading, error, data }) => {
-          console.log(data)
           if (loading) return (
             <Container>
               <Spinner />

@@ -154,7 +154,6 @@ export default class Chat extends Component {
                     newMessage = sendGroupMessage
                 }
                 const data = cache.readQuery({ query: GET_ME });
-                console.log('newmessage', newMessage)
                 if (type === 'Family') {
                     // familyGroup在me中查找
                     
@@ -213,7 +212,6 @@ export default class Chat extends Component {
 
 
     _goBack = (type, group,client) => {
-        console.log('this.state.messages', this.state.messages)
         if (this.state.messages.length > 0) {
             this.props.addNewUnReadMessages({
                 variables: {
@@ -226,18 +224,13 @@ export default class Chat extends Component {
         
         // 删除缓存中多的信息
         const data = client.readQuery({query:GET_ME})
-        console.log('data',data)
         if(type==='Family'){
-            console.log('family')
             data.me.relativefamilyGroups.map(g => {
-                console.log('g',g)
                 if (g.id === group.id) {
-                    console.log('g',g)
                     if(g.messages.length<=messagesLenth){
                         return g
                     }
                     const newGroup = update(g,{messages:{$set:g.messages.slice(-1,-messagesLenth)}})
-                    console.log('newGroup',newGroup)
                     return newGroup
                 }
                 return g

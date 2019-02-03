@@ -20,7 +20,6 @@ export default class ImagePickerExample extends React.Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Mutation
           mutation={POST_PHOTO}
-          onCompleted={data => console.log(data)}
         >
           {
             (postPhoto, { loading, error, data }) => {

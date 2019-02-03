@@ -89,7 +89,6 @@ export default  class SearchMajor extends Component {
       Alert.alert('尚未选择专业')
       return
     }
-    console.log(selectedId,majorName)
     selectNewMajor({variables:{majorId:selectedId,majorName:majorName}})
     this.props.navigation.goBack()
   }

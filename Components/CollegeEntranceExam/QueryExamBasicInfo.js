@@ -15,7 +15,6 @@ export default class QueryExamBasicInfo extends React.Component{
                 query={GET_EXAMBASICINFO}
                 >
                 {({ loading, error, data }) => {
-                    console.log("data",data)
                     if (loading) return <Spinner/>;
                     if(error) return <View><Text>{errorMessage(error)}</Text></View>
                     if(data && data.getExamBasicInfo){

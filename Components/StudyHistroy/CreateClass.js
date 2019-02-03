@@ -46,7 +46,6 @@ class CreateClass extends Component {
         }
     
         for(let i=startGrade;i<=endGrade;i++){
-            console.log(i)
             try{
                 await addGradeAndClass({variables:{grade:i,className}})
             }catch(error){

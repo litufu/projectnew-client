@@ -39,9 +39,7 @@ class ClassContent extends Component {
     const newClassGroups = classGroups.filter(classGroup => classGroup.study.id === schoolEdu.id)
     // 我已经确定加入的组
     const myClassGroups = this._getMyGroups(newClassGroups,me.id)
-    console.log('myClassGroups',myClassGroups)
     const myClassGroup = myClassGroups.length>0 ?myClassGroups[0] :[]
-    console.log('myClassGroup',myClassGroup)
     return (
       <Container>
         <Header style={{ marginTop: statusBarHeight, backgroundColor: headerBackgroundColor }}>

@@ -39,7 +39,6 @@ export default class QueryMessages extends Component {
                 ({ data }) => {
 
                     const lastUnreadMessageId = this.getGroupLastUnReadMessageId(data.newUnreadMessages, group, type)
-                    console.log('lastUnreadMessageId', lastUnreadMessageId)
                     let unReadMessageNum
                     if (lastUnreadMessageId) {
                         unReadMessageNum = this.getUnreadMessageNum(lastUnreadMessageId, group)
@@ -48,7 +47,6 @@ export default class QueryMessages extends Component {
                         unReadMessageNum=0
                     }
 
-                    console.log('unReadMessageNum', unReadMessageNum)
                     if (unReadMessageNum === 0) {
                         return <Text></Text>
                     }
@@ -65,7 +63,6 @@ export default class QueryMessages extends Component {
 
 
     LastMessage = (group) => {
-        console.log('group.messages', group.messages)
         const sortedMessages = group.messages.sort(
             (a, b) => (new Date(b.createdAt) - new Date(a.createdAt))
         )
@@ -87,10 +84,7 @@ export default class QueryMessages extends Component {
                         const locationGroups = me.locationGroups.filter(group => group.messages.length > 0)
                         const classGroups = me.classGroups.filter(group => group.messages.length > 0)
                         const workGroups = me.workGroups.filter(group => group.messages.length > 0)
-                        console.log('familyGroups', familyGroups)
-                        console.log('locationGroups', locationGroups)
-                        console.log('classGroups', classGroups)
-                        console.log('workGroups', workGroups)
+               
                         return (
                             <List>
                                 {familyGroups.length > 0 &&

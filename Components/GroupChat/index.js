@@ -29,7 +29,6 @@ export default class Chat extends Component {
                         } else if (type === "RegStatus") {
                             newGroup = data.me.regStatus
                         }
-                        console.log('newGroup', newGroup)
                         if (loading) return <Spinner />
                         if (error) return <Text>{errorMessage(error)}</Text>
                         return (

@@ -989,7 +989,6 @@
 					s = selector;
 					for(var i in _filter){
 						var item = _filter[i];
-						// console.log('filter#',item['exp'],selector);
 						selector = selector.replace(item['exp'],item['str']);
 						if(selector.indexOf('#')>-1){
 							var arr = selector.split('#');
@@ -1109,11 +1108,9 @@
 			options[p] = parameter[p];
 		}
 		var selectors = getSelectors(options.text);
-		// console.log('selectors#',selectors);
 		var result = [];							//匹配结果
 		for(var i = 0;i<selectors.length;i++){		//遍历所有可能性
 			var ids = selector2id(selectors[i],options.sex);
-			// console.log('ids#',ids);
 			for(var j=0;j<ids.length;j++){
 				var id = ids[j];
 				if(options.type=='chain'){

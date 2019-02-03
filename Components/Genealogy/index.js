@@ -38,7 +38,6 @@ export default class Genealogy extends React.Component {
           {({ loading, error, data }) => {
             if (loading) return <Spinner />
             if (error) return <Text>{errorMessage(error)}</Text>
-            console.log(data.getFamiliesById)
 
             return (
               <Example

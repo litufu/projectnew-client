@@ -159,11 +159,7 @@ class Contacts extends Component {
       ){
         return <Spinner />
       }
-      console.log(me)
-      console.log(classGroups)
-      console.log(myOldColleagues)
-      console.log(workGroups)
-
+ 
     return (
           <List>
             {this._renderFamilyList(this.props.getMedata.me.relativefamilyGroups,me,)}

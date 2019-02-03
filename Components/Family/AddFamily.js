@@ -75,8 +75,6 @@ export default class AddFamily extends Component {
     
     const { relationship, name,spouseId } = this.state
     if((relationship==='son' || relationship==='daughter') && !spouseId){
-      console.log(relationship)
-      console.log(spouseId)
       Alert.alert('未填写配偶前无法创建子女')
       return null
     }
@@ -126,7 +124,6 @@ export default class AddFamily extends Component {
       Alert.alert('未填写配偶前无法创建子女')
       return null
     }
-    console.log(relationship)
     const pass = this.validate(relationship, name, client,me)
     const familyId = this.props.navigation.getParam('familyId')
     const toId = this.props.navigation.getParam('toId')

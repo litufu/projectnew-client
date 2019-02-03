@@ -31,7 +31,6 @@ class FindPassword extends React.Component {
     }
 
     handlePress = (findPassword) => {
-        console.log(this.state.checekUserId)
         
         if(!this.state.checekUserId) return 
         findPassword(
