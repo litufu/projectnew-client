@@ -121,14 +121,14 @@ class Family extends Component {
       }}
       >
       {
-        confirmFamily=>(
+        (confirmFamily,{loading})=>(
           <Button 
         warning
         onPress={()=>confirmFamily({ 
           variables: { familyId: who.id },
         })}
         >
-          <Text>确认</Text>
+          <Text>`确认${loading ? '...':""}`</Text>
         </Button>
         )
       }
