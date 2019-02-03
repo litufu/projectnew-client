@@ -4,6 +4,7 @@ import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { withClientState } from 'apollo-link-state';
 import { ApolloLink, Observable  } from 'apollo-link';
+import { RetryLink } from "apollo-link-retry";
 import { ApolloProvider } from 'react-apollo'
 import { SecureStore } from 'expo'
 import { split } from 'apollo-link';
@@ -17,7 +18,7 @@ import { typeDefs} from "./schema";
 import { defaults} from "./defaults";
 import {DEV_HOST,DEV_WSS,PRO_HOST,PRO_WSS} from '../utils/settings'
 
-const Production = true
+const Production = false
 
 if(Production){
   host = PRO_HOST
@@ -104,8 +105,12 @@ const splitlink = split(
   httpLink,
 )
 
+const retryLink = new RetryLink();
+
+
 const client = new ApolloClient({
   link: ApolloLink.from([
+    retryLink,
     erorrLink,
     requestLink,
     stateLink,

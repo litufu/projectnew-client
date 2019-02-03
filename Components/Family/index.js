@@ -258,10 +258,10 @@ const styles = StyleSheet.create({
   right: {
     flex: 0.2,
   },
-  button: {
-    alignItems: "center",
-    justifyContent: "center"
-  },
+  // button: {
+  //   alignItems: "center",
+  //   justifyContent: "center"
+  // },
   addButton: {
     margin: 10,
   }

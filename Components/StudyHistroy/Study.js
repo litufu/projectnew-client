@@ -628,7 +628,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     },
     left: {
-        flex: 0.2
+        flex: 0.4
     },
     right: {
         flex: 0.8,
