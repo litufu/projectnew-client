@@ -87,9 +87,9 @@ export default class ParallaxScrollView extends Component {
         optimisticResponse: {
           __typename: "Mutation",
           postPhoto: {
-            id: photo.id,
+            id: photo?photo.id:"avatar123",
             __typename: "Photo",
-            name: photo.name,
+            name: photo?photo.name:"avatar",
             url:result.uri,
           }
         },
@@ -102,14 +102,14 @@ export default class ParallaxScrollView extends Component {
               ...data.userInfo,
               avatar:{
                 __typename:'Photo',
-                id:this.props.data.userInfo.avatar.id,
+                id:postPhoto.id,
                 name:postPhoto.name,
                 url:`https://gewu-avatar.oss-cn-hangzhou.aliyuncs.com/avatars/${postPhoto.name}`
               }
             }
           } 
           // Write our data back to the cache.
-          cache.writeQuery({ query: GET_USERINFO,variables:{id:this.props.data.userInfo.avatar.id} ,data:newData });
+          cache.writeQuery({ query: GET_USERINFO,variables:{id:this.props.data.userInfo.id} ,data:newData });
         }
       })
     }

@@ -77,23 +77,24 @@ export default class ApplicationCard extends Component {
                             <CardItem
                                 footer
                             >
-                                <Left>
+                                <Left style={styles.left}>
                                     <Button
                                         onPress={this.props.handleToApplicants}
                                     >
                                         <Text  >报名详情</Text>
                                     </Button>
                                 </Left>
-                                <Body>
+                                <Body style={styles.body}>
                                     <Button
                                         onPress={this.props.handleToChat}
                                     >
                                         <Text  >进入群聊</Text>
                                     </Button>
                                 </Body>
-                                <Right >
+                                <Right style={styles.right}>
                                     <Mutation 
                                     mutation={CANCEL_REGSTATUS}
+                                    onError={()=>Alert.alert(errorMessage(error))}
                                     update={(cache, { data: { cancelRegStatus } }) => {
                                         const { me } = cache.readQuery({ query: GET_ME });
                                         cache.writeQuery({
@@ -108,9 +109,7 @@ export default class ApplicationCard extends Component {
                                                     <Button
                                                         onPress={() => this.handleCancel(cancelRegStatus)}
                                                     >
-                                                        <Text>取消报名 </Text>
-                                                        {loading && <Spinner />}
-                                                        {error && Alert.alert(errorMessage(error))}
+                                                        <Text>{`取消报名${loading ? "...":""}`} </Text>
                                                     </Button>
 
                                                 )
@@ -143,12 +142,15 @@ export default class ApplicationCard extends Component {
 
 const styles = StyleSheet.create({
     left: {
-        flex: 0.4,
+        flex: 0.5,
         alignItems: 'flex-start'
     },
     right: {
         flex: 0.5,
         alignItems: 'flex-end'
+    },
+    body:{
+        flex: 0.5,
     },
     text: {
         fontWeight: 'bold',

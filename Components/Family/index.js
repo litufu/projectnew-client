@@ -127,7 +127,7 @@ class Family extends Component {
           variables: { familyId: who.id },
         })}
         >
-          <Text>`确认${loading ? '...':""}`</Text>
+          <Text>{`确认${loading ? '...':""}`}</Text>
         </Button>
         )
       }
