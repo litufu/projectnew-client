@@ -96,7 +96,6 @@ class Family extends Component {
 
   _renderConnectBtn=(who,me)=>(
     <Button
-      style={styles.button}
       onPress={() => this.connect(who,me)}
     >
       <Text>连接</Text>
@@ -256,7 +255,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   right: {
-    flex: 0.2,
+    flex: 0.3,
   },
   // button: {
   //   alignItems: "center",
