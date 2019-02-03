@@ -5,6 +5,8 @@ import { Container, Header, Content, List, ListItem, Text, Icon, Left, Body, Rig
 class Groups extends Component {
   render() {
     const me = this.props.me
+    const locationGroups = me.locationGroups.filter(locationGroup=>locationGroup.users.length!==1 && locationGroup.users.length !==0 )
+
     return (
         <Content>
        {
@@ -54,8 +56,9 @@ class Groups extends Component {
             )
           }
           {
-            (me.birthplace && me.birthplace.id) && (
-              <ListItem icon onPress={()=>this.props.navigation.navigate('LocationGroup',{me})}>
+            (me.birthplace && me.birthplace.id && locationGroups.length>0) && (
+              
+              <ListItem icon onPress={()=>this.props.navigation.navigate('LocationGroup',{me,locationGroups})}>
               <Left>
                 <Button style={{ backgroundColor: "#007AFF" }}>
                   <Icon active name="account-location"  type='MaterialCommunityIcons'/>

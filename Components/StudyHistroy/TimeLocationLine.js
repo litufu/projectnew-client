@@ -6,8 +6,8 @@ import {
   RefreshControl,
   ActivityIndicator
 } from 'react-native';
-// import Timeline from 'react-native-timeline-feed'
-import Timeline from '../Timeline'
+import Timeline from 'react-native-timeline-feed'
+// import Timeline from '../Timeline'
 
 const kindName = {
     "PrimarySchool":"小学",
@@ -89,10 +89,10 @@ export default class TimeLocationLine extends Component {
           }}
           timeStyle={{textAlign: 'center', backgroundColor:'#ff9797', color:'white', padding:5, borderRadius:13}}
           descriptionStyle={{color:'gray'}}
-          flatListProps={{
-            style:{paddingTop:5},
-          }}
-          innerCircleType="dot"
+          // flatListProps={{
+          //   style:{paddingTop:5},
+          // }}
+          // innerCircleType="dot"
         />
       </View>
     );

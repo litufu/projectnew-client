@@ -7,6 +7,7 @@ import {headerBackgroundColor,headerFontColor,statusBarHeight,headerButtonColor}
 export default class LocationGroup extends Component {
   render() {
     const me = this.props.navigation.getParam('me')
+    const locationGroups = this.props.navigation.getParam('locationGroups')
     return (
         <Container>
         <Header style={{marginTop:statusBarHeight,backgroundColor:headerBackgroundColor}}>
@@ -26,7 +27,7 @@ export default class LocationGroup extends Component {
         <Content>
         <List>
                 {
-                    me.locationGroups.filter(locationGroup=>locationGroup.users.length!==1 && locationGroup.users.length !==0 ).map(locationGroup => (
+                    locationGroups.map(locationGroup => (
                         <ListItem key={locationGroup.id} onPress={() => this.props.navigation.navigate('LocationContent', { locationGroup, me })}>
                             <Text>{locationGroup.name}</Text>
                         </ListItem>
