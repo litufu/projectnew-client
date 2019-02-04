@@ -66,7 +66,7 @@ export default  class SearchMajor extends Component {
     }
     selectNewUniversity({variables:{universityId:selectedId,universityName:universityName}})
     this.props.navigation.goBack()
-  }.
+  }
 
 
   render() {

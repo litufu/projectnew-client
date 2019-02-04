@@ -665,7 +665,7 @@ class AppWithNavigationState extends Component {
                             storeMessage(`FellowTownsman${newMessage.to}`, newMessage)
                             return result
                         } else if (newMessage.type === 'RegStatus') {
-                            if (prev.me.regStatus.id === newMessage.toId) {
+                            if (prev.me.regStatus.id === newMessage.to) {
                                 const result = update(prev, {
                                     me: {
                                         regStatus: {

@@ -5,7 +5,7 @@ import { Query } from 'react-apollo'
 import { withNavigation } from 'react-navigation'
 
 import { errorMessage } from '../../utils/tools'
-import GET_ME from '../../graphql/GET_ME'
+import GET_ME from '../../graphql/get_me.query'
 import GET_REGSTATUSAPPLICANTSBYID from '../../graphql/get_regStatusApplicantsById.query'
 import ApplicationCard from './ApplicationCard'
 import { subjects } from './settings'
@@ -85,7 +85,7 @@ class Result extends Component {
           {
             ({ loading, data }) => {
               if (loading) return <Spinner />
-              const me = dat.me
+              const me = data.me
               return (
                 <Content>
                   {me && me.regStatus && me.regStatus.id

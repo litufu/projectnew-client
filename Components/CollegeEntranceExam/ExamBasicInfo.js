@@ -59,6 +59,7 @@ class ExamBasicInfo extends React.Component {
          */
         const regex = /^\d{14}$/
         if(!regex.test(examineeCardNumber)){
+            console.log('准考证号长度错误')
             return false
         }
         // 检查前2位
@@ -67,6 +68,7 @@ class ExamBasicInfo extends React.Component {
         const actualFirstTwo = examineeCardNumber.slice(0,2)
        
         if(firstTwo!==actualFirstTwo){
+            console.log('前两位错误')
             return false
         }
         // 检查3-4位
@@ -75,6 +77,7 @@ class ExamBasicInfo extends React.Component {
         const actualSecondTwo = examineeCardNumber.slice(2,4)
   
         if(secondTwo!==actualSecondTwo){
+            console.log('34位错误')
            return false     
         }
         // 检查5-8位
@@ -83,6 +86,7 @@ class ExamBasicInfo extends React.Component {
             const highschoolAreaCode = data.me.studies.filter(study=>study.school.kind==="HighSchool").sort((a,b)=>new Date(b.startTime) - new Date(a.startTime))[0].school.location.area.code
             if(actualSecondTwo===highschoolAreaCode.slice(0,2)){
                 if(examineeCardNumber.slice(4,8) !== highschoolAreaCode.slice(2,6)){
+                    console.log('58位错误')
                     return false
                 }
             }
