@@ -22,6 +22,12 @@ class Contacts extends Component {
           userIds.push(family.to.user.id)
         }
       }
+      for(const user of familyGroup.users){
+        if(!~userIds.indexOf(user.id) && user.id!==me.id){
+          users.push(user)
+          userIds.push(user.id)
+        }
+      }
     }
     return users
   }
