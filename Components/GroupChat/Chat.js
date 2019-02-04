@@ -342,7 +342,7 @@ export default class Chat extends Component {
                                     user={{
                                         _id: me.id,
                                     }}
-                                    renderActions={() => this.renderCustomActions(sendGroupMessage, type, group, me)}
+                                    // renderActions={() => this.renderCustomActions(sendGroupMessage, type, group, me)}
                                     locale="zh-cn"
                                     placeholder="输入信息..."
                                     renderTime={null}

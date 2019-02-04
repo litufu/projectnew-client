@@ -14,9 +14,8 @@ export default class CollegeEntranceExam extends React.Component {
         this.props.navigation.navigate('QueryExamBasicInfo',{data})
     }
 
-    _handleUniversityAndMajor=(data,loading,error)=>{
+    _handleUniversityAndMajor=(data,loading)=>{
         if(loading) return
-        if(error) return 
         if(data && data.getExamBasicInfo){
             this.props.navigation.navigate('UniversityAndMajor',{data})
         }else{
@@ -59,12 +58,15 @@ export default class CollegeEntranceExam extends React.Component {
                                 <Icon type="FontAwesome" name="arrow-right" />
                             </Right>
                         </ListItem>
-                        <Query query={GET_EXAMBASICINFO}>
+                        <Query 
+                        onError={(error)=>Alert.alert(errorMessage(error))}
+                        query={GET_EXAMBASICINFO}
+                        >
                             {
-                                ({loading,error,data})=>{
+                                ({loading,data})=>{
                                     return (
                                         <ListItem
-                                        onPress={()=>this._handleUniversityAndMajor(data,loading,error)}
+                                        onPress={()=>this._handleUniversityAndMajor(data,loading)}
                                             >
                                             <Left>
                                                 <Text >选择学校和专业</Text>
@@ -72,7 +74,6 @@ export default class CollegeEntranceExam extends React.Component {
                                             <Right>
                                                 <Icon type="FontAwesome" name={loading ? "spinner":"arrow-right"} />
                                             </Right>
-                                            {error && Alert.alert(errorMessage(error))}
                                         </ListItem>
                                     )
                                 }

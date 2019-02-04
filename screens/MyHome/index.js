@@ -19,12 +19,12 @@ export default class Home extends React.Component {
     };
 
     _handleCollegeEntranceExam = (data) => {
-        if (!(data.me.families && data.me.families.length !== 0 && data.me.families.filter(family => family.status === '3').length !== 0)) {
-            Alert.alert('提示', '由于APP密码丢失后仅可通过家庭成员找回.请先在“设置-家庭成员”的界面添加家庭成员，并至少与一人连接.')
-            return
-        }
+        // if (!(data.me.families && data.me.families.length !== 0 && data.me.families.filter(family => family.status === '3').length !== 0)) {
+        //     Alert.alert('提示', '由于APP密码丢失后仅可通过家庭成员找回.请先在“设置-家庭成员”的界面添加家庭成员，并至少与一人连接.')
+        //     return
+        // }
         if (!(data.me.studies && data.me.studies.length !== 0 && data.me.studies.filter(study => study.school.kind === "HighSchool").length !== 0)) {
-            Alert.alert('提示', '为验证你为高三学生身份,请在“设置-学习经历”中至少添加高中学习经历')
+            Alert.alert('提示', '填写高考报名信息前,请在“设置-学习经历”中添加高中学习经历')
             return
         }
 
