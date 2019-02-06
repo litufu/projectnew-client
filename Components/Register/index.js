@@ -4,6 +4,8 @@ import { Button,Text,Input,Item ,Label,Container,Spinner,Content} from 'native-b
 import { Mutation } from 'react-apollo'
 import {Constants} from 'expo'
 
+import {errorMessage} from '../../utils/settings'
+
 import SIGNUP from '../../graphql/signup.mutation'
 
 const deviceId = Constants.isDevice ? Constants.deviceId : "123"
@@ -44,43 +46,21 @@ export default class Register extends React.Component{
   }
 // 注册新账号的按钮
   renderSignupButton=(username,password,password2)=>(
-      <Mutation mutation={SIGNUP}>
-        {(signup, { loading, error, data }) => {
-          if (loading) return (
-            <Button block primary>
-              <Text style={styles.bigText}>注 册</Text>
-              <Spinner color='blue' />
-            </Button>
-          );
-
-          if (error) return (
-            <Button block primary onPress={async () => {
-                const valid = this.validateRegister(username,password,password2)
-                if(valid.ok) {
-                  try{
-                    const result = await signup({ variables: { username,password,deviceId } });
-                    Alert.alert("注册成功请登录")
-                    this.props.navigation.navigate('Login')
-                  }catch(error){
-                    Alert.alert('注册失败',error.message.replace(/GraphQL error:/g, ""),
-                      [{text: 'OK', onPress: () => this.props.navigation.navigate('Register')},
-                    ],{ onDismiss: () => this.props.navigation.navigate('Register') })
-                    this.props.navigation.navigate('Register')
-                  }
-                }
-              }}>
-              <Text style={styles.bigText}>注 册</Text>
-            </Button>
-          );
-
+      <Mutation 
+      onError={(error)=>Alert.alert(errorMessage(error))}
+      onCompleted={()=>{
+        Alert.alert("注册成功.请登录")
+        this.props.navigation.navigate('Login')
+      }}
+      mutation={SIGNUP}
+      >
+        {(signup, { loading}) => {
           return(
               <Button block primary onPress={async () => {
                   const valid = this.validateRegister(username,password,password2)
                   if(valid.ok) {
                     try{
-                      const result = await signup({ variables: { username,password } });
-                      Alert.alert("注册成功请登录")
-                      this.props.navigation.navigate('Login')
+                      const result = await signup({ variables: { username,password,deviceId } });
                     }catch(error){
                       Alert.alert('注册失败',error.message.replace(/GraphQL error:/g, ""),
                         [{text: 'OK', onPress: () => this.props.navigation.navigate('Register')},
@@ -90,6 +70,7 @@ export default class Register extends React.Component{
                   }
                 }}>
                 <Text style={styles.bigText}>注 册</Text>
+                {loading && <Spinner color='blue' />}
               </Button>
           )
         }}
@@ -162,7 +143,7 @@ const styles = StyleSheet.create({
     fontSize:36,
   },
   bigText:{
-    fontSize:20,
+    // fontSize:20,
   },
   topStyle:{
     justifyContent:"flex-end",

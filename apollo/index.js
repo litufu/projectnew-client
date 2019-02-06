@@ -18,7 +18,7 @@ import { typeDefs} from "./schema";
 import { defaults} from "./defaults";
 import {DEV_HOST,DEV_WSS,PRO_HOST,PRO_WSS} from '../utils/settings'
 
-const Production = false
+const Production = true
 
 if(Production){
   host = PRO_HOST
