@@ -25,6 +25,11 @@ export default class Region extends Component{
         place:nextProps.place
     })
     }
+    if (nextProps.openProvinceCityArea !== this.props.openProvinceCityArea) {
+      this.setState({
+        openProvinceCityArea:nextProps.openProvinceCityArea
+    })
+    }
   }
 
   handlePlace=(place,closeModal)=>{
@@ -38,13 +43,13 @@ export default class Region extends Component{
     const displayPlace = display(place)
     return(
       <View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
          onPress={()=>this.setState({openProvinceCityArea:true})}
        >
-       <Text style={{color:'blue'}}>
+       <Text >
         {displayPlace}
        </Text>
-     </TouchableOpacity>
+     </TouchableOpacity> */}
         <Location
         callback={this.handlePlace}
         openProvinceCityArea={this.state.openProvinceCityArea}

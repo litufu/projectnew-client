@@ -33,7 +33,7 @@ export default class MyDatetime extends Component {
     return (
       <View style={{ flex: 1 }}>
         <TouchableOpacity onPress={this._showDateTimePicker}>
-          <Text style={{color:'blue'}}>{date}</Text>
+          <Text>{date}</Text>
         </TouchableOpacity>
         <DateTimePicker
           isVisible={this.state.isDateTimePickerVisible}
