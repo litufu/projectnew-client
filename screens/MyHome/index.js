@@ -57,6 +57,13 @@ export default class Home extends React.Component {
                                             handlePress={() => this._handleCollegeEntranceExam(data)}
                                             name="高考报名"
                                         />
+                                        <MyIcon
+                                            iconName={loading ? 'spinner' : 'road'}
+                                            iconType='font-awesome'
+                                            color="#517fa4"
+                                            handlePress={() => this._handleCollegeEntranceExam(data)}
+                                            name="高考报名"
+                                        />
                                     </ListItem>)
                             }
                         }
