@@ -1,0 +1,10 @@
+#Mon Feb 25 12:45:10 CST 2019
+path.2=classes3.dex
+path.1=classes2.dex
+path.0=classes.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+base.2=H\:\\sdApp\\projectnew-client\\android\\app\\build\\intermediates\\transforms\\dexMerger\\devMinSdkDevKernel\\debug\\10
+base.1=H\:\\sdApp\\projectnew-client\\android\\app\\build\\intermediates\\transforms\\dexMerger\\devMinSdkDevKernel\\debug\\10
+base.0=H\:\\sdApp\\projectnew-client\\android\\app\\build\\intermediates\\transforms\\dexMerger\\devMinSdkDevKernel\\debug\\10
