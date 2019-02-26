@@ -78,6 +78,7 @@ import AddPhoto from '../Components/AddPhoto'
 import Settings from '../Components/Settings'
 import FindPassword from '../Components/FindPassword'
 import Product from '../Components/Product'
+import Trade from '../Components/Trade'
 
 import { storeMessage, retrieveMessages } from '../utils/tools'
 
@@ -264,6 +265,9 @@ const ProfileNavigation = createStackNavigator(
         },
         Product:{
             screen: Product,
+        },
+        Trade:{
+            screen: Trade,
         }
     },
     {
