@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Mutation} from 'react-apollo'
 import { 
     Container,
      Header, 
@@ -18,10 +19,36 @@ import {
 } from 'native-base';
 import {Stepper} from 'teaset'
 
+import ADD_TRADE from '../../graphql/add_trade.mutation'
+
 export default class Tradde extends Component {
     state={
         valueCustom:1,
     }
+
+    _renderNewTradeButton=(product,amount)=>(
+        <Mutation 
+        mutation={ADD_TRADE}
+        >
+        {
+            (newTrade,{loading,error})=>{
+                
+                if(error) return <Text>提交订单出错</Text>
+                return(
+                    <Button 
+                    full
+                    onPress={()=>newTrade({ variables: { productId:product.id,number:this.state.valueCustom,amount} })}
+                    >
+                        <Text style={{fontSize:15,color:'white'}}>{`${amount}元 提交订单`} </Text>
+                        {loading && <Spinner />}
+                    </Button>)
+            }
+           
+        }
+        </Mutation>
+    )
+
+
     render() {
         const product = this.props.navigation.getParam('product')
         const {valueCustom} = this.state
@@ -75,9 +102,7 @@ export default class Tradde extends Component {
                 </Content>
                 <Footer>
                 <FooterTab style={{backgroundColor:'orange'}}>
-                    <Button full>
-                    <Text style={{fontSize:15,color:'white'}}>{`${amount}元 提交订单`}</Text>
-                    </Button>
+                    {this._renderNewTradeButton(product,amount)}
                 </FooterTab>
                 </Footer>
             </Container>

@@ -39,7 +39,10 @@ export default class Product extends Component {
                                             <Text note numberOfLines={1}>{product.info}</Text>
                                         </Body>
                                         <Right>
-                                            <Button transparent>
+                                            <Button 
+                                            transparent
+                                            onPress={()=>this.props.navigation.navigate('Trade',{product})}
+                                            >
                                                 <Text>购买</Text>
                                             </Button>
                                         </Right>
