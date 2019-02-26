@@ -77,6 +77,7 @@ import MyIcon from '../Components/MyIcon'
 import AddPhoto from '../Components/AddPhoto'
 import Settings from '../Components/Settings'
 import FindPassword from '../Components/FindPassword'
+import Product from '../Components/Product'
 
 import { storeMessage, retrieveMessages } from '../utils/tools'
 
@@ -260,6 +261,9 @@ const ProfileNavigation = createStackNavigator(
         },
         FindPassword: {
             screen: FindPassword,
+        },
+        Product:{
+            screen: Product,
         }
     },
     {

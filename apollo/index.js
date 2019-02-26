@@ -16,9 +16,7 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { resolvers} from "./resolvers";
 import { typeDefs} from "./schema";
 import { defaults} from "./defaults";
-import {DEV_HOST,DEV_WSS,PRO_HOST,PRO_WSS} from '../utils/settings'
-
-const Production = true
+import {DEV_HOST,DEV_WSS,PRO_HOST,PRO_WSS,Production} from '../utils/settings'
 
 if(Production){
   host = PRO_HOST

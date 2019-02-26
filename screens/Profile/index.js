@@ -125,8 +125,8 @@ export default class ProfileScreen extends Component {
                                         </Right>
                                     </ListItem>
                                     <Divider style={{ height: 15 }} />
-                                    {/* <ListItem
-                                        onPress={() => this.props.navigation.navigate('Work')}
+                                    <ListItem
+                                        onPress={() => this.props.navigation.navigate('Product')}
                                         icon>
                                         <Left>
                                             <Button style={{ backgroundColor: "#A4C8F0" }}>
@@ -134,12 +134,12 @@ export default class ProfileScreen extends Component {
                                             </Button>
                                         </Left>
                                         <Body>
-                                            <Text>充值</Text>
+                                            <Text>购买</Text>
                                         </Body>
                                         <Right>
                                             <Icon active name="arrow-forward" />
                                         </Right>
-                                    </ListItem> */}
+                                    </ListItem>
                                     <ListItem
                                         onPress={() => this.props.navigation.navigate('Settings')}
                                         icon>
