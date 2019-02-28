@@ -396,6 +396,7 @@
     <orderEntry type="library" name="Gradle: expolib_v1.com.facebook.fresco:expolib_v1-imagepipeline-okhttp3:1.0.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.android:facebook-share:4.38.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-iid:15.0.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: :alipaySdk-15.5.9-20181123210601:@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7:27.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: de.greenrobot:eventbus:2.4.0@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:shadows-framework:3.8@jar" level="project" />

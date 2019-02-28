@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {Mutation} from 'react-apollo'
 import { 
     Container,
@@ -19,9 +20,10 @@ import {
 } from 'native-base';
 import {Stepper} from 'teaset'
 
+import Alipay from '../../utils/Alipay'
 import ADD_TRADE from '../../graphql/add_trade.mutation'
 
-export default class Tradde extends Component {
+export default class Trade extends Component {
     state={
         valueCustom:1,
     }
@@ -37,13 +39,16 @@ export default class Tradde extends Component {
                 return(
                     <Button 
                     full
-                    onPress={()=>newTrade({ variables: { productId:product.id,number:this.state.valueCustom,amount} })}
+                    onPress={async ()=>{
+                        const {data} = await newTrade({ variables: { productId:product.id,number:this.state.valueCustom,amount} })
+                        console.log(data)
+                        this.props.navigation.navigate('Pay',{data})
+                    }}
                     >
                         <Text style={{fontSize:15,color:'white'}}>{`${amount}元 提交订单`} </Text>
                         {loading && <Spinner />}
                     </Button>)
             }
-           
         }
         </Mutation>
     )

@@ -10,6 +10,8 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import host.exp.exponent.alipay.AlipayPackage;
+
 
 public class MainApplication extends ExpoApplication {
 
@@ -23,9 +25,11 @@ public class MainApplication extends ExpoApplication {
     return Arrays.<ReactPackage>asList(
         // Add your own packages here!
         // TODO: add native modules!
+        
 
         // Needed for `react-native link`
-        // new MainReactPackage()
+        // new MainReactPackage(),
+        new AlipayPackage()
     );
   }
 

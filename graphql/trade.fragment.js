@@ -12,6 +12,7 @@ const TRADE_FRAGMENT = gql`
     user{
         id
     }
+    signedStr
   }
   ${PRODUCT_FRAGMENT}
 `

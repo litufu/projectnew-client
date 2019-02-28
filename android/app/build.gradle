@@ -99,6 +99,8 @@ apply from: 'expo.gradle'
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+  implementation (name: 'alipaySdk-15.5.9-20181123210601', ext: 'aar')
+
   implementation 'com.android.support:multidex:1.0.1'
 
   // Our dependencies

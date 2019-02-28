@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add realtionship.js
+  C:\Program Files\nodejs\node.exe C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-yunpeng-alipay
 
 PATH: 
   C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\java\jdk1.8.0_92\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Common Files\lenovo\easyplussdk\bin;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\IDM Computer Solutions\UltraCompare;C:\Program Files (x86)\MySQL\MySQL Server 5.5\bin;C:\Program Files\MySQL\MySQL Server 5.5\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Tesseract-OCR;C:\Program Files\Git\cmd;C:\Program Files\OpenSSH\bin;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Users\28521\AppData\Local\Android\Sdk\tools;C:\Users\28521\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\nodejs\;C:\Users\28521\AppData\Local\Programs\Python\Python36\Scripts\;C:\Users\28521\AppData\Local\Programs\Python\Python36\;C:\Users\28521\AppData\Local\Microsoft\WindowsApps;C:\Users\28521\AppData\Local\atom\bin;C:\ProgramData\phantomjs-2.1.1-windows\bin;C:\Users\28521\AppData\Local\Microsoft\WindowsApps;C:\Program Files\PostgreSQL\10\bin;H:\Docker Toolbox;C:\Users\28521\AppData\Local\Android\Sdk\platform-tools;C:\Users\28521\AppData\Local\Android\Sdk\tools;C:\Program Files\ArangoDB3 3.3.15\usr\bin;C:\Users\28521\AppData\Local\ArangoDB3-client 3.3.15\usr\bin;H:\project\stock_xuxiang\aria2-1.34.0-win-64bit-build1\aria2-1.34.0-win-64bit-build1;F:\system_path\watchman;C:\Users\28521\AppData\Roaming\npm;C:\Program Files (x86)\Google\Chrome\Application\chrome.exe;;C:\Users\28521\AppData\Local\Programs\Microsoft VS Code\bin
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.npm.taobao.org/realtionship.js: Not found
-      at Request.params.callback [as _callback] (C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:65656:18)
-      at Request.self.callback (C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:134675:22)
-      at Request.emit (events.js:182:13)
-      at Request.<anonymous> (C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:135658:10)
-      at Request.emit (events.js:182:13)
-      at IncomingMessage.<anonymous> (C:\Users\28521\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:135578:12)
-      at Object.onceWrapper (events.js:273:13)
-      at IncomingMessage.emit (events.js:187:15)
-      at endReadableNT (_stream_readable.js:1094:12)
-      at process._tickCallback (internal/process/next_tick.js:63:19)
+  Error: EPERM: operation not permitted, unlink 'H:\sdApp\projectnew-client\node_modules\react-native-elements\node_modules\.bin'
 
 npm manifest: 
   {
@@ -44,14 +34,19 @@ npm manifest:
       "apollo-link-context": "^1.0.10",
       "apollo-link-error": "^1.1.2",
       "apollo-link-http": "^1.5.7",
+      "apollo-link-retry": "^2.2.10",
       "apollo-link-state": "^0.4.2",
       "apollo-link-ws": "^1.0.10",
       "apollo-utilities": "^1.0.26",
       "dateformat": "^3.0.3",
       "expo": "^31.0.5",
+      "expokit": "31.0.2",
       "graphql": "^14.0.2",
       "graphql-tag": "^2.10.0",
+      "immutability-helper": "^2.9.0",
+      "js-pinyin": "^0.1.9",
       "lodash": "^4.17.11",
+      "md5": "^2.2.1",
       "moment": "^2.22.2",
       "native-base": "^2.8.1",
       "prop-types": "^15.6.2",
@@ -62,11 +57,12 @@ npm manifest:
       "react-native-elements": "^0.19.1",
       "react-native-expo-image-cache": "^3.2.0",
       "react-native-gifted-chat": "^0.5.0",
+      "react-native-keyboard-spacer": "^0.4.1",
       "react-native-modal": "^7.0.2",
       "react-native-modal-datetime-picker": "^6.0.0",
+      "react-native-swiper": "^1.5.14",
       "react-native-timeline-feed": "^0.1.2",
-      "react-navigation": "^2.18.3",
-      "styled-components": "^4.0.3",
+      "react-navigation": "2.18.3",
       "subscriptions-transport-ws": "^0.9.15",
       "teaset": "^0.5.10"
     },
@@ -634,20 +630,6 @@ Lockfile:
       lodash "^4.17.10"
       to-fast-properties "^2.0.0"
   
-  "@emotion/is-prop-valid@^0.7.3":
-    version "0.7.3"
-    resolved "http://registry.npm.taobao.org/@emotion/is-prop-valid/download/@emotion/is-prop-valid-0.7.3.tgz#a6bf4fa5387cbba59d44e698a4680f481a8da6cc"
-    dependencies:
-      "@emotion/memoize" "0.7.1"
-  
-  "@emotion/memoize@0.7.1":
-    version "0.7.1"
-    resolved "http://registry.npm.taobao.org/@emotion/memoize/download/@emotion/memoize-0.7.1.tgz#e93c13942592cf5ef01aa8297444dc192beee52f"
-  
-  "@emotion/unitless@^0.7.0":
-    version "0.7.3"
-    resolved "http://registry.npm.taobao.org/@emotion/unitless/download/@emotion/unitless-0.7.3.tgz#6310a047f12d21a1036fb031317219892440416f"
-  
   "@expo/react-native-action-sheet@^1.0.1":
     version "1.1.2"
     resolved "http://registry.npm.taobao.org/@expo/react-native-action-sheet/download/@expo/react-native-action-sheet-1.1.2.tgz#4c2f9b8190678799552e83134a975ec370a694d9"
@@ -706,7 +688,7 @@ Lockfile:
     version "0.0.27"
     resolved "http://registry.npm.taobao.org/@types/websql/download/@types/websql-0.0.27.tgz#621a666a7f02018e7cbb4abab956a25736c27d71"
   
-  "@types/zen-observable@^0.8.0":
+  "@types/zen-observable@0.8.0", "@types/zen-observable@^0.8.0":
     version "0.8.0"
     resolved "http://registry.npm.taobao.org/@types/zen-observable/download/@types/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
   
@@ -857,6 +839,13 @@ Lockfile:
       apollo-link "^1.2.6"
       apollo-link-http-common "^0.2.8"
   
+  apollo-link-retry@^2.2.10:
+    version "2.2.10"
+    resolved "https://registry.npmjs.org/apollo-link-retry/-/apollo-link-retry-2.2.10.tgz#cd9483929b2c6db757441415a3bd9e1f147d9254"
+    dependencies:
+      "@types/zen-observable" "0.8.0"
+      apollo-link "^1.2.8"
+  
   apollo-link-state@^0.4.2:
     version "0.4.2"
     resolved "http://registry.npm.taobao.org/apollo-link-state/download/apollo-link-state-0.4.2.tgz#ac00e9be9b0ca89eae0be6ba31fe904b80bbe2e8"
@@ -876,6 +865,12 @@ Lockfile:
     dependencies:
       apollo-utilities "^1.0.0"
       zen-observable-ts "^0.8.13"
+  
+  apollo-link@^1.2.8:
+    version "1.2.8"
+    resolved "https://registry.npmjs.org/apollo-link/-/apollo-link-1.2.8.tgz#0f252adefd5047ac1a9f35ba9439d216587dcd84"
+    dependencies:
+      zen-observable-ts "^0.8.15"
   
   apollo-utilities@1.0.26, apollo-utilities@^1.0.0, apollo-utilities@^1.0.26, apollo-utilities@^1.0.8:
     version "1.0.26"
@@ -1172,15 +1167,6 @@ Lockfile:
     dependencies:
       lodash "^4.6.1"
   
-  "babel-plugin-styled-components@>= 1":
-    version "1.10.0"
-    resolved "http://registry.npm.taobao.org/babel-plugin-styled-components/download/babel-plugin-styled-components-1.10.0.tgz#ff1f42ad2cc78c21f26b62266b8f564dbc862939"
-    dependencies:
-      "@babel/helper-annotate-as-pure" "^7.0.0"
-      "@babel/helper-module-imports" "^7.0.0"
-      babel-plugin-syntax-jsx "^6.18.0"
-      lodash "^4.17.10"
-  
   babel-plugin-syntax-async-functions@^6.5.0:
     version "6.13.0"
     resolved "http://registry.npm.taobao.org/babel-plugin-syntax-async-functions/download/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
@@ -1201,7 +1187,7 @@ Lockfile:
     version "6.18.0"
     resolved "http://registry.npm.taobao.org/babel-plugin-syntax-flow/download/babel-plugin-syntax-flow-6.18.0.tgz#4c3ab20a2af26aa20cd25995c398c4eb70310c8d"
   
-  babel-plugin-syntax-jsx@^6.18.0, babel-plugin-syntax-jsx@^6.5.0, babel-plugin-syntax-jsx@^6.8.0:
+  babel-plugin-syntax-jsx@^6.5.0, babel-plugin-syntax-jsx@^6.8.0:
     version "6.18.0"
     resolved "http://registry.npm.taobao.org/babel-plugin-syntax-jsx/download/babel-plugin-syntax-jsx-6.18.0.tgz#0af32a9a6e13ca7a3fd5069e62d7b0f58d0d8946"
   
@@ -1754,6 +1740,10 @@ Lockfile:
     version "0.4.2"
     resolved "http://registry.npm.taobao.org/chardet/download/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
   
+  charenc@~0.0.1:
+    version "0.0.2"
+    resolved "http://registry.npm.taobao.org/charenc/download/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
+  
   chokidar@^1.6.1:
     version "1.7.0"
     resolved "http://registry.npm.taobao.org/chokidar/download/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
@@ -1986,21 +1976,13 @@ Lockfile:
       shebang-command "^1.2.0"
       which "^1.2.9"
   
+  crypt@~0.0.1:
+    version "0.0.2"
+    resolved "http://registry.npm.taobao.org/crypt/download/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
+  
   crypto-js@^3.1.9-1:
     version "3.1.9-1"
     resolved "http://registry.npm.taobao.org/crypto-js/download/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
-  
-  css-color-keywords@^1.0.0:
-    version "1.0.0"
-    resolved "http://registry.npm.taobao.org/css-color-keywords/download/css-color-keywords-1.0.0.tgz#fea2616dc676b2962686b3af8dbdbe180b244e05"
-  
-  css-to-react-native@^2.2.2:
-    version "2.2.2"
-    resolved "http://registry.npm.taobao.org/css-to-react-native/download/css-to-react-native-2.2.2.tgz#c077d0f7bf3e6c915a539e7325821c9dd01f9965"
-    dependencies:
-      css-color-keywords "^1.0.0"
-      fbjs "^0.8.5"
-      postcss-value-parser "^3.3.0"
   
   dateformat@^3.0.3:
     version "3.0.3"
@@ -2131,8 +2113,8 @@ Lockfile:
     resolved "http://registry.npm.taobao.org/eslint-plugin-react-native-globals/download/eslint-plugin-react-native-globals-0.1.2.tgz#ee1348bc2ceb912303ce6bdbd22e2f045ea86ea2"
   
   eslint-plugin-react-native@^3.2.1:
-    version "3.5.0"
-    resolved "http://registry.npm.taobao.org/eslint-plugin-react-native/download/eslint-plugin-react-native-3.5.0.tgz#78a5d6aadb11f85d1b114488d1fddfa2bf4fc1fb"
+    version "3.6.0"
+    resolved "http://registry.npm.taobao.org/eslint-plugin-react-native/download/eslint-plugin-react-native-3.6.0.tgz#7cad3b7c6159df6d26fe3252c6c5417a17f27b4b"
     dependencies:
       eslint-plugin-react-native-globals "^0.1.1"
   
@@ -2488,6 +2470,12 @@ Lockfile:
       uuid-js "^0.7.5"
       whatwg-fetch "^2.0.4"
   
+  expokit@31.0.2:
+    version "31.0.2"
+    resolved "http://registry.npm.taobao.org/expokit/download/expokit-31.0.2.tgz#8a331eb4e890d912402ccd660f37cff8639604a0"
+    dependencies:
+      jsc-android "^224109.1.0"
+  
   extend-shallow@^1.1.2:
     version "1.1.4"
     resolved "http://registry.npm.taobao.org/extend-shallow/download/extend-shallow-1.1.4.tgz#19d6bf94dfc09d76ba711f39b872d21ff4dd9071"
@@ -2578,7 +2566,7 @@ Lockfile:
       semver "^5.1.0"
       through2 "^2.0.0"
   
-  fbjs@0.8.17, fbjs@^0.8.0, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.9, fbjs@~0.8.9:
+  fbjs@0.8.17, fbjs@^0.8.0, fbjs@^0.8.4, fbjs@^0.8.9, fbjs@~0.8.9:
     version "0.8.17"
     resolved "http://registry.npm.taobao.org/fbjs/download/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
     dependencies:
@@ -2922,6 +2910,12 @@ Lockfile:
     version "3.2.3"
     resolved "http://registry.npm.taobao.org/immediate/download/immediate-3.2.3.tgz#d140fa8f614659bd6541233097ddaac25cdd991c"
   
+  immutability-helper@^2.9.0:
+    version "2.9.0"
+    resolved "https://registry.npmjs.org/immutability-helper/-/immutability-helper-2.9.0.tgz#04a1c646300cd3a68aa5dc1daa7758da2ca75292"
+    dependencies:
+      invariant "^2.2.0"
+  
   immutable-tuple@^0.4.9:
     version "0.4.9"
     resolved "http://registry.npm.taobao.org/immutable-tuple/download/immutable-tuple-0.4.9.tgz#473ebdd6c169c461913a454bf87ef8f601a20ff0"
@@ -2993,7 +2987,7 @@ Lockfile:
       strip-ansi "^4.0.0"
       through "^2.3.6"
   
-  invariant@^2.2.2, invariant@^2.2.4:
+  invariant@^2.2.0, invariant@^2.2.2, invariant@^2.2.4:
     version "2.2.4"
     resolved "http://registry.npm.taobao.org/invariant/download/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
     dependencies:
@@ -3029,7 +3023,7 @@ Lockfile:
     dependencies:
       binary-extensions "^1.0.0"
   
-  is-buffer@^1.1.5:
+  is-buffer@^1.1.5, is-buffer@~1.1.1:
     version "1.1.6"
     resolved "http://registry.npm.taobao.org/is-buffer/download/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   
@@ -3225,6 +3219,10 @@ Lockfile:
     dependencies:
       merge-stream "^1.0.1"
   
+  js-pinyin@^0.1.9:
+    version "0.1.9"
+    resolved "http://registry.npm.taobao.org/js-pinyin/download/js-pinyin-0.1.9.tgz#cdf19335645ddb20d4630df1058aac25d256adfd"
+  
   "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
     version "4.0.0"
     resolved "http://registry.npm.taobao.org/js-tokens/download/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -3239,6 +3237,10 @@ Lockfile:
     dependencies:
       argparse "^1.0.7"
       esprima "^4.0.0"
+  
+  jsc-android@^224109.1.0:
+    version "224109.1.0"
+    resolved "http://registry.npm.taobao.org/jsc-android/download/jsc-android-224109.1.0.tgz#9749ec92f1e284b3c09befe7c47cc6e60b1f0cdf"
   
   jsesc@^1.3.0:
     version "1.3.0"
@@ -3452,15 +3454,19 @@ Lockfile:
     dependencies:
       buffer-alloc "^1.1.0"
   
+  md5@^2.2.1:
+    version "2.2.1"
+    resolved "http://registry.npm.taobao.org/md5/download/md5-2.2.1.tgz#53ab38d5fe3c8891ba465329ea23fac0540126f9"
+    dependencies:
+      charenc "~0.0.1"
+      crypt "~0.0.1"
+      is-buffer "~1.1.1"
+  
   mem@^1.1.0:
     version "1.1.0"
     resolved "http://registry.npm.taobao.org/mem/download/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
     dependencies:
       mimic-fn "^1.0.0"
-  
-  memoize-one@^4.0.0:
-    version "4.1.0"
-    resolved "http://registry.npm.taobao.org/memoize-one/download/memoize-one-4.1.0.tgz#a2387c58c03fff27ca390c31b764a79addf3f906"
   
   merge-stream@^1.0.1:
     version "1.0.1"
@@ -4290,10 +4296,6 @@ Lockfile:
     version "0.1.1"
     resolved "http://registry.npm.taobao.org/posix-character-classes/download/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   
-  postcss-value-parser@^3.3.0:
-    version "3.3.1"
-    resolved "http://registry.npm.taobao.org/postcss-value-parser/download/postcss-value-parser-3.3.1.tgz#9ff822547e2893213cf1c30efa51ac5fd1ba8281"
-  
   pouchdb-collections@^1.0.1:
     version "1.0.1"
     resolved "http://registry.npm.taobao.org/pouchdb-collections/download/pouchdb-collections-1.0.1.tgz#fe63a17da977611abef7cb8026cb1a9553fd8359"
@@ -4337,7 +4339,7 @@ Lockfile:
     dependencies:
       asap "~2.0.3"
   
-  prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+  prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
     version "15.6.2"
     resolved "http://registry.npm.taobao.org/prop-types/download/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
     dependencies:
@@ -4354,7 +4356,7 @@ Lockfile:
   
   query-string@^6.1.0:
     version "6.2.0"
-    resolved "http://registry.npm.taobao.org/query-string/download/query-string-6.2.0.tgz#468edeb542b7e0538f9f9b1aeb26f034f19c86e1"
+    resolved "https://registry.npmjs.org/query-string/-/query-string-6.2.0.tgz#468edeb542b7e0538f9f9b1aeb26f034f19c86e1"
     dependencies:
       decode-uri-component "^0.2.0"
       strict-uri-encode "^2.0.0"
@@ -4416,7 +4418,7 @@ Lockfile:
       shell-quote "^1.6.1"
       ws "^3.3.1"
   
-  react-is@^16.3.2, react-is@^16.5.2, react-is@^16.6.0:
+  react-is@^16.3.2, react-is@^16.5.2:
     version "16.6.3"
     resolved "http://registry.npm.taobao.org/react-is/download/react-is-16.6.3.tgz#d2d7462fcfcbe6ec0da56ad69047e47e56e7eac0"
   
@@ -4451,17 +4453,17 @@ Lockfile:
   
   react-native-dismiss-keyboard@1.0.0:
     version "1.0.0"
-    resolved "http://registry.npm.taobao.org/react-native-dismiss-keyboard/download/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
+    resolved "https://registry.npmjs.org/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
   
   react-native-drawer-layout-polyfill@^1.3.2:
     version "1.3.2"
-    resolved "http://registry.npm.taobao.org/react-native-drawer-layout-polyfill/download/react-native-drawer-layout-polyfill-1.3.2.tgz#192c84d7a5a6b8a6d2be2c7daa5e4164518d0cc7"
+    resolved "https://registry.npmjs.org/react-native-drawer-layout-polyfill/-/react-native-drawer-layout-polyfill-1.3.2.tgz#192c84d7a5a6b8a6d2be2c7daa5e4164518d0cc7"
     dependencies:
       react-native-drawer-layout "1.3.2"
   
   react-native-drawer-layout@1.3.2:
     version "1.3.2"
-    resolved "http://registry.npm.taobao.org/react-native-drawer-layout/download/react-native-drawer-layout-1.3.2.tgz#b9740d7663a1dc4f88a61b9c6d93d2d948ea426e"
+    resolved "https://registry.npmjs.org/react-native-drawer-layout/-/react-native-drawer-layout-1.3.2.tgz#b9740d7663a1dc4f88a61b9c6d93d2d948ea426e"
     dependencies:
       react-native-dismiss-keyboard "1.0.0"
   
@@ -4527,6 +4529,10 @@ Lockfile:
       prop-types "^15.6.0"
       react-native-iphone-x-helper "^1.0.1"
   
+  react-native-keyboard-spacer@^0.4.1:
+    version "0.4.1"
+    resolved "http://registry.npm.taobao.org/react-native-keyboard-spacer/download/react-native-keyboard-spacer-0.4.1.tgz#46f18a320432098a25ea9fa89f5143dd254d332d"
+  
   react-native-lightbox@^0.7.0:
     version "0.7.0"
     resolved "http://registry.npm.taobao.org/react-native-lightbox/download/react-native-lightbox-0.7.0.tgz#e52b4d7fcc141f59d7b23f0180de535e35b20ec9"
@@ -4571,7 +4577,7 @@ Lockfile:
   
   react-native-safe-area-view@0.11.0:
     version "0.11.0"
-    resolved "http://registry.npm.taobao.org/react-native-safe-area-view/download/react-native-safe-area-view-0.11.0.tgz#4f3dda43c2bace37965e7c6aef5fc83d4f19d174"
+    resolved "https://registry.npmjs.org/react-native-safe-area-view/-/react-native-safe-area-view-0.11.0.tgz#4f3dda43c2bace37965e7c6aef5fc83d4f19d174"
     dependencies:
       hoist-non-react-statics "^2.3.1"
   
@@ -4586,8 +4592,8 @@ Lockfile:
     resolved "http://registry.npm.taobao.org/react-native-screens/download/react-native-screens-1.0.0-alpha.15.tgz#5b5a0041310b46f12048fda1908d52e7290ec18f"
   
   react-native-screens@^1.0.0-alpha.11:
-    version "1.0.0-alpha.17"
-    resolved "http://registry.npm.taobao.org/react-native-screens/download/react-native-screens-1.0.0-alpha.17.tgz#8c1a7224b967c476670963fce7d06b946e7158e9"
+    version "1.0.0-alpha.22"
+    resolved "https://registry.npmjs.org/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   
   react-native-svg@8.0.8:
     version "8.0.8"
@@ -4597,9 +4603,15 @@ Lockfile:
       lodash "^4.16.6"
       pegjs "^0.10.0"
   
+  react-native-swiper@^1.5.14:
+    version "1.5.14"
+    resolved "https://registry.npmjs.org/react-native-swiper/-/react-native-swiper-1.5.14.tgz#1c6f949ca377186300f972bb0f30d24062c899aa"
+    dependencies:
+      prop-types "^15.5.10"
+  
   react-native-tab-view@^0.0.77:
     version "0.0.77"
-    resolved "http://registry.npm.taobao.org/react-native-tab-view/download/react-native-tab-view-0.0.77.tgz#11ceb8e7c23100d07e628dc151b57797524d00d4"
+    resolved "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-0.0.77.tgz#11ceb8e7c23100d07e628dc151b57797524d00d4"
     dependencies:
       prop-types "^15.6.0"
   
@@ -4691,32 +4703,32 @@ Lockfile:
   
   react-navigation-deprecated-tab-navigator@1.3.0:
     version "1.3.0"
-    resolved "http://registry.npm.taobao.org/react-navigation-deprecated-tab-navigator/download/react-navigation-deprecated-tab-navigator-1.3.0.tgz#015dcae1e977b984ca7e99245261c15439026bb7"
+    resolved "https://registry.npmjs.org/react-navigation-deprecated-tab-navigator/-/react-navigation-deprecated-tab-navigator-1.3.0.tgz#015dcae1e977b984ca7e99245261c15439026bb7"
     dependencies:
       react-native-tab-view "^0.0.77"
   
   react-navigation-drawer@0.5.0:
     version "0.5.0"
-    resolved "http://registry.npm.taobao.org/react-navigation-drawer/download/react-navigation-drawer-0.5.0.tgz#d91b6a6ec65c34ba78c00f814b1e6508922cc9ec"
+    resolved "https://registry.npmjs.org/react-navigation-drawer/-/react-navigation-drawer-0.5.0.tgz#d91b6a6ec65c34ba78c00f814b1e6508922cc9ec"
     dependencies:
       react-native-drawer-layout-polyfill "^1.3.2"
   
   react-navigation-stack@0.7.0:
     version "0.7.0"
-    resolved "http://registry.npm.taobao.org/react-navigation-stack/download/react-navigation-stack-0.7.0.tgz#0b2f139ee1cba953037ef51353df992ec6c74fa2"
+    resolved "https://registry.npmjs.org/react-navigation-stack/-/react-navigation-stack-0.7.0.tgz#0b2f139ee1cba953037ef51353df992ec6c74fa2"
   
   react-navigation-tabs@0.8.4:
     version "0.8.4"
-    resolved "http://registry.npm.taobao.org/react-navigation-tabs/download/react-navigation-tabs-0.8.4.tgz#aa767f28b899f13c99f2b034b4a665f8cf0a5737"
+    resolved "https://registry.npmjs.org/react-navigation-tabs/-/react-navigation-tabs-0.8.4.tgz#aa767f28b899f13c99f2b034b4a665f8cf0a5737"
     dependencies:
       hoist-non-react-statics "^2.5.0"
       prop-types "^15.6.1"
       react-lifecycles-compat "^3.0.4"
       react-native-tab-view "^1.0.0"
   
-  react-navigation@^2.18.3:
+  react-navigation@2.18.3:
     version "2.18.3"
-    resolved "http://registry.npm.taobao.org/react-navigation/download/react-navigation-2.18.3.tgz#de9a24dc37dfc33f3e4779a9f13f45ea97dfe19e"
+    resolved "https://registry.npmjs.org/react-navigation/-/react-navigation-2.18.3.tgz#de9a24dc37dfc33f3e4779a9f13f45ea97dfe19e"
     dependencies:
       clamp "^1.0.1"
       create-react-context "0.2.2"
@@ -5291,30 +5303,6 @@ Lockfile:
     version "2.0.1"
     resolved "http://registry.npm.taobao.org/strip-json-comments/download/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   
-  styled-components@^4.0.3:
-    version "4.1.3"
-    resolved "http://registry.npm.taobao.org/styled-components/download/styled-components-4.1.3.tgz#4472447208e618b57e84deaaeb6acd34a5e0fe9b"
-    dependencies:
-      "@babel/helper-module-imports" "^7.0.0"
-      "@emotion/is-prop-valid" "^0.7.3"
-      "@emotion/unitless" "^0.7.0"
-      babel-plugin-styled-components ">= 1"
-      css-to-react-native "^2.2.2"
-      memoize-one "^4.0.0"
-      prop-types "^15.5.4"
-      react-is "^16.6.0"
-      stylis "^3.5.0"
-      stylis-rule-sheet "^0.0.10"
-      supports-color "^5.5.0"
-  
-  stylis-rule-sheet@^0.0.10:
-    version "0.0.10"
-    resolved "http://registry.npm.taobao.org/stylis-rule-sheet/download/stylis-rule-sheet-0.0.10.tgz#44e64a2b076643f4b52e5ff71efc04d8c3c4a430"
-  
-  stylis@^3.5.0:
-    version "3.5.4"
-    resolved "http://registry.npm.taobao.org/stylis/download/stylis-3.5.4.tgz#f665f25f5e299cf3d64654ab949a57c768b73fbe"
-  
   subscriptions-transport-ws@^0.9.15:
     version "0.9.15"
     resolved "http://registry.npm.taobao.org/subscriptions-transport-ws/download/subscriptions-transport-ws-0.9.15.tgz#68a8b7ba0037d8c489fb2f5a102d1494db297d0d"
@@ -5329,7 +5317,7 @@ Lockfile:
     version "2.0.0"
     resolved "http://registry.npm.taobao.org/supports-color/download/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
   
-  supports-color@^5.3.0, supports-color@^5.5.0:
+  supports-color@^5.3.0:
     version "5.5.0"
     resolved "http://registry.npm.taobao.org/supports-color/download/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
     dependencies:
@@ -5731,6 +5719,12 @@ Lockfile:
   zen-observable-ts@^0.8.13:
     version "0.8.13"
     resolved "http://registry.npm.taobao.org/zen-observable-ts/download/zen-observable-ts-0.8.13.tgz#ae1fd77c84ef95510188b1f8bca579d7a5448fc2"
+    dependencies:
+      zen-observable "^0.8.0"
+  
+  zen-observable-ts@^0.8.15:
+    version "0.8.15"
+    resolved "https://registry.npmjs.org/zen-observable-ts/-/zen-observable-ts-0.8.15.tgz#6cf7df6aa619076e4af2f707ccf8a6290d26699b"
     dependencies:
       zen-observable "^0.8.0"
   
