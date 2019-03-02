@@ -51,7 +51,7 @@ export default class Rules extends Component {
                         </ListItem>
                         <ListItem>
                             <Text>2、周一到周四为报名时间，周五为报名匹配结果公布时间,周六和周日为线下见面时间。
-                                一周为一个周期。
+                                一周为一个报名相亲周期。
                             </Text>
                         </ListItem>
                         <ListItem>

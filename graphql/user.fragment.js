@@ -13,6 +13,7 @@ import FAMILYGROUP_FRAGMENT from './familyGroup.fragment'
 import CLASSGROUP_FRAGMENT from './classGroup.fragment'
 import WORKGROUP_FRAGMENT from './workGroup.fragment'
 import LOVESETTING_FRAGMENT from './loveSetting.fragment'
+import LOVESIGNUP_FRAGMENT  from './loveSignUp.fragment'
 
 const USER_FRAGMENT = gql`
   fragment UserFragment on User {
@@ -64,6 +65,9 @@ const USER_FRAGMENT = gql`
     loveSetting{
       ...LoveSettingFragment
     },
+    signUpLove{
+      ...LoveSignUpFragment
+    }
  }
  ${PHOTO_FRAGMENT}
  ${LOCATION_FRAGMENT}
@@ -79,5 +83,6 @@ const USER_FRAGMENT = gql`
  ${CLASSGROUP_FRAGMENT}
  ${WORKGROUP_FRAGMENT}
  ${LOVESETTING_FRAGMENT}
+ ${LOVESIGNUP_FRAGMENT}
 `
 export default USER_FRAGMENT;

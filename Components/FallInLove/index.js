@@ -20,17 +20,39 @@ import {
 } from 'native-base';
 
 import GET_ME from '../../graphql/get_me.query'
+import ADD_UPDATE_LOVESIGNUP from '../../graphql/add_loveSignUp.mutation'
 import { DateStartTime } from '../../utils/settings'
 import { errorMessage } from '../../utils/tools'
 
 
 export default class FallInLove extends Component {
 
+    constructor(props) {
+        super(props);
+        const {me} = props.navigation.getParam('data')
+        const now = new Date()
+        const phase = parseInt(`${(now.getTime() - DateStartTime.getTime()) / 1000 / 60 / 60 / 24 / 7}`) + 1
+        let status
+        if(me.signUpLove){
+            if(me.signUpLove.period===`${phase}`){
+                status = "1"
+            }else{
+                status = "0"
+            }
+        }else{
+            status = "0"
+        }
+        this.state={
+            status
+        }
+      }
+
     render() {
+        const {status} = this.state
         const week = new Date().getDay();
         let signUp
         if (week == 0 || week == 5 || week == 6) {
-            signUp = false
+            signUp = true
         } else {
             signUp = true
         }
@@ -68,25 +90,50 @@ export default class FallInLove extends Component {
                                 <Content>
                                     <List>
                                         <ListItem>
-                                            <Text>{signUp ? `相亲报名第${phase}期` : "本期报名已截止"}</Text>
+                                            <Text>{signUp ? `${data.me.residence ? data.me.residence.city.name : ""}相亲报名第${phase}期` : "本期报名已截止"}</Text>
                                         </ListItem>
-                                        <Button
-                                            full
-                                            info
-                                            rounded
-                                            style={{ marginHorizontal: 20, marginVertical: 15 }}
-                                            disabled={!signUp}
+                                        <Mutation 
+                                        mutation={ADD_UPDATE_LOVESIGNUP}
+                                        update={(cache, { data: { addOrUpdateLoveSignUp } }) => {
+                                            const { me } = cache.readQuery({ query: GET_ME });
+                                            cache.writeQuery({
+                                              query: GET_ME,
+                                              data: { me: {...me,signUpLove:addOrUpdateLoveSignUp}},
+                                            });
+                                          }}
                                         >
-                                            <Text>参与报名</Text>
-                                        </Button>
+                                        {
+                                            addOrUpdateLoveSignUp=>{
+
+                                                return(
+                                                    <Button
+                                                    full
+                                                    info
+                                                    rounded
+                                                    style={{ marginHorizontal: 20, marginVertical: 15 }}
+                                                    disabled={!signUp || status!=="0"}
+                                                    onPress={()=>{
+                                                        addOrUpdateLoveSignUp()
+                                                        this.setState({status:"1"})
+
+                                                    }}
+                                                >
+                                                    <Text>{status==="0" ?"参与报名" :"已报名"}</Text>
+                                                </Button>
+                                                )
+                                            }
+                                        }
+                                        </Mutation>
+                                        
                                         <ListItem>
-                                            <Text>见面时间：</Text>
+                                            {signUp && <Text>见面时间：周五公布结果</Text>}
+                                           
                                         </ListItem>
                                         <ListItem>
-                                            <Text>见面地点：</Text>
+                                            {signUp && <Text>见面地点：周五公布结果</Text>}
                                         </ListItem>
                                         <ListItem>
-                                            <Text>{signUp ? "报名中..." : "本期相亲对象："}</Text>
+                                            {signUp && <Text>本期相亲对象：见面地点：周五公布结果</Text>}
                                         </ListItem>
                                         {
                                             !signUp && (
