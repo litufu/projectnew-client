@@ -11,11 +11,11 @@ export default class MyIcon extends React.Component{
        
             <View style={styles.container}>
                 <Icon
-                    reverse
                     name={iconName}
                     type={iconType}
                     color={color}
-                    underlayColor="blue"
+                    size={30}
+                    iconStyle={styles.icon}
                     onPress={ handlePress} 
                     />
 
@@ -30,6 +30,9 @@ const styles = StyleSheet.create({
         flex:1,
         alignItems:'center',
         justifyContent:'center',
+    },
+    icon:{
+        marginVertical:5,
     }
 })
 

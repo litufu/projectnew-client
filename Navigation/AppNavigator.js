@@ -38,6 +38,10 @@ import QueryResult from '../Components/CollegeEntranceExam/QueryResult'
 import Applicants from '../Components/CollegeEntranceExam/Applicants'
 //  2、 找工作
 import FindJob from '../Components/FindJob'
+// 3、同城热恋
+import FallInLove from '../Components/FallInLove'
+import FallInLoveSettings from '../Components/FallInLove/Settings'
+import FallInLoveRules from '../Components/FallInLove/Rules'
 
 // 引入group
 import FamilyGroup from '../Components/Groups/FamilyGroup'
@@ -122,6 +126,16 @@ const HomeNavigation = createStackNavigator(
         UserProfile: {
             screen: UserProfile,
         },
+        FallInLove:{
+            screen: FallInLove,
+        },
+        FallInLoveSettings:{
+            screen: FallInLoveSettings,
+        },
+        FallInLoveRules:{
+            screen: FallInLoveRules,
+        }
+
 
     },
     {

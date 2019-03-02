@@ -10,6 +10,7 @@ export default class Product extends Component {
     _renderProduct = () => (
         <Query
             query={GET_PRODUCTS}
+            fetchPolicy="network-only"
         >
             {
                 ({ loading, error, data }) => {

@@ -31,6 +31,21 @@ export default class Home extends React.Component {
         this.props.navigation.navigate('CollegeEntranceExam', { data })
     }
 
+    _handleFallInLove = (data) => {
+        if (!(data.me.families && data.me.families.length !== 0 && data.me.families.filter(family => family.status === '3').length !== 0)) {
+            Alert.alert('提示', '请先在“设置-家庭成员”的界面添加家庭成员，并至少与一人连接.')
+            return
+        }
+        if (!(data.me.studies && data.me.studies.length !== 0 )) {
+            Alert.alert('提示', '请在“设置-学习经历”中添加学习经历')
+            return
+        }
+
+        this.props.navigation.navigate('FallInLove', { data })
+    }
+
+    
+
     render() {
         return (
             <Container>
@@ -58,11 +73,11 @@ export default class Home extends React.Component {
                                             name="高考报名"
                                         />
                                         <MyIcon
-                                            iconName={loading ? 'spinner' : 'road'}
+                                            iconName={loading ? 'spinner' : 'heart'}
                                             iconType='font-awesome'
-                                            color="#517fa4"
-                                            handlePress={() => this._handleCollegeEntranceExam(data)}
-                                            name="高考报名"
+                                            color="red"
+                                            handlePress={() => this._handleFallInLove(data)}
+                                            name="同城热恋"
                                         />
                                     </ListItem>)
                             }
