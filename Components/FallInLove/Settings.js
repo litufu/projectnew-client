@@ -138,29 +138,54 @@ export default class Trade extends Component {
                                     <Left>
                                         <Text>时间</Text>
                                     </Left>
-                                    <Right>
-                                        <TouchableHighlight
+                                    {
+                                        !datePlace 
+                                        ? (<Right>
+                                            <TouchableHighlight
                                             onPress={() => this.setState({ display: "dateTime" })}
                                         >
                                             <Text>
-                                                {!dateTime ? "未填写" : `${dateTime}`}
+                                                 未填写
                                             </Text>
                                         </TouchableHighlight>
-                                    </Right>
+                                        </Right>)
+                                        :(
+                                            <TouchableHighlight
+                                            onPress={() => this.setState({ display: "dateTime" })}
+                                        >
+                                            <Text>
+                                                {dateTime}
+                                            </Text>
+                                        </TouchableHighlight>
+                                        )
+                                    }
                                 </ListItem>
                                 <ListItem>
                                     <Left>
                                         <Text>地点</Text>
                                     </Left>
-                                    <Right>
-                                        <TouchableHighlight
+                                    {
+                                        !datePlace 
+                                        ? (<Right>
+                                            <TouchableHighlight
                                             onPress={() => this.setState({ display: "datePlace" })}
                                         >
                                             <Text>
-                                                {!datePlace ? "未填写" : `${datePlace}`}
+                                                 未填写
                                             </Text>
                                         </TouchableHighlight>
-                                    </Right>
+                                        </Right>)
+                                        :(
+                                            <TouchableHighlight
+                                            onPress={() => this.setState({ display: "datePlace" })}
+                                        >
+                                            <Text>
+                                                {datePlace}
+                                            </Text>
+                                        </TouchableHighlight>
+                                        )
+                                    }
+                                        
                                 </ListItem>
                             </List>
                         )

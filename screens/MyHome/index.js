@@ -40,6 +40,13 @@ export default class Home extends React.Component {
             Alert.alert('提示', '请在“设置-学习经历”中添加学习经历')
             return
         }
+        const birthday = new Date(data.me.birthday)
+        const d = new Date()
+        const age = d.getFullYear()-birthday.getFullYear()-((d.getMonth()<birthday.getMonth()|| d.getMonth()===birthday.getMonth() && d.getDate()<birthday.getDate())?1:0);
+        if(age<18){
+            Alert.alert('提示', '年龄不满18周岁，无法报名')
+            return
+        }
 
         this.props.navigation.navigate('FallInLove', { data })
     }
