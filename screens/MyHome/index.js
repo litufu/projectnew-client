@@ -51,6 +51,11 @@ export default class Home extends React.Component {
         this.props.navigation.navigate('FallInLove', { data })
     }
 
+
+    _FoundTeam = (data) => {
+        this.props.navigation.navigate('FoundTeam', { data })
+    }
+
     
 
     render() {
@@ -85,6 +90,13 @@ export default class Home extends React.Component {
                                             color="red"
                                             handlePress={() => this._handleFallInLove(data)}
                                             name="同城热恋"
+                                        />
+                                        <MyIcon
+                                            iconName={loading ? 'spinner' : 'gears'}
+                                            iconType='font-awesome'
+                                            color="#3385ff"
+                                            handlePress={() => this._FoundTeam(data)}
+                                            name="创业组团"
                                         />
                                     </ListItem>)
                             }

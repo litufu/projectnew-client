@@ -14,6 +14,7 @@ import CLASSGROUP_FRAGMENT from './classGroup.fragment'
 import WORKGROUP_FRAGMENT from './workGroup.fragment'
 import LOVESETTING_FRAGMENT from './loveSetting.fragment'
 import LOVESIGNUP_FRAGMENT  from './loveSignUp.fragment'
+import SKILL_FRAGMENT from './skill.fragment'
 
 const USER_FRAGMENT = gql`
   fragment UserFragment on User {
@@ -67,6 +68,9 @@ const USER_FRAGMENT = gql`
     },
     signUpLove{
       ...LoveSignUpFragment
+    },
+    skills{
+      ...SkillFragment
     }
  }
  ${PHOTO_FRAGMENT}
@@ -84,5 +88,6 @@ const USER_FRAGMENT = gql`
  ${WORKGROUP_FRAGMENT}
  ${LOVESETTING_FRAGMENT}
  ${LOVESIGNUP_FRAGMENT}
+ ${SKILL_FRAGMENT}
 `
 export default USER_FRAGMENT;

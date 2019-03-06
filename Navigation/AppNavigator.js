@@ -42,6 +42,10 @@ import FindJob from '../Components/FindJob'
 import FallInLove from '../Components/FallInLove'
 import FallInLoveSettings from '../Components/FallInLove/Settings'
 import FallInLoveRules from '../Components/FallInLove/Rules'
+// 4、创业组团
+import FoundTeam from '../Components/FoundTeam'
+import SkillSetting  from '../Components/FoundTeam/SkillSetting'
+import AddPartner from '../Components/FoundTeam/AddPartner'
 
 // 引入group
 import FamilyGroup from '../Components/Groups/FamilyGroup'
@@ -134,9 +138,16 @@ const HomeNavigation = createStackNavigator(
         },
         FallInLoveRules:{
             screen: FallInLoveRules,
+        },
+        FoundTeam:{
+            screen: FoundTeam,
+        },
+        SkillSetting:{
+            screen: SkillSetting,
+        },
+        AddPartner:{
+            screen: AddPartner,
         }
-
-
     },
     {
         initialRouteName: "Home",
