@@ -71,7 +71,7 @@ const USER_FRAGMENT = gql`
     },
     skills{
       ...SkillFragment
-    }
+    },
  }
  ${PHOTO_FRAGMENT}
  ${LOCATION_FRAGMENT}

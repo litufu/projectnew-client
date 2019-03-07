@@ -46,6 +46,7 @@ import FallInLoveRules from '../Components/FallInLove/Rules'
 import FoundTeam from '../Components/FoundTeam'
 import SkillSetting  from '../Components/FoundTeam/SkillSetting'
 import AddPartner from '../Components/FoundTeam/AddPartner'
+import ProjectIntroduce from '../Components/FoundTeam/ProjectIntroduce'
 
 // 引入group
 import FamilyGroup from '../Components/Groups/FamilyGroup'
@@ -147,7 +148,11 @@ const HomeNavigation = createStackNavigator(
         },
         AddPartner:{
             screen: AddPartner,
+        },
+        ProjectIntroduce:{
+            screen: ProjectIntroduce,
         }
+
     },
     {
         initialRouteName: "Home",

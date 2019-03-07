@@ -7,10 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83211f08-bb34-462d-a0ea-8574291d6f83" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Navigation/AppNavigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Navigation/AppNavigator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Components/FoundTeam/AddPartner.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Components/FoundTeam/AddPartner.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" afterDir="false" />
@@ -28,18 +27,19 @@
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/split-apk/devMinSdkDevKernel/debug/slices/slice_9.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/split-apk/devMinSdkDevKernel/debug/slices/slice_9.apk" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/devMinSdkDevKernel/debug/180/host/exp/exponent/MainActivity.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/devMinSdkDevKernel/debug/180/host/exp/exponent/MainActivity.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/devMinSdkDevKernel/debug/189/host/exp/exponent/generated/DetachBuildConstants.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/devMinSdkDevKernel/debug/189/host/exp/exponent/generated/DetachBuildConstants.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/devMinSdkDevKernel/debug/__content__.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/devMinSdkDevKernel/debug/__content__.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexMerger/devMinSdkDevKernel/debug/0/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexMerger/devMinSdkDevKernel/debug/0/classes.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexMerger/devMinSdkDevKernel/debug/9/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexMerger/devMinSdkDevKernel/debug/9/classes.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexMerger/devMinSdkDevKernel/debug/__content__.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexMerger/devMinSdkDevKernel/debug/__content__.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRun/devMinSdkDevKernel/debug/0/host/exp/exponent/MainActivity.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRun/devMinSdkDevKernel/debug/0/host/exp/exponent/MainActivity.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRun/devMinSdkDevKernel/debug/0/host/exp/exponent/generated/DetachBuildConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRun/devMinSdkDevKernel/debug/0/host/exp/exponent/generated/DetachBuildConstants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRun/devMinSdkDevKernel/debug/__content__.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRun/devMinSdkDevKernel/debug/__content__.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/0/buildId.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/0/buildId.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/0/host/exp/exponent/MainActivity.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/0/host/exp/exponent/MainActivity.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/9/buildId.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/9/buildId.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/9/host/exp/exponent/generated/DetachBuildConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/9/host/exp/exponent/generated/DetachBuildConstants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/__content__.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/instantRunSlicer/devMinSdkDevKernel/debug/__content__.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/host/exp/exponent/generated/DetachBuildConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/host/exp/exponent/generated/DetachBuildConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../graphql/user.fragment.js" beforeDir="false" afterPath="$PROJECT_DIR$/../graphql/user.fragment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../screens/MyHome/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../screens/MyHome/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../utils/settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/../utils/settings.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,11 +67,12 @@
           <entry key="project.open.time.37" value="1" />
           <entry key="project.open.time.41" value="1" />
           <entry key="project.open.time.51" value="1" />
+          <entry key="project.open.time.53" value="1" />
           <entry key="project.open.time.55" value="1" />
           <entry key="project.open.time.58" value="2" />
           <entry key="project.open.time.82" value="1" />
           <entry key="project.open.time.97" value="1" />
-          <entry key="project.opened" value="13" />
+          <entry key="project.opened" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -169,8 +170,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -270,7 +271,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.21313673" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.15147454" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />

@@ -92,7 +92,7 @@ export default class Home extends React.Component {
                                             name="同城热恋"
                                         />
                                         <MyIcon
-                                            iconName={loading ? 'spinner' : 'gears'}
+                                            iconName={loading ? 'spinner' : 'handshake-o'}
                                             iconType='font-awesome'
                                             color="#3385ff"
                                             handlePress={() => this._FoundTeam(data)}

@@ -158,19 +158,15 @@ export default class SendInvitation extends Component {
                     if (error) return <Text>{errorMessage(error)}</Text>
                     return (
                         <List>
-                            <Button
+                            {data.projects.length<1 && <Button
                                 full
                                 style={{ marginHorizontal: 20, marginVertical: 15 }}
                                 onPress={() => {
-                                    if(data.projects.length>=1){
-                                        Alert.alert('目前仅支持创建一个项目')
-                                        return
-                                    }
                                     this.setState({ display: "project" })
                                 }}
                             >
                                 <Text>新建创业项目</Text>
-                            </Button>
+                            </Button>}
                             {
                                 data.projects.map((project,index) => (
                                     <ListItem avatar key={index}>
